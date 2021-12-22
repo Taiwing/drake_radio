@@ -1,5 +1,46 @@
-<html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Drake Radio</title>
+		<style>
+			body {
+				background: #000;
+				padding: 0px;
+				margin: 0px;
+			}
+		</style>
+	</head>
 	<body>
-			<p>Hello to the Milky Way!</p>
+		<script type="module">
+			import * as THREE from 'https://cdn.skypack.dev/three'
+
+			const scene = new THREE.Scene()
+			const camera = new THREE.PerspectiveCamera(
+				75, window.innerWidth / window.innerHeight, 0.1, 1000
+			)
+
+			const renderer = new THREE.WebGLRenderer()
+			const geometry = new THREE.BoxGeometry()
+			const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+			const cube = new THREE.Mesh(geometry, material)
+
+			scene.add(cube)
+			renderer.setSize(window.innerWidth, window.innerHeight)
+			camera.position.z = 5
+			document.body.appendChild(renderer.domElement)
+
+			function animate() {
+				requestAnimationFrame(animate)
+				renderer.render(scene, camera)
+			}
+			animate()
+
+			setInterval(() => {
+				cube.rotation.x += 0.01
+				cube.rotation.y += 0.01
+			}, 5)
+		</script>
 	</body>
 </html>
