@@ -7,4 +7,5 @@ export {
   MeshBasicMaterial,
   WebGLRenderer,
   PointLight,
+  MathUtils,
 } from 'https://cdn.skypack.dev/three'

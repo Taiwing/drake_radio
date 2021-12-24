@@ -21,6 +21,7 @@ export class World {
       camera: this._camera, 
       renderer: this._renderer, 
     })
+    resizer.onResize = () => { this.render() }
   }
 
   render() {
