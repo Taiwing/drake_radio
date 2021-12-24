@@ -1,7 +1,9 @@
+/*
 import * as THREE from 'https://cdn.skypack.dev/three'
 import {
   OrbitControls
 } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js'
+*/
 
 export const milkyWay = () => {
   const container = document.querySelector('#scene-container')
