@@ -1,7 +1,15 @@
 body {
+	background-color: black;
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
+	color: grey;
+	font-family: "New Courier", monospace;
+}
+
+h2 {
+	padding: 0.5em;
+	text-align: center;
 }
 
 #scene-container {
