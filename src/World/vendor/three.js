@@ -8,4 +8,5 @@ export {
   WebGLRenderer,
   PointLight,
   MathUtils,
+  Clock,
 } from 'https://cdn.skypack.dev/three'

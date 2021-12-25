@@ -10,8 +10,12 @@ export const createCube = (opt = {}) => {
   const geometry = new BoxBufferGeometry(width, height, depth)
   const material = new MeshBasicMaterial({ color })
   const cube = new Mesh(geometry, material)
-  cube.rotation.x = MathUtils.degToRad(-60)
-  cube.rotation.y = MathUtils.degToRad(-45)
-  cube.rotation.z = MathUtils.degToRad(60)
+  cube.rotation.set(-0.5, -0.1, 0.8)
+  const radiansPerSecond = MathUtils.degToRad(30)
+  cube.tick = ({ delta }) => {
+    cube.rotation.x += radiansPerSecond * delta
+    cube.rotation.y += radiansPerSecond * delta
+    cube.rotation.z += radiansPerSecond * delta
+  }
   return cube
 }
