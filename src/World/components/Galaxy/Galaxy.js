@@ -10,6 +10,6 @@ export class Galaxy extends Group {
   }
 
   tick({ delta }) {
-    this.rotation.x += this._rotationPerSec * delta
+    this.rotation.y += this._rotationPerSec * delta
   }
 }

@@ -6,6 +6,7 @@ import { createControls } from './systems/controls.js'
 import { createRenderer } from './systems/renderer.js'
 import { Resizer } from './systems/Resizer.js'
 import { Loop } from './systems/Loop.js'
+import { AxesHelper } from './vendor/three.js'
 
 export class World {
   constructor({ container }) {
@@ -37,6 +38,11 @@ export class World {
     this._loop.updatables.push(this._controls)
     this._loop.updatables.push(this._galaxy)
     this._scene.add(this._galaxy, light)
+
+    //TEMP
+    const axesHelper = new AxesHelper(3)
+    this._scene.add(axesHelper)
+    //TEMP
   }
 
   render() {

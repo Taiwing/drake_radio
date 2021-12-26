@@ -14,4 +14,5 @@ export {
   Clock,
   LineSegments,
   Group,
+  AxesHelper,
 } from 'https://cdn.skypack.dev/three'
