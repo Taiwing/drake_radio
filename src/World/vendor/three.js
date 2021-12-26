@@ -15,4 +15,8 @@ export {
   LineSegments,
   Group,
   AxesHelper,
+  BufferGeometry,
+  PointsMaterial,
+  Points,
+  Float32BufferAttribute,
 } from 'https://cdn.skypack.dev/three'

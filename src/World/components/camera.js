@@ -7,7 +7,7 @@ export const createCamera = (opt = {}) => {
     near = 0.1,
     far = 100,
     x = 0,
-    y = 0,
+    y = 3.5,
     z = 10,
   } = opt
 

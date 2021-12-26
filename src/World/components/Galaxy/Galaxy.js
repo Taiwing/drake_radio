@@ -1,11 +1,13 @@
 import { Group, MathUtils } from '../../vendor/three.js'
 import { createSphere } from './sphere.js'
+import { createParticles } from './particles.js'
 
 export class Galaxy extends Group {
   constructor() {
     super()
     this._center = createSphere()
-    this.add(this._center)
+    this._stars = createParticles()
+    this.add(this._center, this._stars)
     this._rotationPerSec = MathUtils.degToRad(10)
   }
 
