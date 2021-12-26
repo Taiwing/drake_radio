@@ -1,7 +1,7 @@
 import { createCamera } from './components/camera.js'
 import { createScene } from './components/scene.js'
-import { createCube } from './components/cube.js'
-import { createLights } from './components/lights.js'
+import { createLights } from './components/lights.js' //TODO: move this to Galaxy
+import { Galaxy } from './components/Galaxy/Galaxy.js'
 import { createControls } from './systems/controls.js'
 import { createRenderer } from './systems/renderer.js'
 import { Resizer } from './systems/Resizer.js'
@@ -20,23 +20,23 @@ export class World {
       canvas: this._renderer.domElement,
     })
     this._controls.addEventListener('change', () => this.render())
+    this._resizer = new Resizer({
+      container: this._container,
+      camera: this._camera,
+      renderer: this._renderer,
+    })
+    this._resizer.onResize = () => this.render()
     this._loop = new Loop({
       camera: this._camera,
       scene: this._scene,
       renderer: this._renderer,
     })
 
-    const cube = createCube()
+    this._galaxy = new Galaxy()
     const light = createLights()
-    this._loop.updatables.push(cube)
-    this._loop.updatables.push(this._camera)
     this._loop.updatables.push(this._controls)
-    this._scene.add(cube, light)
-    const resizer = new Resizer({
-      container: this._container, 
-      camera: this._camera, 
-      renderer: this._renderer, 
-    })
+    this._loop.updatables.push(this._galaxy)
+    this._scene.add(this._galaxy, light)
   }
 
   render() {
