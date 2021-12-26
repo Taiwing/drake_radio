@@ -6,12 +6,14 @@ export class Loop {
     this._scene = scene 
     this._renderer = renderer
     this._clock = new Clock()
+    this._delta = this._clock.getDelta()
     this.updatables = []
   }
 
   start() {
+    this._delta = this._clock.getDelta()
     this._renderer.setAnimationLoop(() => {
-      this.tick()
+      this._tick()
       this._renderer.render(this._scene, this._camera)
     })
   }
@@ -20,10 +22,10 @@ export class Loop {
     this._renderer.setAnimationLoop(null)
   }
 
-  tick () {
-    const delta = this._clock.getDelta()
+  _tick () {
+    this._delta = this._clock.getDelta()
     for (const object of this.updatables) {
-      object.tick({ delta })
+      object.tick({ delta: this._delta })
     }
   }
 }
