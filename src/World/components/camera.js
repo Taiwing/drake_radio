@@ -8,7 +8,7 @@ export const createCamera = (opt = {}) => {
     far = 100,
     x = 0,
     y = 3.5,
-    z = 10,
+    z = 15,
   } = opt
 
   const camera = new PerspectiveCamera(fov, aspect, near, far)

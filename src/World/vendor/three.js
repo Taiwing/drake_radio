@@ -20,6 +20,7 @@ export {
   Points,
   Float32BufferAttribute,
   Curve,
+  CurvePath,
   TubeGeometry,
   Vector3,
 } from 'https://cdn.skypack.dev/three'
