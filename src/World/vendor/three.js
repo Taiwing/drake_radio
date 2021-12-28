@@ -23,4 +23,5 @@ export {
   CurvePath,
   TubeGeometry,
   Vector3,
+  Line,
 } from 'https://cdn.skypack.dev/three'
