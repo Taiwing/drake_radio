@@ -66,16 +66,26 @@ const getSection = ({ radius, origin, npoints }) => {
   return points
 }
 
-const getCurveVertices = ({ length, radius, width, nsections, npoints }) => {
+const getCurveVertices = ({
+  length,
+  radius,
+  width,
+  nsections,
+  npoints,
+  reduction,
+}) => {
   const segment = length / nsections
   const leftAngle = MathUtils.degToRad(345)
   const rightAngle = MathUtils.degToRad(15)
   const vertices = []
   const linePoints = []
+  let sectionRadius = width / 2
   for (let t = 0; t < length; t += segment) {
     const origin = involuteCurve({ radius, t })
     linePoints.push(origin)
-    vertices.push(...getSection({ radius: width / 2, origin, npoints }))
+    if (sectionRadius > segment * 3)
+      sectionRadius = width / 2 * (length - t) * 1 / reduction
+    vertices.push(...getSection({ radius: sectionRadius, origin, npoints }))
   }
   return { vertices, linePoints }
 }
@@ -85,8 +95,9 @@ export const createCurve = (opt = {}) => {
     radius,
     width,
     length = 7,
-    nsections = 200,
-    npoints = 100,
+    reduction = 5,
+    nsections = 500,
+    npoints = 50,
     buildTube = false,
     buildLine = false,
     color = 'blue'
@@ -97,6 +108,7 @@ export const createCurve = (opt = {}) => {
     width,
     nsections,
     npoints,
+    reduction,
   })
   return {
     vertices,
