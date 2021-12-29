@@ -15,6 +15,7 @@ export {
   LineSegments,
   Group,
   AxesHelper,
+  CameraHelper,
   BufferGeometry,
   PointsMaterial,
   Points,

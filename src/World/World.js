@@ -5,7 +5,7 @@ import { createControls } from './systems/controls.js'
 import { createRenderer } from './systems/renderer.js'
 import { Resizer } from './systems/Resizer.js'
 import { Loop } from './systems/Loop.js'
-import { AxesHelper } from './vendor/three.js'
+import { AxesHelper, CameraHelper } from './vendor/three.js'
 
 export class World {
   constructor({ container }) {
@@ -18,6 +18,7 @@ export class World {
     this._controls = createControls({
       camera: this._camera,
       canvas: this._renderer.domElement,
+      dist: 20,
     })
     this._controls.addEventListener('change', () => this.render())
     this._resizer = new Resizer({
@@ -40,6 +41,10 @@ export class World {
     //TEMP
     const axesHelper = new AxesHelper(3)
     this._scene.add(axesHelper)
+    /*
+    const cameraHelper = new CameraHelper(this._camera)
+    this._scene.add(cameraHelper)
+    */
     //TEMP
   }
 

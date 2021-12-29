@@ -5,7 +5,7 @@ export const createCamera = (opt = {}) => {
     fov = 35,
     aspect = 1,
     near = 0.1,
-    far = 100,
+    far = 50,
     x = 0,
     y = 3.5,
     z = 15,
