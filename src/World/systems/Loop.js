@@ -14,7 +14,7 @@ export class Loop {
     this._delta = this._clock.getDelta()
     this._renderer.setAnimationLoop(() => {
       this._tick()
-      this._renderer.render(this._scene, this._camera)
+      this._renderer._render(this._scene, this._camera)
     })
   }
 
