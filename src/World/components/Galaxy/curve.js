@@ -10,6 +10,8 @@ import {
   BufferGeometry,
 } from '../../vendor/three.js'
 
+import { sphereVertices } from './particles.js'
+
 const involuteCurve = ({ radius, t }) => {
   const x = (Math.sin(t) - t * Math.cos(t)) * radius
   const y = 0
@@ -55,17 +57,6 @@ const createLine = ({ length, radius, width, nsections, color }) => {
   return new Line(geometry, material)
 }
 
-const getSection = ({ radius, origin, npoints }) => {
-  const points = []
-  const vec = new Vector3()
-  while (points.length < npoints) {
-    vec.randomDirection().multiplyScalar(radius).add(origin)
-    const { x, y, z } = vec
-    points.push({ x, y, z })
-  }
-  return points
-}
-
 const getCurveVertices = ({
   length,
   radius,
@@ -85,7 +76,11 @@ const getCurveVertices = ({
     linePoints.push(origin)
     if (sectionRadius > segment * 3)
       sectionRadius = width / 2 * (length - t) * 1 / reduction
-    vertices.push(...getSection({ radius: sectionRadius, origin, npoints }))
+    vertices.push(...sphereVertices({
+      count: npoints,
+      radius: sectionRadius,
+      origin,
+    }))
   }
   return { vertices, linePoints }
 }

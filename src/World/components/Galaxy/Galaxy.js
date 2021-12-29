@@ -19,7 +19,7 @@ export class Galaxy extends Group {
     const galacticRadius = 5
     const galacticHeight = 0.5
 
-    this._center = createSphere({ radius: centerRadius * 2/3 })
+    this._center = createSphere({ radius: centerRadius * 3/5 })
     const arms = [createCurve({
       radius: centerRadius,
       width: galacticHeight,

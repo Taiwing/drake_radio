@@ -40,9 +40,9 @@ export class World {
     this._scene.add(this._galaxy)
 
     //TEMP
+    /*
     const axesHelper = new AxesHelper(3)
     this._scene.add(axesHelper)
-    /*
     setInterval(() => {
       const { x, y, z } = this._controls.target
       console.log({ target: { x, y, z }})
