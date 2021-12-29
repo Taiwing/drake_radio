@@ -1,6 +1,5 @@
 import { createCamera } from './components/camera.js'
 import { createScene } from './components/scene.js'
-import { createLights } from './components/lights.js' //TODO: move this to Galaxy
 import { Galaxy } from './components/Galaxy/Galaxy.js'
 import { createControls } from './systems/controls.js'
 import { createRenderer } from './systems/renderer.js'
@@ -34,10 +33,9 @@ export class World {
     })
 
     this._galaxy = new Galaxy()
-    const light = createLights()
     this._loop.updatables.push(this._controls)
     this._loop.updatables.push(this._galaxy)
-    this._scene.add(this._galaxy, light)
+    this._scene.add(this._galaxy)
 
     //TEMP
     const axesHelper = new AxesHelper(3)
