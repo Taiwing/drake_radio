@@ -1,13 +1,96 @@
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<title>Drake Radio</title>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link href="./styles/main.css" rel="stylesheet" type="text/css" />
+		<link href="./main.css" rel="stylesheet" type="text/css" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
 		<script type="module" src='./src/main.js'></script>
 	</head>
 	<body>
-		<h2> Drake Radio - Galactic Simulator</h2>
+		<div id="header">
+			<h2>Drake Radio - Galactic Simulator
+				<button title="settings" id="config-button">
+					<i class="fa-solid fa-gear fa-2x"></i>
+				</button>
+			</h2>
+		</div>
+		<dialog id="config-dialog" style="z-index: 1;">
+			<p id="drake-info">
+				Choose values for the Drake equation parameters.
+			</p>
+			<div class="form-line">
+				<button title="random" id="random-button">
+					<i class="fa-solid fa-dice-six fa-2x"></i>
+				</button>
+				<button title="reset" id="reset-button">
+					<i class="fa-solid fa-arrow-rotate-left fa-2x"></i>
+				</button>
+			</div>
+			<form id="drake-form" method="dialog">
+				<label class="form-line">
+					R*
+					<input
+						type="text"
+						inputmode="numeric"
+						id="new-stars-rate"
+					>
+				</label>
+				<label class="form-line">
+					fp
+					<input
+						type="text"
+						inputmode="numeric"
+						id="planet-fraction"
+					>
+				</label>
+				<label class="form-line">
+					ne
+					<input
+						type="text"
+						inputmode="numeric"
+						id="habitable-average"
+					>
+				</label>
+				<label class="form-line">
+					fl
+					<input
+						type="text"
+						inputmode="numeric"
+						id="life-fraction"
+					>
+				</label>
+				<label class="form-line">
+					fi
+					<input
+						type="text"
+						inputmode="numeric"
+						id="intelligence-fraction"
+					>
+				</label>
+				<label class="form-line">
+					fc
+					<input
+						type="text"
+						inputmode="numeric"
+						id="communication-fraction"
+					>
+				</label>
+				<label class="form-line">
+					L
+					<input
+						type="text"
+						inputmode="numeric"
+						id="civilization-lifetime"
+					>
+				</label>
+				<div class="form-line">
+					<input type="submit" value="save">
+					<input type="submit" value="cancel">
+				</div>
+			</form>
+		</dialog>
 		<div id="scene-container"></div>
 	</body>
 </html>
