@@ -53,12 +53,26 @@ const updateEquationResult = () => {
 
 const resetDrakeForm = () => {
   for (const name in drakeFormParameters) {
-    const { def, current } = drakeFormParameters[name]
+    const { def } = drakeFormParameters[name]
     const element = document.getElementById(name)
     element.value = def.toString()
-    if (current === undefined) drakeFormParameters[name].current = def
   }
   updateEquationResult()
+}
+
+const saveDrakeForm = () => {
+  for (const name in drakeFormParameters) {
+    const { value } = document.getElementById(name)
+    drakeFormParameters[name].current = value
+  }
+}
+
+const initDrakeForm = () => {
+  for (const name in drakeFormParameters) {
+    const { current } = drakeFormParameters[name]
+    const element = document.getElementById(name)
+    element.value = current
+  }
 }
 
 const randomInt = (min, max) => {
@@ -86,16 +100,18 @@ export default () => {
   randomButton.addEventListener('click', randomDrakeForm)
   configButton.addEventListener('click', () => {
     if (typeof configDialog.showModal === 'function') {
+      initDrakeForm()
       configDialog.showModal()
     } else {
       console.log('The <dialog> API is not implemented on this browser.')
     }
   })
   configDialog.addEventListener('close', () => {
-    console.log(`The button ${configDialog.returnValue} has been clicked!`)
-    //TODO: update current values on save
+    const { returnValue } = configDialog
+    if (returnValue === 'save') saveDrakeForm()
   })
   formResult.for = Object.keys(drakeFormParameters).join(' ')
   form.addEventListener('input', updateEquationResult)
   resetDrakeForm()
+  saveDrakeForm()
 }
