@@ -12,6 +12,10 @@ h2 {
 	text-align: center;
 }
 
+h3 {
+	text-align: center;
+}
+
 #header {
 	display: flex;
 	flex-direction: row;
@@ -45,11 +49,6 @@ button, input[type="submit"] {
 	width: 12em;
 }
 
-#drake-info {
-	text-align: justify;
-	text-justify: auto;
-}
-
 #drake-form {
 	display: flex;
 	flex-direction: column;
@@ -59,9 +58,20 @@ input[type="text"] {
 	width: 7em;
 }
 
-.form-line {
-	margin-top: 0.5em;
+.form-line, .button-line, .result-line {
 	display: flex;
 	flex-direction: flex-row;
 	justify-content: space-between;
+}
+
+.form-line {
+	margin-top: 0.5em;
+}
+
+.result-line {
+	margin-top: 1em;
+}
+
+.button-line {
+	margin-top: 1.5em;
 }

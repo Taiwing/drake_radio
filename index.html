@@ -17,9 +17,7 @@
 			</h2>
 		</div>
 		<dialog id="config-dialog" style="z-index: 1;">
-			<p id="drake-info">
-				Choose values for the Drake equation parameters.
-			</p>
+			<h3>Drake Equation</h3>
 			<form id="drake-form" method="dialog">
 				<label class="form-line">
 					R*
@@ -77,12 +75,12 @@
 						id="civilization-lifetime"
 					>
 				</label>
-				<label class="form-line">
+				<label class="result-line">
 					N:
 					<output name="result" id="N">0</output>
 				</label>
 			</form>
-			<div class="form-line">
+			<div class="button-line">
 				<input form="drake-form" type="submit" value="save">
 				<button title="random" id="random-button">
 					<i class="fa-solid fa-dice-six"></i>
