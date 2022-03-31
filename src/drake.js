@@ -40,7 +40,7 @@ const drakeFormParameters = {
 }
 
 const resetDrakeForm = () => {
-  for (const name of Object.keys(drakeFormParameters)) {
+  for (const name in drakeFormParameters) {
     const { def, current } = drakeFormParameters[name]
     const element = document.getElementById(name)
     element.value = def.toString()
@@ -53,7 +53,7 @@ const randomInt = (min, max) => {
 }
 
 const randomDrakeForm = () => {
-  for (const name of Object.keys(drakeFormParameters)) {
+  for (const name in drakeFormParameters) {
     const { min, max, randomMax } = drakeFormParameters[name]
     const element = document.getElementById(name)
     element.value = randomInt(min, randomMax || max).toFixed(2)
