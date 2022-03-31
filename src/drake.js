@@ -73,6 +73,7 @@ const initDrakeForm = () => {
     const element = document.getElementById(name)
     element.value = current
   }
+  updateEquationResult()
 }
 
 const randomInt = (min, max) => {

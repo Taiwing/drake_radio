@@ -20,14 +20,6 @@
 			<p id="drake-info">
 				Choose values for the Drake equation parameters.
 			</p>
-			<div class="form-line">
-				<button title="random" id="random-button">
-					<i class="fa-solid fa-dice-six fa-2x"></i>
-				</button>
-				<button title="reset" id="reset-button">
-					<i class="fa-solid fa-arrow-rotate-left fa-2x"></i>
-				</button>
-			</div>
 			<form id="drake-form" method="dialog">
 				<label class="form-line">
 					R*
@@ -89,11 +81,17 @@
 					N:
 					<output name="result" id="N">0</output>
 				</label>
-				<div class="form-line">
-					<input type="submit" value="save">
-					<input type="submit" value="cancel">
-				</div>
 			</form>
+			<div class="form-line">
+				<input form="drake-form" type="submit" value="save">
+				<button title="random" id="random-button">
+					<i class="fa-solid fa-dice-six"></i>
+				</button>
+				<button title="reset" id="reset-button">
+					<i class="fa-solid fa-arrow-rotate-left"></i>
+				</button>
+				<input form="drake-form" type="submit" value="cancel">
+			</div>
 		</dialog>
 		<div id="scene-container"></div>
 	</body>
