@@ -39,6 +39,18 @@ const drakeFormParameters = {
   },
 }
 
+const updateEquationResult = () => {
+  const formResult = document.getElementById('N')
+
+  let result = 1
+  for (name in drakeFormParameters) {
+    const element = document.getElementById(name)
+    const value = parseFloat(element.value)
+    result *= Number.isNaN(value) ? 0 : value
+  }
+  formResult.value = result.toFixed(4)
+}
+
 const resetDrakeForm = () => {
   for (const name in drakeFormParameters) {
     const { def, current } = drakeFormParameters[name]
@@ -46,6 +58,7 @@ const resetDrakeForm = () => {
     element.value = def.toString()
     if (current === undefined) drakeFormParameters[name].current = def
   }
+  updateEquationResult()
 }
 
 const randomInt = (min, max) => {
@@ -58,13 +71,17 @@ const randomDrakeForm = () => {
     const element = document.getElementById(name)
     element.value = randomInt(min, randomMax || max).toFixed(2)
   }
+  updateEquationResult()
 }
 
 export default () => {
-  const resetButton = document.querySelector('#reset-button')
-  const randomButton = document.querySelector('#random-button')
-  const configButton = document.querySelector('#config-button')
-  const configDialog = document.querySelector('#config-dialog')
+  const resetButton = document.getElementById('reset-button')
+  const randomButton = document.getElementById('random-button')
+  const configButton = document.getElementById('config-button')
+  const configDialog = document.getElementById('config-dialog')
+  const form = document.getElementById('drake-form')
+  const formResult = document.getElementById('N')
+
   resetButton.addEventListener('click', resetDrakeForm)
   randomButton.addEventListener('click', randomDrakeForm)
   configButton.addEventListener('click', () => {
@@ -76,6 +93,9 @@ export default () => {
   })
   configDialog.addEventListener('close', () => {
     console.log(`The button ${configDialog.returnValue} has been clicked!`)
+    //TODO: update current values on save
   })
+  formResult.for = Object.keys(drakeFormParameters).join(' ')
+  form.addEventListener('input', updateEquationResult)
   resetDrakeForm()
 }
