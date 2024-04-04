@@ -1,0 +1,12 @@
+- add descriptions for drake equation parameters
+- actually document the project in the README file
+
+- create the 'base' civilisation (maybe add parameters for it, to place it
+  wherever for example, or its lifespan and signal sending)
+- create a timescale (check the universe lifetime)
+- add a time slider to go forward or backward in time (maybe add 'stops' for
+  events, like when a civilisation appears or disappears or a meeting happens)
+- add a speed parameter for the simulation
+- make the alien civilisations appear and disappear depending on the equation
+  parameters and result
+- illustrate this with 'signal bubbles'
