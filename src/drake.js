@@ -11,7 +11,7 @@ const drakeFormParameters = {
     max: 1,
   },
   'habitable-average': {
-    def: 0.4,
+    def: 0.45,
     min: 0,
     max: 1_000_000,
     randomMax: 1,
