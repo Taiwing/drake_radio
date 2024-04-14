@@ -1,4 +1,5 @@
 function dialogOutsideClickClose(e) {
+  if (e.target.tagName !== 'DIALOG') return
   const rect = e.target.getBoundingClientRect()
 
   const clickedOutside = (
@@ -6,7 +7,10 @@ function dialogOutsideClickClose(e) {
     || e.clientX < rect.left || e.clientX > rect.right
   )
 
-  if (clickedOutside) e.target.close()
+  if (clickedOutside) {
+    e.target.close()
+    e.stopPropagation()
+  }
 }
 
 class CustomDialog extends HTMLDialogElement {

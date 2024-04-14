@@ -8,6 +8,7 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
 		<script type="module" src='./src/main.js'></script>
 		<script type="module" src='./src/dialog.js'></script>
+		<script type="module" src='./src/modal-button.js'></script>
 	</head>
 	<body>
 		<div id="header">
@@ -21,7 +22,15 @@
 			<h3>Drake Equation</h3>
 			<form id="drake-form" method="dialog">
 				<label class="form-line">
-					<span>R<sub>*</sub></span>
+					<modal-button>
+						<span slot="button">R<sub>*</sub></span>
+						<div slot="modal">
+							<p>
+								The average number of stars formed per year in
+								our Galaxy.
+							</p>
+						</div>
+					</modal-button>
 					<input
 						type="text"
 						inputmode="numeric"
@@ -29,7 +38,15 @@
 					>
 				</label>
 				<label class="form-line">
-					<span>f<sub>p</sub></span>
+					<modal-button>
+						<span slot="button">f<sub>p</sub></span>
+						<div slot="modal">
+							<p>
+								The fraction of stars that have planets (between
+								0 and 1).
+							</p>
+						</div>
+					</modal-button>
 					<input
 						type="text"
 						inputmode="numeric"
@@ -37,7 +54,15 @@
 					>
 				</label>
 				<label class="form-line">
-					<span>n<sub>e</sub></span>
+					<modal-button>
+						<span slot="button">n<sub>e</sub></span>
+						<div slot="modal">
+							<p>
+								Average number of planets that can support life
+								per star that has planets.
+							</p>
+						</div>
+					</modal-button>
 					<input
 						type="text"
 						inputmode="numeric"
@@ -45,7 +70,15 @@
 					>
 				</label>
 				<label class="form-line">
-					<span>f<sub>l</sub></span>
+					<modal-button>
+						<span slot="button">f<sub>l</sub></span>
+						<div slot="modal">
+							<p>
+								The fraction of habitable planets on which
+								life actually develops (between 0 and 1).
+							</p>
+						</div>
+					</modal-button>
 					<input
 						type="text"
 						inputmode="numeric"
@@ -53,7 +86,16 @@
 					>
 				</label>
 				<label class="form-line">
-					<span>f<sub>i</sub></span>
+					<modal-button>
+						<span slot="button">f<sub>i</sub></span>
+						<div slot="modal">
+							<p>
+								The fraction of inhabited planets that develop
+								intelligent life, thus civilization (between 0
+								and 1).
+							</p>
+						</div>
+					</modal-button>
 					<input
 						type="text"
 						inputmode="numeric"
@@ -61,7 +103,16 @@
 					>
 				</label>
 				<label class="form-line">
-					<span>f<sub>c</sub></span>
+					<modal-button>
+						<span slot="button">f<sub>c</sub></span>
+						<div slot="modal">
+							<p>
+								The fraction of civilizations that develop a
+								technology releasing detectable signs of their
+								existence into space (between 0 and 1).
+							</p>
+						</div>
+					</modal-button>
 					<input
 						type="text"
 						inputmode="numeric"
@@ -69,7 +120,16 @@
 					>
 				</label>
 				<label class="form-line">
-					<span>L</span>
+					<modal-button>
+						<span slot="button">L</span>
+						<div slot="modal">
+							<p>
+								Length of time for which technological
+								civilizations release detectable signals into
+								space (in years).
+							</p>
+						</div>
+					</modal-button>
 					<input
 						type="text"
 						inputmode="numeric"
@@ -77,7 +137,15 @@
 					>
 				</label>
 				<label class="result-line">
-					N:
+					<modal-button>
+						<span slot="button">N:</span>
+						<div slot="modal">
+							<p>
+								The number of civilizations in the galaxy with
+								which communication might be possible.
+							</p>
+						</div>
+					</modal-button>
 					<output name="result" id="N">0</output>
 				</label>
 			</form>
