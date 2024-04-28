@@ -1,11 +1,15 @@
-- create the 'base' civilisation (maybe add parameters for it, to place it
-  wherever for example, or its lifespan and signal sending)
-- create a timescale (check the universe lifetime)
+- create a timescale (check the galaxy and universe lifetime)
 - add a time slider to go forward or backward in time (maybe add 'stops' for
   events, like when a civilisation appears or disappears or a meeting happens)
 - add a speed parameter for the simulation
 - make the alien civilisations appear and disappear depending on the equation
   parameters and result
 - illustrate this with 'signal bubbles'
+- add stats for events, number of living civilisations, dead civilisations,
+  detection count (when a civilisation detects an other), contact count (when
+  civilisations can actually communicate with each other, meaning sending a
+  signal to a civilisation and receiving a response) and duration (how long
+  contact is possible between the two civilisations), and averages for these
+  values
 
 - expand README file explanations
