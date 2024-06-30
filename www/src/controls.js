@@ -3,7 +3,7 @@ ControlPanelTemplate.innerHTML = `
 	<link href="./main.css" rel="stylesheet" type="text/css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
 
-  <button title="" id="play-pause-button" class="main-button">
+  <button title="" id="play-pause-button" class="main-button" style="width: 3em">
     <i class="fa-solid fa-play fa-2x" id="play-pause-icon"></i>
   </button>
 `
