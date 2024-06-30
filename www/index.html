@@ -8,12 +8,13 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
 		<script type="module" src='./src/main.js'></script>
 		<script type="module" src='./src/dialog.js'></script>
+		<script type="module" src='./src/controls.js'></script>
 		<script type="module" src='./src/modal-button.js'></script>
 	</head>
 	<body>
 		<div id="header">
 			<h2>Drake Radio - Galactic Simulator
-				<button title="settings" id="config-button">
+				<button title="settings" id="config-button" class="main-button">
 					<i class="fa-solid fa-gear fa-2x"></i>
 				</button>
 			</h2>
@@ -161,5 +162,6 @@
 			</div>
 		</dialog>
 		<div id="scene-container"></div>
+		<control-panel />
 	</body>
 </html>
