@@ -77,7 +77,7 @@ input[type="text"] {
 	width: 7em;
 }
 
-.form-line, .button-line, .result-line {
+.form-line, .button-line {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -85,10 +85,6 @@ input[type="text"] {
 
 .form-line {
 	margin-top: 0.5em;
-}
-
-.result-line {
-	margin-top: 1em;
 }
 
 .button-line {
