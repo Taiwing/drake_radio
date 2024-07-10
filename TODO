@@ -1,7 +1,5 @@
-- create a timescale (check the galaxy and universe lifetime)
-- add a time slider to go forward or backward in time (maybe add 'stops' for
-  events, like when a civilisation appears or disappears or a meeting happens)
-- add a speed parameter for the simulation
+- create a speed parameter for the simulation (one year per second min and
+  maybe a million max or more if the computation are not too heavy)
 - make the alien civilisations appear and disappear depending on the equation
   parameters and result
 - illustrate this with 'signal bubbles'
