@@ -40,11 +40,10 @@ export const drakeEquation = {
 }
 
 export const simulation = {
-  'galactic-lifetime': {
-    def: 10_000_000_000,
-    min: 1000,
-    max: 100_000_000_000,
-    randomMax: 30_000_000_000,
+  'speed': {
+    def: 1000,
+    min: 1,
+    max: 10_000_000
   },
 }
 
@@ -65,7 +64,7 @@ const updateEquationResult = () => {
     }
   }
   formResult.value = result.toFixed(4)
-  formYearlyResult.value = yearlyResult.toFixed(4)
+  formYearlyResult.value = yearlyResult.toFixed(8)
 }
 
 const resetDrakeForm = () => {

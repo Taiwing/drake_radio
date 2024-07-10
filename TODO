@@ -1,5 +1,3 @@
-- create a speed parameter for the simulation (one year per second min and
-  maybe a million max or more if the computation are not too heavy)
 - make the alien civilisations appear and disappear depending on the equation
   parameters and result
 - illustrate this with 'signal bubbles'
@@ -9,9 +7,12 @@
   signal to a civilisation and receiving a response) and duration (how long
   contact is possible between the two civilisations), and averages for these
   values
+- create drake equation presets (something like 'conservative', 'probable',
+  'optimistic')
 
 - expand README file explanations
 
 FIX:
 
 - make it so the galactic center is at the center of the page
+- enforce max values for drakeEquation and simulation parameters
