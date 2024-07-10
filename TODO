@@ -1,14 +1,17 @@
 - make the alien civilisations appear and disappear depending on the equation
   parameters and result
 - illustrate this with 'signal bubbles'
+- take delta into account for precise speed setting (not just 'per tick' but
+  like 'per second')
+- add a timer and a maybe a speed meter
 - add stats for events, number of living civilisations, dead civilisations,
   detection count (when a civilisation detects an other), contact count (when
   civilisations can actually communicate with each other, meaning sending a
   signal to a civilisation and receiving a response) and duration (how long
   contact is possible between the two civilisations), and averages for these
-  values
+  values (add 'animations' for these events)
 - create drake equation presets (something like 'conservative', 'probable',
-  'optimistic')
+  'optimistic', 'star trek')
 
 - expand README file explanations
 
