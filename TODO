@@ -23,4 +23,5 @@ MAYBE:
 FIX:
 
 - make it so the galactic center is at the center of the page
-- enforce max values for drakeEquation and simulation parameters
+- enforce max values and value types for drakeEquation and simulation parameters
+- disappearing galactic center inside signal bubbles
