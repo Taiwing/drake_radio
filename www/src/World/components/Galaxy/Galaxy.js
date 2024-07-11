@@ -6,24 +6,18 @@ import { createArm } from './arm.js'
 import { Bubble } from './Bubble.js'
 import { VISUAL_LIGHT_YEAR } from './constants.js'
 
-/*
-** center diameter: 1.4 visual units - 28_000 light years
-** milky way diameter: 10 visual units - 200_000 light years
-** milky way height: 0.5 visual units - 10_000 light years
-*/
-
-// Expressed in light years
-const CENTER_DIAMETER = 28_000
-const MILKY_WAY_DIAMETER = 200_000
-const MILKY_WAY_HEIGHT = 10_000
+// Expressed in light years (roughly based on the milky way)
+const CENTER_DIAMETER = 14_000
+const GALAXY_DIAMETER = 100_000
+const GALAXY_HEIGHT = 5_000
 
 export class Galaxy extends Group {
   constructor() {
     super()
     const armsCount = 4
     const centerRadius = CENTER_DIAMETER / 2 * VISUAL_LIGHT_YEAR
-    const galacticRadius = MILKY_WAY_DIAMETER / 2 * VISUAL_LIGHT_YEAR
-    const galacticHeight = MILKY_WAY_HEIGHT * VISUAL_LIGHT_YEAR
+    const galacticRadius = GALAXY_DIAMETER / 2 * VISUAL_LIGHT_YEAR
+    const galacticHeight = GALAXY_HEIGHT * VISUAL_LIGHT_YEAR
 
     this._center = createSphere({ radius: centerRadius * 3/5 })
     const arms = [createCurve({
