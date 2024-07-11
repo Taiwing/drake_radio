@@ -1,8 +1,6 @@
 - make the alien civilisations appear and disappear depending on the equation
   parameters and result
 - illustrate this with 'signal bubbles'
-- take delta into account for precise speed setting (not just 'per tick' but
-  like 'per second')
 - add a timer and a maybe a speed meter
 - add stats for events, number of living civilisations, dead civilisations,
   detection count (when a civilisation detects an other), contact count (when
@@ -13,6 +11,8 @@
 - create drake equation presets (something like 'conservative', 'probable',
   'optimistic', 'star trek')
 - make it possible to disable galactic rotation
+- somewhat randomize civilisations lifetimes (maybe create a parameter in the
+  simulation menu to add some 'noise' to this value)
 
 - expand README file explanations
 

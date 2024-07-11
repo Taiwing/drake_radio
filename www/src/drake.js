@@ -39,12 +39,18 @@ export const drakeEquation = {
   },
 }
 
+//TBD
 export const simulation = {
   'speed': {
-    def: 1000,
+    def: 20_000,
     min: 1,
-    max: 10_000_000
+    max: 10_000_000,
   },
+}
+
+export const drakeResult = {
+  'spawnRate': 0,
+  'total': 0,
 }
 
 const fields = Object.keys(drakeEquation).concat(Object.keys(simulation))
@@ -85,6 +91,8 @@ const saveDrakeForm = () => {
       simulation[name].current = value
     }
   }
+  drakeResult.spawnRate = document.getElementById('Ny').value
+  drakeResult.total = document.getElementById('N').value
 }
 
 const initDrakeForm = () => {
@@ -96,7 +104,7 @@ const initDrakeForm = () => {
   updateEquationResult()
 }
 
-const randomInt = (min, max) => {
+const randomFloat = (min, max) => {
   return Math.random() * max + min
 }
 
@@ -104,9 +112,35 @@ const randomDrakeForm = () => {
   for (const name of fields) {
     const { min, max, randomMax } = drakeEquation[name] || simulation[name]
     const element = document.getElementById(name)
-    element.value = randomInt(min, randomMax || max).toFixed(2)
+    element.value = randomFloat(min, randomMax || max).toFixed(2)
   }
   updateEquationResult()
+}
+
+export const drakeSimulation = ({ delta }) => {
+  const { spawnRate } = drakeResult
+  const simulationSpeed = simulation['speed'].current
+
+  let elapsed = simulationSpeed * delta
+  let rate = spawnRate * delta
+  let spawnCount = 0
+  for (let year = 0; year < elapsed; year++) {
+    if (rate >= 1) {
+      const count = randomFloat(rate / 2, rate + rate / 2)
+      spawnCount += Math.round(count)
+    } else if (randomFloat(0, 1) <= rate) {
+      spawnCount++
+    }
+  }
+  //TEST
+  if (spawnCount > 0) {
+    console.log(`speed = ${simulation['speed'].current} years/second`)
+    console.log(`spawnRate = ${spawnRate}`)
+    console.log(`spawnCount = ${spawnCount}`)
+    console.log({ delta, elapsed, rate })
+  }
+  //TEST
+  return spawnCount
 }
 
 export default () => {
