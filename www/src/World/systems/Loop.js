@@ -25,14 +25,14 @@ export class Loop {
 
   _tick () {
     this._delta = this._clock.getDelta()
-    const worldSpawnCount = drakeSimulation({ delta: this._delta })
+    const spawnCount = drakeSimulation({ delta: this._delta })
     //TEST
-    if (worldSpawnCount > 0) console.log({ worldSpawnCount })
+    if (spawnCount > 0) console.log({ spawnCount })
     //TEST
     for (const object of this.updatables) {
       object.tick({
         delta: this._delta,
-        worldSpawnCount,
+        spawnCount,
         lifetime: drakeEquation['civilization-lifetime'].current,
       })
     }

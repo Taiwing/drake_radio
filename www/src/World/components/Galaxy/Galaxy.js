@@ -3,6 +3,7 @@ import { createSphere } from './sphere.js'
 import { createParticles } from './particles.js'
 import { createCurve } from './curve.js'
 import { createArm } from './arm.js'
+import { Bubble } from './Bubble.js'
 
 /*
 ** 1 unit = 20_000 light years
@@ -45,11 +46,40 @@ export class Galaxy extends Group {
       height: galacticHeight,
       vertices: points,
     })
+    this._starPositions = this._stars.geometry.attributes.position.array
+    this._starCount = this._starPositions.length / 3
     this.add(this._center, this._stars)
     this._rotationPerSec = MathUtils.degToRad(10)
+    this._bubbles = []
   }
 
-  tick({ delta }) {
+  createBubble({ thickness }) {
+    const randomStar = Math.floor(Math.random() * this._starCount)
+    const index = randomStar * 3
+    const x = this._starPositions[index]
+    const y = this._starPositions[index + 1]
+    const z = this._starPositions[index + 2]
+    const bubble = new Bubble({ x, y, z, thickness })
+    this.add(bubble)
+    this._bubbles.push(bubble)
+  }
+
+  tick({ delta, spawnCount, lifetime }) {
     this.rotation.y += this._rotationPerSec * delta
+
+    const bubbles = []
+    while (this._bubbles.length > 0) {
+      const bubble = this._bubbles.pop()
+      if (!bubble.tick({ delta })) {
+        this.remove(bubble)
+      } else {
+        bubbles.push(bubble)
+      }
+    }
+    this._bubbles = bubbles
+
+    for (let i = 0; i < spawnCount; i++) {
+      this.createBubble({ thickness: lifetime })
+    }
   }
 }

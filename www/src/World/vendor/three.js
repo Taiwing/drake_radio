@@ -25,4 +25,5 @@ export {
   TubeGeometry,
   Vector3,
   Line,
+  DoubleSide,
 } from 'https://cdn.skypack.dev/three@0.136.0'
