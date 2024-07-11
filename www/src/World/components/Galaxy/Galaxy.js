@@ -4,12 +4,12 @@ import { createParticles } from './particles.js'
 import { createCurve } from './curve.js'
 import { createArm } from './arm.js'
 import { Bubble } from './Bubble.js'
-import { VISUAL_LIGHT_YEAR } from './constants.js'
-
-// Expressed in light years (roughly based on the milky way)
-const CENTER_DIAMETER = 14_000
-const GALAXY_DIAMETER = 100_000
-const GALAXY_HEIGHT = 5_000
+import {
+  VISUAL_LIGHT_YEAR,
+  CENTER_DIAMETER,
+  GALAXY_DIAMETER,
+  GALAXY_HEIGHT,
+} from './constants.js'
 
 export class Galaxy extends Group {
   constructor() {

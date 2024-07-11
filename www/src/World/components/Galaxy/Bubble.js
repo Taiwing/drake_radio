@@ -6,7 +6,10 @@ import {
   SphereGeometry,
 } from '../../vendor/three.js'
 
-import { VISUAL_LIGHT_YEAR } from './constants.js'
+import { VISUAL_LIGHT_YEAR, GALAXY_DIAMETER } from './constants.js'
+
+const MIDDLE_RADIUS = GALAXY_DIAMETER / 4
+const MAX_OPACITY = 0.5
 
 export class Bubble extends Mesh {
   constructor({ x, y, z, delta, lifetime, speed }) {
@@ -15,7 +18,7 @@ export class Bubble extends Mesh {
     const material = new MeshBasicMaterial({
       color: 0x66acdc,
       transparent: true,
-      opacity: 0.75,
+      opacity: MAX_OPACITY,
       side: DoubleSide,
     })
 
@@ -34,12 +37,11 @@ export class Bubble extends Mesh {
     this.scale.y += growth
     this.scale.z += growth
 
-    /*
-    if (this.scale.x > 5) {
-      this._material.opacity -= 0.02
+    if (this.scale.x >= MIDDLE_RADIUS) {
+      const dim = MAX_OPACITY / (MIDDLE_RADIUS / growth)
+      this._material.opacity -= dim
       if (this._material.opacity <= 0) return false
     }
-    */
 
     return true
   }
