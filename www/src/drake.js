@@ -132,14 +132,6 @@ export const drakeSimulation = ({ delta }) => {
       spawnCount++
     }
   }
-  //TEST
-  if (spawnCount > 0) {
-    console.log(`speed = ${simulation['speed'].current} years/second`)
-    console.log(`spawnRate = ${spawnRate}`)
-    console.log(`spawnCount = ${spawnCount}`)
-    console.log({ delta, elapsed, rate })
-  }
-  //TEST
   return spawnCount
 }
 
