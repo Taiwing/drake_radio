@@ -1,9 +1,10 @@
 import {
-  DoubleSide,
+  //DoubleSide,
   Group,
-  Mesh,
-  MeshBasicMaterial,
+  LineSegments,
+  LineBasicMaterial,
   SphereGeometry,
+  WireframeGeometry,
 } from '../../vendor/three.js'
 
 import { VISUAL_LIGHT_YEAR, GALAXY_DIAMETER } from './constants.js'
@@ -11,15 +12,16 @@ import { VISUAL_LIGHT_YEAR, GALAXY_DIAMETER } from './constants.js'
 const MIDDLE_RADIUS = GALAXY_DIAMETER / 4
 const MAX_OPACITY = 0.5
 
-export class Bubble extends Mesh {
+export class Bubble extends LineSegments {
   constructor({ x, y, z, delta, lifetime, speed }) {
     const scale = speed * delta
-    const geometry = new SphereGeometry(VISUAL_LIGHT_YEAR, 32, 32)
-    const material = new MeshBasicMaterial({
+    const sphereGeometry = new SphereGeometry(VISUAL_LIGHT_YEAR, 32, 32)
+    const geometry = new WireframeGeometry(sphereGeometry)
+    const material = new LineBasicMaterial({
       color: 0x66acdc,
       transparent: true,
       opacity: MAX_OPACITY,
-      side: DoubleSide,
+      //side: DoubleSide,
     })
 
     super(geometry, material)

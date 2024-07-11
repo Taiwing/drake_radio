@@ -6,6 +6,7 @@ export {
   BoxBufferGeometry,
   SphereBufferGeometry,
   SphereGeometry,
+  WireframeGeometry,
   MeshBasicMaterial,
   LineBasicMaterial,
   WebGLRenderer,
