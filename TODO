@@ -18,6 +18,17 @@ MAYBE:
 - refactor so that constants are all at the same place and are thus accesible
   everywhere (like the UNIT value which is used to build the galaxy but also
   needed for calculating distances between points)
+- actually random values might be more of an antifunction than anything else,
+  possibly remove this function then (or change it so that it yields values
+  that can be worked with most of the time)
+- add a global reset button (next to pause/play) that would remove every
+  civilization and reset the drake equation
+- add a scale for the distances (how to handle the zoom ?), or maybe just give
+  the size info on an explication page
+- not to be a stickler but if a civilization is not exactly at the center some
+  stars might still be on the outside of the signal bubble when it disappears,
+  maybe compute the actual radius needed (just add the distance from the origin
+  point I think)
 
 FIX:
 
