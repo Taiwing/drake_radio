@@ -12,7 +12,7 @@ export class Bubble extends Group {
 
     const outerSphereGeometry = new SphereGeometry(0.1, 32, 32)
     this._outerSphereMaterial = new MeshBasicMaterial({
-      color: 0x00ff00,
+      color: 0x66acdc,
       transparent: true,
       opacity: 0.5,
       side: DoubleSide,
@@ -22,7 +22,7 @@ export class Bubble extends Group {
 
     const innerSphereGeometry = new SphereGeometry(0.09, 32, 32)
     this._innerSphereMaterial = new MeshBasicMaterial({
-      color: 0x00ff00,
+      color: 0x66acdc,
       transparent: true,
       opacity: 0.5,
       side: DoubleSide,
