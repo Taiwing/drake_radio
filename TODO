@@ -1,4 +1,3 @@
-- take delta and thickness into account when creating bubbles
 - add a timer and a maybe a speed meter
 - add stats for events, number of living civilisations, dead civilisations,
   detection count (when a civilisation detects an other), contact count (when

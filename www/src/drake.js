@@ -42,7 +42,7 @@ export const drakeEquation = {
 //TBD
 export const simulation = {
   'speed': {
-    def: 10_000,
+    def: 40_000,
     min: 1,
     max: 10_000_000,
   },
