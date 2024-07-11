@@ -6,30 +6,19 @@ import {
   SphereGeometry,
 } from '../../vendor/three.js'
 
-export class Bubble extends Group {
+export class Bubble extends Mesh {
   constructor({ x, y, z, thickness }) {
-    super()
-
-    const outerSphereGeometry = new SphereGeometry(0.1, 32, 32)
-    this._outerSphereMaterial = new MeshBasicMaterial({
+    const geometry = new SphereGeometry(0.1, 32, 32)
+    const material = new MeshBasicMaterial({
       color: 0x66acdc,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.75,
       side: DoubleSide,
     })
-    const outerSphere = new Mesh(outerSphereGeometry, this._outerSphereMaterial)
-    this.add(outerSphere)
 
-    const innerSphereGeometry = new SphereGeometry(0.09, 32, 32)
-    this._innerSphereMaterial = new MeshBasicMaterial({
-      color: 0x66acdc,
-      transparent: true,
-      opacity: 0.5,
-      side: DoubleSide,
-    })
-    const innerSphere = new Mesh(innerSphereGeometry, this._innerSphereMaterial)
-    this.add(innerSphere)
+    super(geometry, material)
 
+    this._material = material
     this.position.set(x, y, z)
   }
 
@@ -39,10 +28,8 @@ export class Bubble extends Group {
     this.scale.z += 0.01
 
     if (this.scale.x > 5) {
-      this._outerSphereMaterial.opacity -= 0.02
-      this._innerSphereMaterial.opacity -= 0.02
-
-      if (this._outerSphereMaterial.opacity <= 0) return false
+      this._material.opacity -= 0.02
+      if (this._material.opacity <= 0) return false
     }
 
     return true
