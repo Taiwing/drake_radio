@@ -6,9 +6,12 @@ import {
   SphereGeometry,
 } from '../../vendor/three.js'
 
+import { VISUAL_LIGHT_YEAR } from './constants.js'
+
 export class Bubble extends Mesh {
-  constructor({ x, y, z, thickness }) {
-    const geometry = new SphereGeometry(0.1, 32, 32)
+  constructor({ x, y, z, delta, lifetime, speed }) {
+    const scale = speed * delta
+    const geometry = new SphereGeometry(VISUAL_LIGHT_YEAR, 32, 32)
     const material = new MeshBasicMaterial({
       color: 0x66acdc,
       transparent: true,
@@ -19,18 +22,24 @@ export class Bubble extends Mesh {
     super(geometry, material)
 
     this._material = material
+    this.scale.x = scale
+    this.scale.y = scale
+    this.scale.z = scale
     this.position.set(x, y, z)
   }
 
-  tick({ delta }) {
-    this.scale.x += 0.01
-    this.scale.y += 0.01
-    this.scale.z += 0.01
+  tick({ delta, speed }) {
+    const growth = speed * delta
+    this.scale.x += growth
+    this.scale.y += growth
+    this.scale.z += growth
 
+    /*
     if (this.scale.x > 5) {
       this._material.opacity -= 0.02
       if (this._material.opacity <= 0) return false
     }
+    */
 
     return true
   }

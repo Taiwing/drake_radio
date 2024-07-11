@@ -1,5 +1,5 @@
 import { Clock } from '../vendor/three.js'
-import { drakeEquation, drakeSimulation } from '../../drake.js'
+import { drakeEquation, simulation, drakeSimulation } from '../../drake.js'
 
 export class Loop {
   constructor({ camera, scene, renderer }) {
@@ -34,6 +34,7 @@ export class Loop {
         delta: this._delta,
         spawnCount,
         lifetime: drakeEquation['civilization-lifetime'].current,
+        speed: simulation['speed'].current,
       })
     }
   }

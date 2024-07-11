@@ -4,21 +4,26 @@ import { createParticles } from './particles.js'
 import { createCurve } from './curve.js'
 import { createArm } from './arm.js'
 import { Bubble } from './Bubble.js'
+import { VISUAL_LIGHT_YEAR } from './constants.js'
 
 /*
-** 1 unit = 20_000 light years
-** center diameter: 1.4 units - 28_000 light years
-** milky way diameter: 10 units - 200_000 light years
-** milky way height: 0.5 units - 10_000 light years
+** center diameter: 1.4 visual units - 28_000 light years
+** milky way diameter: 10 visual units - 200_000 light years
+** milky way height: 0.5 visual units - 10_000 light years
 */
+
+// Expressed in light years
+const CENTER_DIAMETER = 28_000
+const MILKY_WAY_DIAMETER = 200_000
+const MILKY_WAY_HEIGHT = 10_000
 
 export class Galaxy extends Group {
   constructor() {
     super()
     const armsCount = 4
-    const centerRadius = 0.70
-    const galacticRadius = 5
-    const galacticHeight = 0.5
+    const centerRadius = CENTER_DIAMETER / 2 * VISUAL_LIGHT_YEAR
+    const galacticRadius = MILKY_WAY_DIAMETER / 2 * VISUAL_LIGHT_YEAR
+    const galacticHeight = MILKY_WAY_HEIGHT * VISUAL_LIGHT_YEAR
 
     this._center = createSphere({ radius: centerRadius * 3/5 })
     const arms = [createCurve({
@@ -53,24 +58,24 @@ export class Galaxy extends Group {
     this._bubbles = []
   }
 
-  createBubble({ thickness }) {
+  createBubble({ delta, lifetime, speed }) {
     const randomStar = Math.floor(Math.random() * this._starCount)
     const index = randomStar * 3
     const x = this._starPositions[index]
     const y = this._starPositions[index + 1]
     const z = this._starPositions[index + 2]
-    const bubble = new Bubble({ x, y, z, thickness })
+    const bubble = new Bubble({ x, y, z, delta, lifetime, speed })
     this.add(bubble)
     this._bubbles.push(bubble)
   }
 
-  tick({ delta, spawnCount, lifetime }) {
+  tick({ delta, spawnCount, lifetime, speed }) {
     this.rotation.y += this._rotationPerSec * delta
 
     const bubbles = []
     while (this._bubbles.length > 0) {
       const bubble = this._bubbles.pop()
-      if (!bubble.tick({ delta })) {
+      if (!bubble.tick({ delta, speed })) {
         this.remove(bubble)
       } else {
         bubbles.push(bubble)
@@ -79,7 +84,7 @@ export class Galaxy extends Group {
     this._bubbles = bubbles
 
     for (let i = 0; i < spawnCount; i++) {
-      this.createBubble({ thickness: lifetime })
+      this.createBubble({ delta, lifetime, speed })
     }
   }
 }
