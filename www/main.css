@@ -68,29 +68,30 @@ control-panel {
 	border-radius: 10px;
 }
 
-#config-dialog {
-	width: 12em;
-}
-
 #drake-form {
 	display: flex;
 	flex-direction: column;
 }
 
 input[type="text"] {
-	width: 7em;
+	min-width: 1em;
 }
 
 .form-line, .button-line {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	flex-wrap: wrap;
 }
 
 .form-line {
 	margin-top: 0.5em;
 }
 
+.form-line > * {
+	flex: 1;
+}
+
 .button-line {
 	margin-top: 1.5em;
+	justify-content: space-around;
 }
