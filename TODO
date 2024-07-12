@@ -16,9 +16,6 @@ MAYBE:
 - refactor so that constants are all at the same place and are thus accesible
   everywhere (like the UNIT value which is used to build the galaxy but also
   needed for calculating distances between points)
-- actually random values might be more of an antifunction than anything else,
-  possibly remove this function then (or change it so that it yields values
-  that can be worked with most of the time)
 - add a global reset button (next to pause/play) that would remove every
   civilization and reset the drake equation
 - add a scale for the distances (how to handle the zoom ?), or maybe just give

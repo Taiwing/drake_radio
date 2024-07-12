@@ -36,7 +36,7 @@ export const drakeEquation = {
     def: 304,
     min: 0,
     max: 1_000_000_000_000,
-    randomMax: 1_000_000_000,
+    randomMax: 10_000,
   },
 }
 
@@ -133,8 +133,8 @@ function randomNormal(mean, stddev) {
 }
 
 const randomDrakeForm = () => {
-  for (const name of fields) {
-    const { min, max, randomMax } = drakeEquation[name] || simulation[name]
+  for (const name in drakeEquation) {
+    const { min, max, randomMax } = drakeEquation[name]
     const element = document.getElementById(name)
     element.value = randomFloat(min, randomMax || max).toFixed(2)
   }
