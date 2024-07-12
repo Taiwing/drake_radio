@@ -77,13 +77,13 @@ input[type="text"] {
 	min-width: 1em;
 }
 
-.form-line, .button-line {
+.form-line, .button-line, .checkbox-line {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 }
 
-.form-line {
+.form-line, .checkbox-line {
 	margin-top: 0.5em;
 }
 
@@ -94,4 +94,8 @@ input[type="text"] {
 .button-line {
 	margin-top: 1.5em;
 	justify-content: space-around;
+}
+
+.checkbox-line {
+	justify-content: space-between;
 }

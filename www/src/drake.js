@@ -52,6 +52,9 @@ export const simulation = {
     min: 1,
     max: 10_000_000,
   },
+  'rotation': {
+    def: true,
+  }
 }
 
 export const drakeResult = {
@@ -83,18 +86,28 @@ const resetDrakeForm = () => {
   for (const name of fields) {
     const { def } = drakeEquation[name] || simulation[name]
     const element = document.getElementById(name)
-    element.value = def.toString()
+    if (element.type === 'text') element.value = def.toString()
+    else if (element.type === 'checkbox') element.checked = def
   }
   updateEquationResult()
 }
 
 const saveDrakeForm = () => {
   for (const name of fields) {
-    const { value } = document.getElementById(name)
-    if (drakeEquation[name]) {
-      drakeEquation[name].current = parseFloat(value)
-    } else {
-      simulation[name].current = parseFloat(value)
+    const element = document.getElementById(name)
+    if (element.type === 'text') {
+      const { value } = element
+      if (drakeEquation[name]) {
+        drakeEquation[name].current = parseFloat(value)
+      } else if (simulation[name]) {
+        simulation[name].current = parseFloat(value)
+      }
+    } else if (element.type === 'checkbox') {
+      if (drakeEquation[name]) {
+        drakeEquation[name].current = element.checked
+      } else if (simulation[name]) {
+        simulation[name].current = element.checked
+      }
     }
   }
   drakeResult.spawnRate = document.getElementById('Ny').value
@@ -105,7 +118,8 @@ const initDrakeForm = () => {
   for (const name of fields) {
     const { current } = drakeEquation[name] || simulation[name]
     const element = document.getElementById(name)
-    element.value = current
+    if (element.type === 'text') element.value = current.toString()
+    else if (element.type === 'checkbox') element.checked = current
   }
   updateEquationResult()
 }

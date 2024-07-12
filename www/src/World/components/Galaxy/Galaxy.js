@@ -63,8 +63,8 @@ export class Galaxy extends Group {
     this._bubbles.push(bubble)
   }
 
-  tick({ delta, durations, speed }) {
-    this.rotation.y += this._rotationPerSec * delta
+  tick({ delta, durations, speed, rotation }) {
+    if (rotation) this.rotation.y += this._rotationPerSec * delta
 
     const bubbles = []
     while (this._bubbles.length > 0) {

@@ -7,7 +7,6 @@
   values (add 'animations' for these events)
 - create drake equation presets (something like 'conservative', 'probable',
   'optimistic', 'star trek')
-- make it possible to disable galactic rotation
 
 - expand README file explanations
 

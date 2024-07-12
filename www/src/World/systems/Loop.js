@@ -31,6 +31,7 @@ export class Loop {
         delta: this._delta,
         durations,
         speed: simulation['speed'].current,
+        rotation: simulation['rotation'].current,
       })
     }
   }
