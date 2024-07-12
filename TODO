@@ -13,7 +13,6 @@
 
 MAYBE:
 
-- create a stddev parameter in the simulation menu to add some 'noise' to L
 - refactor so that constants are all at the same place and are thus accesible
   everywhere (like the UNIT value which is used to build the galaxy but also
   needed for calculating distances between points)

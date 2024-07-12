@@ -42,6 +42,11 @@ export const drakeEquation = {
 
 //TBD
 export const simulation = {
+  'lifetime-stddev': {
+    def: 152,
+    min: 0,
+    max: 1_000_000_000_000,
+  },
   'speed': {
     def: 40_000,
     min: 1,
@@ -156,7 +161,7 @@ export const drakeSimulation = ({ delta }) => {
 
   const civilizations = []
   const lifetime = drakeEquation['civilization-lifetime'].current
-  const stddev = lifetime / 3
+  const stddev = simulation['lifetime-stddev'].current
   for (let i = 0; i < spawnCount; i++) {
     let randomLifetime = Math.ceil(randomNormal(lifetime, stddev))
     randomLifetime = randomLifetime < 1 ? 1 : randomLifetime
