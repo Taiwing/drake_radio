@@ -52,18 +52,18 @@ export class Galaxy extends Group {
     this._bubbles = []
   }
 
-  createBubble({ delta, lifetime, speed }) {
+  createBubble({ delta, duration, speed }) {
     const randomStar = Math.floor(Math.random() * this._starCount)
     const index = randomStar * 3
     const x = this._starPositions[index]
     const y = this._starPositions[index + 1]
     const z = this._starPositions[index + 2]
-    const bubble = new Bubble({ x, y, z, delta, lifetime, speed })
+    const bubble = new Bubble({ x, y, z, delta, duration, speed })
     this.add(bubble)
     this._bubbles.push(bubble)
   }
 
-  tick({ delta, spawnCount, lifetime, speed }) {
+  tick({ delta, durations, speed }) {
     this.rotation.y += this._rotationPerSec * delta
 
     const bubbles = []
@@ -77,8 +77,8 @@ export class Galaxy extends Group {
     }
     this._bubbles = bubbles
 
-    for (let i = 0; i < spawnCount; i++) {
-      this.createBubble({ delta, lifetime, speed })
+    for (const duration of durations) {
+      this.createBubble({ delta, duration, speed })
     }
   }
 }

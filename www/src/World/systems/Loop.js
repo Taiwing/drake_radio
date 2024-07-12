@@ -1,5 +1,5 @@
 import { Clock } from '../vendor/three.js'
-import { drakeEquation, simulation, drakeSimulation } from '../../drake.js'
+import { simulation, drakeSimulation } from '../../drake.js'
 
 export class Loop {
   constructor({ camera, scene, renderer }) {
@@ -25,12 +25,11 @@ export class Loop {
 
   _tick () {
     this._delta = this._clock.getDelta()
-    const spawnCount = drakeSimulation({ delta: this._delta })
+    const durations = drakeSimulation({ delta: this._delta })
     for (const object of this.updatables) {
       object.tick({
         delta: this._delta,
-        spawnCount,
-        lifetime: drakeEquation['civilization-lifetime'].current,
+        durations,
         speed: simulation['speed'].current,
       })
     }

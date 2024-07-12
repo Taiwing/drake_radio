@@ -22,7 +22,8 @@ export const drakeEquation = {
     max: 1,
   },
   'intelligence-fraction': {
-    def: 0.01,
+    //def: 0.01,
+    def: 0.0722, //TEMP
     min: 0,
     max: 1,
   },
@@ -86,9 +87,9 @@ const saveDrakeForm = () => {
   for (const name of fields) {
     const { value } = document.getElementById(name)
     if (drakeEquation[name]) {
-      drakeEquation[name].current = value
+      drakeEquation[name].current = parseFloat(value)
     } else {
-      simulation[name].current = value
+      simulation[name].current = parseFloat(value)
     }
   }
   drakeResult.spawnRate = document.getElementById('Ny').value
@@ -108,6 +109,24 @@ const randomFloat = (min, max) => {
   return Math.random() * max + min
 }
 
+const _2PI = Math.PI * 2
+
+function randomNormal(mean, stddev) {
+  if (randomNormal.z1 !== undefined) {
+    const result = randomNormal.z1 * stddev + mean
+    randomNormal.z1 = undefined
+    return result
+  }
+
+  const u1 = Math.random()
+  const u2 = Math.random()
+
+  const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(_2PI * u2)
+  randomNormal.z1 = Math.sqrt(-2.0 * Math.log(u1)) * Math.sin(_2PI * u2)
+
+  return z0 * stddev + mean
+}
+
 const randomDrakeForm = () => {
   for (const name of fields) {
     const { min, max, randomMax } = drakeEquation[name] || simulation[name]
@@ -116,6 +135,8 @@ const randomDrakeForm = () => {
   }
   updateEquationResult()
 }
+
+let toto = true
 
 export const drakeSimulation = ({ delta }) => {
   const { spawnRate } = drakeResult
@@ -132,7 +153,17 @@ export const drakeSimulation = ({ delta }) => {
       spawnCount++
     }
   }
-  return spawnCount
+
+  const civilizations = []
+  const lifetime = drakeEquation['civilization-lifetime'].current
+  const stddev = lifetime / 3
+  for (let i = 0; i < spawnCount; i++) {
+    let randomLifetime = Math.ceil(randomNormal(lifetime, stddev))
+    randomLifetime = randomLifetime < 1 ? 1 : randomLifetime
+    civilizations.push(randomLifetime)
+  }
+
+  return civilizations
 }
 
 export default () => {

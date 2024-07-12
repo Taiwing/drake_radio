@@ -15,7 +15,7 @@ const BASE_OPACITY = MAX_OPACITY / 2
 const FLICKER = 1
 
 export class Bubble extends LineSegments {
-  constructor({ x, y, z, delta, lifetime, speed }) {
+  constructor({ x, y, z, delta, duration, speed }) {
     const scale = speed * delta
     const sphereGeometry = new SphereGeometry(VISUAL_LIGHT_YEAR, 32, 32)
     const geometry = new WireframeGeometry(sphereGeometry)
@@ -29,11 +29,13 @@ export class Bubble extends LineSegments {
 
     this._material = material
     this._baseOpacity = BASE_OPACITY
-    this._lifetime = lifetime
+    this._duration = duration
     this.scale.x = scale
     this.scale.y = scale
     this.scale.z = scale
     this.position.set(x, y, z)
+
+    console.log({ duration, x, y, z }) //TEST
   }
 
   tick({ delta, speed }) {
@@ -46,7 +48,7 @@ export class Bubble extends LineSegments {
     }
 
     // Pop the bubble if it reached its maximum size and if civilization is dead
-    if (this.scale.x >= GALAXY_RADIUS && this.scale.x >= this._lifetime) {
+    if (this.scale.x >= GALAXY_RADIUS && this.scale.x >= this._duration) {
       return false
     }
 
