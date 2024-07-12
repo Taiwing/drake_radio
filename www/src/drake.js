@@ -141,8 +141,6 @@ const randomDrakeForm = () => {
   updateEquationResult()
 }
 
-let toto = true
-
 export const drakeSimulation = ({ delta }) => {
   const { spawnRate } = drakeResult
   const simulationSpeed = simulation['speed'].current
