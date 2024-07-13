@@ -76,13 +76,12 @@ export const createParticles = (opt = {}) => {
   const yMax = height / 2
   let points = vertices
   if (addParticles) {
-    //const global = getVertices({ count, yMax: r * 2, cr, r: r * 2 })
+    const global = getVertices({ count, yMax: r * 2, cr, r: r * 2 })
     const disk = getVertices({ count, yMax, cr, r })
     const center = []
     spherePoints({ count: count * 2, radius: cr * 3/4, inside: true })
       .forEach(e => center.push(e.x, e.y, e.z))
-    //points = vertices.concat(global, disk, center)
-    points = vertices.concat(disk, center)
+    points = vertices.concat(global, disk, center)
   }
   geometry.setAttribute('position', new Float32BufferAttribute(points, 3))
   const particles = new Points(geometry, material)

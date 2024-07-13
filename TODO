@@ -2,6 +2,7 @@ STAR REFACTOR:
 - Move the star generation logic out the Galaxy component and use light year
   units instead of ThreeJS coordinate system. Then pass the star list to the
   World and Galaxy components to simply create the corresponding particles.
+- Make it possible to disable global star cloud
 - Create a separate "Simulation" Group for the Bubbles
 - Pass a function hook to the Loop system that will still use the
   "drakeSimulation" function to play the simulation. It should return list of
