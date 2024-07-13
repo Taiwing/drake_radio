@@ -1,7 +1,7 @@
 import { Group, MathUtils } from '../../vendor/three.js'
 import { createSphere } from './sphere.js'
 import { createParticles } from './particles.js'
-import { getCurvePoints } from './curve.js'
+import { curvePoints } from './curve.js'
 import { rotateY } from './rotate.js'
 import { Bubble } from './bubble.js'
 import {
@@ -73,7 +73,7 @@ export class Galaxy extends Group {
 
     this._center = createSphere({ radius: centerRadius * 3/5 })
 
-    const arm = getCurvePoints({ radius: centerRadius, width: galacticHeight })
+    const arm = curvePoints({ radius: centerRadius, width: galacticHeight })
     const arms = [arm]
     const angle = MathUtils.degToRad(360 / GALAXY_ARM_COUNT)
     for (let i = 1; i < GALAXY_ARM_COUNT; i++) {

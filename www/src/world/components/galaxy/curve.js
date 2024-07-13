@@ -1,4 +1,4 @@
-import { sphereVertices } from './particles.js'
+import { spherePoints } from './particles.js'
 
 const involuteCurve = ({ radius, t }) => {
   const x = (Math.sin(t) - t * Math.cos(t)) * radius
@@ -7,7 +7,7 @@ const involuteCurve = ({ radius, t }) => {
   return { x, y, z }
 }
 
-export const getCurvePoints = (opt = {}) => {
+export const curvePoints = (opt = {}) => {
   const {
     radius,
     width,
@@ -24,7 +24,7 @@ export const getCurvePoints = (opt = {}) => {
     const origin = involuteCurve({ radius, t })
     if (sectionRadius > segment * 3)
       sectionRadius = width / 2 * (length - t) * 1 / reduction
-    points.push(...sphereVertices({
+    points.push(...spherePoints({
       count: npoints,
       radius: sectionRadius,
       origin,
