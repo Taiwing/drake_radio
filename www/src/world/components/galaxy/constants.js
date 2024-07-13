@@ -8,3 +8,6 @@ export const VISUAL_LIGHT_YEAR = 1/VISUAL_UNIT  // ThreeJS distance
 export const CENTER_DIAMETER = 14_000
 export const GALAXY_DIAMETER = 100_000
 export const GALAXY_HEIGHT = 5_000
+
+// Spiraling arms count
+export const GALAXY_ARM_COUNT = 4

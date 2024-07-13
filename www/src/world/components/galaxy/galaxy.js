@@ -1,49 +1,99 @@
 import { Group, MathUtils } from '../../vendor/three.js'
 import { createSphere } from './sphere.js'
 import { createParticles } from './particles.js'
-import { createCurve } from './curve.js'
-import { createArm } from './arm.js'
+import { getCurvePoints } from './curve.js'
+import { rotateY } from './rotate.js'
 import { Bubble } from './bubble.js'
 import {
   VISUAL_LIGHT_YEAR,
   CENTER_DIAMETER,
   GALAXY_DIAMETER,
   GALAXY_HEIGHT,
+  GALAXY_ARM_COUNT,
 } from './constants.js'
+
+//TODO: future debug functions
+/*
+import {
+  Curve,
+  CurvePath,
+  TubeGeometry,
+  LineBasicMaterial,
+  LineSegments,
+  Vector3,
+  Line,
+  BufferGeometry,
+}
+
+class InvoluteCurve extends Curve {
+  constructor({ radius, id }) {
+    super()
+    this._radius = radius
+    this._segmentId = id
+  }
+
+  getPoint(t, optionalTarget = new Vector3()) {
+    t += this._segmentId
+    const { x, y, z } = involuteCurve({ t, radius: this._radius })
+    return optionalTarget.set(x, y, z)
+  }
+}
+
+const createTube = ({ length, radius, width, color }) => {
+  const path = new CurvePath()
+  for (let i = 0; i < length ; i++) {
+    const segment = new InvoluteCurve({ radius, id: i })
+    path.add(segment)
+  }
+  const geometry = new TubeGeometry(path, 80, width / 2, 16, false)
+  const material = new LineBasicMaterial({ color, linewidth: 2 })
+  return new LineSegments(geometry, material)
+}
+
+const createLine = ({ length, radius, width, nsections, color }) => {
+  const points = []
+  const segment = length / nsections
+  for (let t = 0; t < length ; t += segment) {
+    const point = involuteCurve({ radius, t })
+    const { x, y, z } = point
+    points.push(new Vector3(x, y, z))
+  }
+  const geometry = new BufferGeometry().setFromPoints(points)
+  const material = new LineBasicMaterial({ color, linewidth: 2 })
+  return new Line(geometry, material)
+}
+*/
 
 export class Galaxy extends Group {
   constructor() {
     super()
-    const armsCount = 4
     const centerRadius = CENTER_DIAMETER / 2 * VISUAL_LIGHT_YEAR
     const galacticRadius = GALAXY_DIAMETER / 2 * VISUAL_LIGHT_YEAR
     const galacticHeight = GALAXY_HEIGHT * VISUAL_LIGHT_YEAR
 
     this._center = createSphere({ radius: centerRadius * 3/5 })
-    const arms = [createCurve({
-      radius: centerRadius,
-      width: galacticHeight,
-    })]
-    for (let i = 1; i < armsCount; i++) {
-      const { vertices, tube, line } = arms[i - 1]
-      const newArm = createArm({ count: armsCount, vertices, tube, line })
-      arms.push(newArm)
+
+    const arm = getCurvePoints({ radius: centerRadius, width: galacticHeight })
+    const arms = [arm]
+    const angle = MathUtils.degToRad(360 / GALAXY_ARM_COUNT)
+    for (let i = 1; i < GALAXY_ARM_COUNT; i++) {
+      const lastArm = arms[i - 1]
+      arms.push(lastArm.map((point) => rotateY({ point, angle })))
     }
-    const points = []
+
+    const flatPoints = []
     for (const arm of arms) {
-      const { vertices, tube, line } = arm
-      if (tube) this.add(tube)
-      if (line) this.add(line)
-      for (const vertex of vertices) {
-        const { x, y, z } = vertex
-        points.push(x, y, z)
+      for (const point of arm) {
+        const { x, y, z } = point
+        flatPoints.push(x, y, z)
       }
     }
+
     this._stars = createParticles({
       cr: centerRadius,
       r: galacticRadius,
       height: galacticHeight,
-      vertices: points,
+      vertices: flatPoints,
     })
     this._starPositions = this._stars.geometry.attributes.position.array
     this._starCount = this._starPositions.length / 3
