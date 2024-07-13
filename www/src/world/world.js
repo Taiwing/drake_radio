@@ -1,10 +1,10 @@
 import { createCamera } from './components/camera.js'
 import { createScene } from './components/scene.js'
-import { Galaxy } from './components/Galaxy/Galaxy.js'
+import { Galaxy } from './components/galaxy/galaxy.js'
 import { createControls } from './systems/controls.js'
-import { Renderer } from './systems/Renderer.js'
-import { Resizer } from './systems/Resizer.js'
-import { Loop } from './systems/Loop.js'
+import { Renderer } from './systems/renderer.js'
+import { Resizer } from './systems/resizer.js'
+import { Loop } from './systems/loop.js'
 import { AxesHelper, CameraHelper } from './vendor/three.js'
 
 export class World {

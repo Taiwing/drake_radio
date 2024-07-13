@@ -3,7 +3,7 @@ import { createSphere } from './sphere.js'
 import { createParticles } from './particles.js'
 import { createCurve } from './curve.js'
 import { createArm } from './arm.js'
-import { Bubble } from './Bubble.js'
+import { Bubble } from './bubble.js'
 import {
   VISUAL_LIGHT_YEAR,
   CENTER_DIAMETER,

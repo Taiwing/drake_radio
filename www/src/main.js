@@ -1,4 +1,4 @@
-import { World } from './World/World.js'
+import { World } from './world/world.js'
 import { Controls } from './controls.js'
 import initDrakeForm from './drake.js'
 

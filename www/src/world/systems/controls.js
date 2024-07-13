@@ -1,4 +1,4 @@
-import { OrbitControls } from '../vendor/orbitControls.js'
+import { OrbitControls } from '../vendor/orbit-controls.js'
 
 export const createControls = ({ camera, canvas, dist, pan }) => {
   const controls = new OrbitControls(camera, canvas)
