@@ -47,22 +47,21 @@ export const spherePoints = ({
   return points
 }
 
-const getVertices = ({ count, yMax, cr, r }) => {
-  const xMax = r
-  const vertices = []
+const getPoints = ({ count, yMax, cr, r }) => {
+  const points = []
   for (let i = 0; i < count; i++) {
-    const x = (xMax * Math.random()) * (Math.random() < 0.5 ? -1 : 1)
-    const y = (yMax * Math.random()) * (Math.random() < 0.5 ? -1 : 1)
-    const z = (xMax * Math.random()) * (Math.random() < 0.5 ? -1 : 1)
+    const x = r * (Math.random() * 2 - 1)
+    const y = yMax * (Math.random() * 2 - 1)
+    const z = r * (Math.random() * 2 - 1)
     if (!isInsideSphere({ r: cr, x, y, z }) && isInsideSphere({ r, x, y, z }))
-      vertices.push(x, y, z)
+      points.push(x, y, z)
   }
-  return vertices
+  return points
 }
 
 export const createParticles = (opt = {}) => {
   const {
-    count = 20000,
+   count = 20000,
     size = 0.01,
     height = 0.5,
     r = 5,
@@ -76,8 +75,8 @@ export const createParticles = (opt = {}) => {
   const yMax = height / 2
   let points = vertices
   if (addParticles) {
-    const global = getVertices({ count, yMax: r * 2, cr, r: r * 2 })
-    const disk = getVertices({ count, yMax, cr, r })
+    const global = getPoints({ count, yMax: r * 2, cr, r: r * 2 })
+    const disk = getPoints({ count, yMax, cr, r })
     const center = []
     spherePoints({ count: count * 2, radius: cr * 3/4, inside: true })
       .forEach(e => center.push(e.x, e.y, e.z))
