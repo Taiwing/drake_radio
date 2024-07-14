@@ -97,6 +97,7 @@ export class Galaxy extends Group {
     })
     this._starPositions = this._stars.geometry.attributes.position.array
     this._starCount = this._starPositions.length / 3
+    console.log({ startCount: this._starCount }) //TEST
     this.add(this._center, this._stars)
     this._rotationPerSec = MathUtils.degToRad(10)
     this._bubbles = []
