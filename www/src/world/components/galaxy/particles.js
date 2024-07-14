@@ -58,7 +58,7 @@ const diskPoints = ({ count, yMax, r }) => {
 
 export const createParticles = (opt = {}) => {
   const {
-   count = 20000,
+    count = 20000,
     size = 0.01,
     height = 0.5,
     r = 5,
