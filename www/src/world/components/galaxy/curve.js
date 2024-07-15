@@ -1,4 +1,4 @@
-import { spherePoints } from './particles.js'
+import { spherePoints } from './sphere.js'
 
 const involuteCurve = ({ radius, t }) => {
   const x = (Math.sin(t) - t * Math.cos(t)) * radius

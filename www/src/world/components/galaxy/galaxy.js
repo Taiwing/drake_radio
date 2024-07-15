@@ -1,15 +1,22 @@
-import { Group, MathUtils } from '../../vendor/three.js'
-import { createSphere } from './sphere.js'
-import { createParticles } from './particles.js'
+import {
+  Group,
+  MathUtils,
+  SphereGeometry,
+  Mesh,
+  MeshBasicMaterial,
+  BufferGeometry,
+  PointsMaterial,
+  Float32BufferAttribute,
+  Points,
+} from '../../vendor/three.js'
+import { starPoints } from './stars.js'
 import { curvePoints } from './curve.js'
-import { rotateY } from './rotate.js'
 import { Bubble } from './bubble.js'
 import {
   VISUAL_LIGHT_YEAR,
   CENTER_DIAMETER,
   GALAXY_DIAMETER,
   GALAXY_HEIGHT,
-  GALAXY_ARM_COUNT,
 } from './constants.js'
 
 //TODO: future debug functions
@@ -22,7 +29,6 @@ import {
   LineSegments,
   Vector3,
   Line,
-  BufferGeometry,
 }
 
 class InvoluteCurve extends Curve {
@@ -68,33 +74,13 @@ export class Galaxy extends Group {
   constructor() {
     super()
     const centerRadius = CENTER_DIAMETER / 2 * VISUAL_LIGHT_YEAR
-    const galacticRadius = GALAXY_DIAMETER / 2 * VISUAL_LIGHT_YEAR
-    const galacticHeight = GALAXY_HEIGHT * VISUAL_LIGHT_YEAR
+    const radius = GALAXY_DIAMETER / 2 * VISUAL_LIGHT_YEAR
+    const height = GALAXY_HEIGHT * VISUAL_LIGHT_YEAR
 
-    this._center = createSphere({ radius: centerRadius * 3/5 })
+    const points = starPoints({ centerRadius, radius, height })
 
-    const arm = curvePoints({ radius: centerRadius, width: galacticHeight })
-    const arms = [arm]
-    const angle = MathUtils.degToRad(360 / GALAXY_ARM_COUNT)
-    for (let i = 1; i < GALAXY_ARM_COUNT; i++) {
-      const lastArm = arms[i - 1]
-      arms.push(lastArm.map((point) => rotateY({ point, angle })))
-    }
-
-    const flatPoints = []
-    for (const arm of arms) {
-      for (const point of arm) {
-        const { x, y, z } = point
-        flatPoints.push(x, y, z)
-      }
-    }
-
-    this._stars = createParticles({
-      cr: centerRadius,
-      r: galacticRadius,
-      height: galacticHeight,
-      vertices: flatPoints,
-    })
+    this._center = this._createSphere({ radius: centerRadius * 3/5 })
+    this._stars = this._createParticles({ points })
     this._starPositions = this._stars.geometry.attributes.position.array
     this._starCount = this._starPositions.length / 3
     console.log({ startCount: this._starCount }) //TEST
@@ -103,7 +89,24 @@ export class Galaxy extends Group {
     this._bubbles = []
   }
 
-  createBubble({ delta, duration, speed }) {
+  _createSphere(opt = {}) {
+    const { radius, color = 'white', opacity = 0.75, transparent = true } = opt
+    const geometry = new SphereGeometry(radius)
+    const material = new MeshBasicMaterial({ color, opacity, transparent })
+    const sphere = new Mesh(geometry, material)
+    return sphere
+  }
+
+  _createParticles({ points, size = 0.01 }) {
+    const geometry = new BufferGeometry()
+    const material = new PointsMaterial({ color: 'white', size })
+    const flatPoints = []
+    points.forEach(p => flatPoints.push(p.x, p.y, p.z))
+    geometry.setAttribute('position', new Float32BufferAttribute(flatPoints, 3))
+    return new Points(geometry, material)
+  }
+
+  _createBubble({ delta, duration, speed }) {
     const randomStar = Math.floor(Math.random() * this._starCount)
     const index = randomStar * 3
     const x = this._starPositions[index]
@@ -129,7 +132,7 @@ export class Galaxy extends Group {
     this._bubbles = bubbles
 
     for (const duration of durations) {
-      this.createBubble({ delta, duration, speed })
+      this._createBubble({ delta, duration, speed })
     }
   }
 }
