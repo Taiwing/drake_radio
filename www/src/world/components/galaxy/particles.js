@@ -5,10 +5,6 @@ import {
   Float32BufferAttribute,
 } from '../../vendor/three.js'
 
-const isInsideSphere = ({ r, x, y, z }) => {
-  return x*x + y*y + z*z < r*r
-}
-
 const randomSpherePoint = ({ origin, radius = 1, inside = false }) => {
   const y = Math.random() * 2 - 1
   const r = Math.sqrt(1 - y * y)
