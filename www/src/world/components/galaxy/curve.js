@@ -20,10 +20,13 @@ export const curvePoints = (opt = {}) => {
   const segment = length / nsections
   const points = []
   let sectionRadius = width / 2
+  const radiusMin = sectionRadius / 6
   for (let t = 0; t < length; t += segment) {
     const origin = involuteCurve({ radius, t })
-    if (sectionRadius > segment * 3)
+    if (sectionRadius > radiusMin) {
       sectionRadius = width / 2 * (length - t) * 1 / reduction
+      sectionRadius = sectionRadius < radiusMin ? radiusMin : sectionRadius
+    }
     points.push(...spherePoints({
       count: npoints,
       radius: sectionRadius,

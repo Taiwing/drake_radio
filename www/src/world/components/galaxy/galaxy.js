@@ -73,13 +73,15 @@ const createLine = ({ length, radius, width, nsections, color }) => {
 export class Galaxy extends Group {
   constructor() {
     super()
-    const centerRadius = CENTER_DIAMETER / 2 * VISUAL_LIGHT_YEAR
-    const radius = GALAXY_DIAMETER / 2 * VISUAL_LIGHT_YEAR
-    const height = GALAXY_HEIGHT * VISUAL_LIGHT_YEAR
+    const centerRadius = CENTER_DIAMETER / 2
+    const radius = GALAXY_DIAMETER / 2
+    const height = GALAXY_HEIGHT
 
     const points = starPoints({ centerRadius, radius, height })
 
-    this._center = this._createSphere({ radius: centerRadius * 3/5 })
+    this._center = this._createSphere({
+      radius: centerRadius * 3/5 * VISUAL_LIGHT_YEAR,
+    })
     this._stars = this._createParticles({ points })
     this._starPositions = this._stars.geometry.attributes.position.array
     this._starCount = this._starPositions.length / 3
@@ -100,9 +102,13 @@ export class Galaxy extends Group {
   _createParticles({ points, size = 0.01 }) {
     const geometry = new BufferGeometry()
     const material = new PointsMaterial({ color: 'white', size })
-    const flatPoints = []
-    points.forEach(p => flatPoints.push(p.x, p.y, p.z))
-    geometry.setAttribute('position', new Float32BufferAttribute(flatPoints, 3))
+    const particles = []
+    points.forEach(p => particles.push(
+      p.x * VISUAL_LIGHT_YEAR,
+      p.y * VISUAL_LIGHT_YEAR,
+      p.z * VISUAL_LIGHT_YEAR
+    ))
+    geometry.setAttribute('position', new Float32BufferAttribute(particles, 3))
     return new Points(geometry, material)
   }
 
