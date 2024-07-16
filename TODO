@@ -32,7 +32,7 @@ STAR REFACTOR MAYBE:
 
 MAYBE:
 
-- add a global reset button (next to pause/play) that would remove every
+- add a global hard reset button (next to pause/play) that would remove every
   civilization and reset the drake equation
 - add a scale for the distances (how to handle the zoom ?), or maybe just give
   the size info on an explication page
