@@ -5,14 +5,14 @@ ControlPanelTemplate.innerHTML = `
 	<link href="./main.css" rel="stylesheet" type="text/css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
 
-  <button title="" id="backward-button" class="main-button">
-    <i class="fa-solid fa-backward fa-2x" id="backward-icon"></i>
+  <button title="Speed Down" id="speed-down-button" class="main-button">
+    <i class="fa-solid fa-backward fa-2x" id="speed-down-icon"></i>
   </button>
-  <button title="" id="play-pause-button" class="main-button" style="width: 3em">
+  <button title="Play" id="play-pause-button" class="main-button" style="width: 3em">
     <i class="fa-solid fa-play fa-2x" id="play-pause-icon"></i>
   </button>
-  <button title="" id="forward-button" class="main-button">
-    <i class="fa-solid fa-forward fa-2x" id="forward-icon"></i>
+  <button title="Speed Up" id="speed-up-button" class="main-button">
+    <i class="fa-solid fa-forward fa-2x" id="speed-up-icon"></i>
   </button>
 `
 
@@ -25,12 +25,15 @@ class ControlPanel extends HTMLElement {
 
   updatePlayPauseButton(loop) {
     const icon = this.shadowRoot.querySelector('#play-pause-icon')
+    const button = this.shadowRoot.querySelector('#play-pause-button')
     if (loop) {
       icon.classList.remove('fa-play')
       icon.classList.add('fa-pause')
+      button.title = 'Pause'
     } else {
       icon.classList.remove('fa-pause')
       icon.classList.add('fa-play')
+      button.title = 'Play'
     }
   }
 }
@@ -57,7 +60,7 @@ export class Controls {
     })
 
     const backwardButton = this._controlPanel.shadowRoot
-      .querySelector('#backward-button')
+      .querySelector('#speed-down-button')
     backwardButton.addEventListener('click', () => this.speedDown())
 
     const playPauseButton = this._controlPanel.shadowRoot
@@ -65,7 +68,7 @@ export class Controls {
     playPauseButton.addEventListener('click', () => this.playPauseToggle())
 
     const forwardButton = this._controlPanel.shadowRoot
-      .querySelector('#forward-button')
+      .querySelector('#speed-up-button')
     forwardButton.addEventListener('click', () => this.speedUp())
   }
 
