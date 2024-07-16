@@ -35,10 +35,7 @@ export class World {
       scene: this._scene,
       renderer: this._renderer,
     })
-
-    this._galaxy = new Galaxy({ stars, galaxySpec })
-    this._loop.updatables.push(this._galaxy)
-    this._scene.add(this._galaxy)
+    this.reset({ stars, galaxySpec })
 
     //TODO: debug functions
     /*
