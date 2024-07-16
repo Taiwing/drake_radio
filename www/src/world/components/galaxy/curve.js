@@ -7,6 +7,12 @@ const involuteCurve = ({ radius, t }) => {
   return { x, y, z }
 }
 
+// The length parameter is really hard to compute so these parameters really
+// have to be adjused manually. That's not a big deal since they should never
+// change anyway. However to parameterize this for the user (like make it
+// possible for him to change galactic dimensions), a function computing the
+// length stochastically should be created (the inverse function is just not a
+// solution here for the involute curve).
 export const curvePoints = (opt = {}) => {
   const {
     radius,
