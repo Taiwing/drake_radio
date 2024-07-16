@@ -10,7 +10,6 @@ import {
   Points,
 } from '../../vendor/three.js'
 import { starPoints } from './stars.js'
-import { curvePoints } from './curve.js'
 import { Bubble } from './bubble.js'
 import {
   VISUAL_LIGHT_YEAR,
