@@ -8,15 +8,9 @@ import {
   PointsMaterial,
   Float32BufferAttribute,
   Points,
-} from '../../vendor/three.js'
-import { starPoints } from './stars.js'
+} from '../vendor/three.js'
 import { Bubble } from './bubble.js'
-import {
-  VISUAL_LIGHT_YEAR,
-  CENTER_DIAMETER,
-  GALAXY_DIAMETER,
-  GALAXY_HEIGHT,
-} from './constants.js'
+import { VISUAL_LIGHT_YEAR } from '../constants.js'
 
 //TODO: future debug functions
 /*
@@ -70,18 +64,14 @@ const createLine = ({ length, radius, width, nsections, color }) => {
 */
 
 export class Galaxy extends Group {
-  constructor() {
+  constructor({ stars, galaxySpec }) {
     super()
-    const centerRadius = CENTER_DIAMETER / 2
-    const radius = GALAXY_DIAMETER / 2
-    const height = GALAXY_HEIGHT
 
-    const points = starPoints({ centerRadius, radius, height })
-
+    this._spec = galaxySpec
     this._center = this._createSphere({
-      radius: centerRadius * 3/5 * VISUAL_LIGHT_YEAR,
+      radius: this._spec.CENTER_DIAMETER / 2 * 3/5 * VISUAL_LIGHT_YEAR,
     })
-    this._stars = this._createParticles({ points })
+    this._stars = this._createParticles({ points: stars })
     this._starPositions = this._stars.geometry.attributes.position.array
     this._starCount = this._starPositions.length / 3
     console.log({ startCount: this._starCount }) //TEST
@@ -111,13 +101,13 @@ export class Galaxy extends Group {
     return new Points(geometry, material)
   }
 
-  _createBubble({ delta, duration, speed }) {
+  _createBubble({ delta, duration, speed, radiusMax }) {
     const randomStar = Math.floor(Math.random() * this._starCount)
     const index = randomStar * 3
     const x = this._starPositions[index]
     const y = this._starPositions[index + 1]
     const z = this._starPositions[index + 2]
-    const bubble = new Bubble({ x, y, z, delta, duration, speed })
+    const bubble = new Bubble({ x, y, z, delta, duration, speed, radiusMax })
     this.add(bubble)
     this._bubbles.push(bubble)
   }
@@ -137,7 +127,12 @@ export class Galaxy extends Group {
     this._bubbles = bubbles
 
     for (const duration of durations) {
-      this._createBubble({ delta, duration, speed })
+      this._createBubble({
+        delta,
+        duration,
+        speed,
+        radiusMax: this._spec.DIAMETER / 2,
+      })
     }
   }
 }

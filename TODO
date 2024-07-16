@@ -1,7 +1,4 @@
 STAR REFACTOR:
-- Move the star generation logic out the Galaxy component and use light year
-  units instead of ThreeJS coordinate system. Then pass the star list to the
-  World and Galaxy components to simply create the corresponding particles.
 - Make it possible to disable global star cloud
 - Create a separate "Simulation" Group for the Bubbles
 - Pass a function hook to the Loop system that will still use the
@@ -35,9 +32,6 @@ STAR REFACTOR MAYBE:
 
 MAYBE:
 
-- refactor so that constants are all at the same place and are thus accesible
-  everywhere (like the UNIT value which is used to build the galaxy but also
-  needed for calculating distances between points)
 - add a global reset button (next to pause/play) that would remove every
   civilization and reset the drake equation
 - add a scale for the distances (how to handle the zoom ?), or maybe just give

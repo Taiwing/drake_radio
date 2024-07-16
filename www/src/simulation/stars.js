@@ -1,5 +1,5 @@
-import { MathUtils } from '../../vendor/three.js'
-import { GALAXY_ARM_COUNT } from './constants.js'
+import { MathUtils } from '../world/vendor/three.js'
+import { galaxySpec } from './constants.js'
 import { randomSpherePoint, spherePoints } from './sphere.js'
 import { curvePoints } from './curve.js'
 
@@ -35,8 +35,8 @@ export const starPoints = ({ count = 20000, centerRadius, radius, height }) => {
   // Spiraling Arms
   const arm = curvePoints({ radius: centerRadius, width: height })
   const arms = [arm]
-  const angle = MathUtils.degToRad(360 / GALAXY_ARM_COUNT)
-  for (let i = 1; i < GALAXY_ARM_COUNT; i++) {
+  const angle = MathUtils.degToRad(360 / galaxySpec.ARM_COUNT)
+  for (let i = 1; i < galaxySpec.ARM_COUNT; i++) {
     const lastArm = arms[i - 1]
     arms.push(lastArm.map((point) => rotateY({ point, angle })))
   }

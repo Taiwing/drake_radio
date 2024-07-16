@@ -1,6 +1,6 @@
 import { createCamera } from './components/camera.js'
 import { createScene } from './components/scene.js'
-import { Galaxy } from './components/galaxy/galaxy.js'
+import { Galaxy } from './components/galaxy.js'
 import { createControls } from './systems/controls.js'
 import { Renderer } from './systems/renderer.js'
 import { Resizer } from './systems/resizer.js'
@@ -8,7 +8,7 @@ import { Loop } from './systems/loop.js'
 import { AxesHelper, CameraHelper } from './vendor/three.js'
 
 export class World {
-  constructor({ container }) {
+  constructor({ container, stars, galaxySpec }) {
     this._container = container
     this._camera = createCamera()
     this._scene = createScene()
@@ -35,7 +35,7 @@ export class World {
       renderer: this._renderer,
     })
 
-    this._galaxy = new Galaxy()
+    this._galaxy = new Galaxy({ stars, galaxySpec })
     this._loop.updatables.push(this._galaxy)
     this._scene.add(this._galaxy)
 
