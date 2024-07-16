@@ -1,6 +1,6 @@
 import { starPoints } from './simulation/stars.js'
 import { galaxySpec } from './simulation/constants.js'
-import { simulation, resetDrakeForm, saveDrakeForm } from './drake.js'
+import { config, resetDrakeForm, saveDrakeForm } from './drake.js'
 
 const ControlPanelTemplate = document.createElement('template')
 ControlPanelTemplate.innerHTML = `
@@ -89,9 +89,9 @@ export class Controls {
   }
 
   speedDown() {
-    const { current, min } = simulation['speed']
+    const { current, min } = config['speed']
     const newCurrent = Math.floor(current - current * SPEED_FACTOR)
-    simulation['speed'].current = newCurrent < min ? min : newCurrent
+    config['speed'].current = newCurrent < min ? min : newCurrent
   }
 
   playPauseToggle() {
@@ -106,9 +106,9 @@ export class Controls {
   }
 
   speedUp() {
-    const { current, max } = simulation['speed']
+    const { current, max } = config['speed']
     const newCurrent = Math.ceil(current + current * SPEED_FACTOR)
-    simulation['speed'].current = newCurrent > max ? max : newCurrent
+    config['speed'].current = newCurrent > max ? max : newCurrent
   }
 
   reCenter() {
@@ -124,7 +124,5 @@ export class Controls {
     if (this._loop) this.playPauseToggle()
     this._world.reset({ stars, galaxySpec })
     this._world.render()
-    resetDrakeForm()
-    saveDrakeForm()
   }
 }

@@ -1,5 +1,5 @@
 import { Clock } from '../vendor/three.js'
-import { simulation, drakeSimulation } from '../../drake.js'
+import { config, drakeSimulation } from '../../drake.js'
 
 export class Loop {
   constructor({ camera, scene, renderer }) {
@@ -30,8 +30,8 @@ export class Loop {
       object.tick({
         delta: this._delta,
         durations,
-        speed: simulation['speed'].current,
-        rotation: simulation['rotation'].current,
+        speed: config['speed'].current,
+        rotation: config['rotation'].current,
       })
     }
   }

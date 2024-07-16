@@ -1,47 +1,50 @@
-export const drakeEquation = {
+export const config = {
   'new-stars-rate': {
     def: 1.5,
     min: 0,
     max: 1_000_000,
     randomMax: 5,
+    isDrakeParameter: true,
    },
   'planet-fraction': {
     def: 0.9,
     min: 0,
     max: 1,
+    isDrakeParameter: true,
   },
   'habitable-average': {
     def: 0.45,
     min: 0,
     max: 1_000_000,
     randomMax: 1,
+    isDrakeParameter: true,
   },
   'life-fraction': {
     def: 0.1,
     min: 0,
     max: 1,
+    isDrakeParameter: true,
   },
   'intelligence-fraction': {
     //def: 0.01,
     def: 0.0722, //TEMP
     min: 0,
     max: 1,
+    isDrakeParameter: true,
   },
   'communication-fraction': {
     def: 0.75,
     min: 0,
     max: 1,
+    isDrakeParameter: true,
   },
   'civilization-lifetime': {
     def: 304,
     min: 0,
     max: 1_000_000_000_000,
     randomMax: 10_000,
+    isDrakeParameter: true,
   },
-}
-
-//TBD
-export const simulation = {
   'lifetime-stddev': {
     def: 152,
     min: 0,
@@ -54,6 +57,10 @@ export const simulation = {
   },
   'rotation': {
     def: true,
+  },
+  'star-cloud': {
+    def: true,
+    hardReset: true,
   }
 }
 
@@ -62,7 +69,8 @@ export const drakeResult = {
   'total': 0,
 }
 
-const fields = Object.keys(drakeEquation).concat(Object.keys(simulation))
+const fields = Object.keys(config)
+const drakeParameters = fields.filter(name => config[name].isDrakeParameter)
 
 const updateEquationResult = () => {
   const formResult = document.getElementById('N')
@@ -70,7 +78,7 @@ const updateEquationResult = () => {
 
   let result = 1
   let yearlyResult = 1
-  for (name in drakeEquation) {
+  for (name of drakeParameters) {
     const element = document.getElementById(name)
     const value = parseFloat(element.value)
     result *= Number.isNaN(value) ? 0 : value
@@ -84,7 +92,7 @@ const updateEquationResult = () => {
 
 export const resetDrakeForm = () => {
   for (const name of fields) {
-    const { def } = drakeEquation[name] || simulation[name]
+    const { def } = config[name]
     const element = document.getElementById(name)
     if (element.type === 'text') element.value = def.toString()
     else if (element.type === 'checkbox') element.checked = def
@@ -95,20 +103,9 @@ export const resetDrakeForm = () => {
 export const saveDrakeForm = () => {
   for (const name of fields) {
     const element = document.getElementById(name)
-    if (element.type === 'text') {
-      const { value } = element
-      if (drakeEquation[name]) {
-        drakeEquation[name].current = parseFloat(value)
-      } else if (simulation[name]) {
-        simulation[name].current = parseFloat(value)
-      }
-    } else if (element.type === 'checkbox') {
-      if (drakeEquation[name]) {
-        drakeEquation[name].current = element.checked
-      } else if (simulation[name]) {
-        simulation[name].current = element.checked
-      }
-    }
+    const value = element.type === 'text' ? parseFloat(element.value)
+      : element.type === 'checkbox' ? element.checked : undefined
+    if (config[name]) config[name].current = value
   }
   drakeResult.spawnRate = document.getElementById('Ny').value
   drakeResult.total = document.getElementById('N').value
@@ -116,7 +113,7 @@ export const saveDrakeForm = () => {
 
 const initDrakeForm = () => {
   for (const name of fields) {
-    const { current } = drakeEquation[name] || simulation[name]
+    const { current } = config[name]
     const element = document.getElementById(name)
     if (element.type === 'text') element.value = current.toString()
     else if (element.type === 'checkbox') element.checked = current
@@ -147,8 +144,8 @@ function randomNormal(mean, stddev) {
 }
 
 const randomDrakeForm = () => {
-  for (const name in drakeEquation) {
-    const { min, max, randomMax } = drakeEquation[name]
+  for (const name of drakeParameters) {
+    const { min, max, randomMax } = config[name]
     const element = document.getElementById(name)
     element.value = randomFloat(min, randomMax || max).toFixed(2)
   }
@@ -157,7 +154,7 @@ const randomDrakeForm = () => {
 
 export const drakeSimulation = ({ delta }) => {
   const { spawnRate } = drakeResult
-  const simulationSpeed = simulation['speed'].current
+  const simulationSpeed = config['speed'].current
 
   let elapsed = simulationSpeed * delta
   let rate = spawnRate * delta
@@ -172,8 +169,8 @@ export const drakeSimulation = ({ delta }) => {
   }
 
   const civilizations = []
-  const lifetime = drakeEquation['civilization-lifetime'].current
-  const stddev = simulation['lifetime-stddev'].current
+  const lifetime = config['civilization-lifetime'].current
+  const stddev = config['lifetime-stddev'].current
   for (let i = 0; i < spawnCount; i++) {
     let randomLifetime = Math.ceil(randomNormal(lifetime, stddev))
     randomLifetime = randomLifetime < 1 ? 1 : randomLifetime
