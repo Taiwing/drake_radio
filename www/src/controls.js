@@ -14,6 +14,12 @@ ControlPanelTemplate.innerHTML = `
   <button title="Speed Up" id="speed-up-button" class="main-button">
     <i class="fa-solid fa-forward fa-2x" id="speed-up-icon"></i>
   </button>
+  <button title="Re-Center" id="re-center-button" class="main-button">
+    <i class="fa-solid fa-arrows-to-circle fa-2x" id="re-center-icon"></i>
+  </button>
+  <button title="Hard Reset" id="hard-reset-button" class="main-button">
+    <i class="fa-solid fa-arrow-rotate-left fa-2x" id="hard-reset-icon"></i>
+  </button>
 `
 
 class ControlPanel extends HTMLElement {
@@ -59,17 +65,25 @@ export class Controls {
       key.preventDefault()
     })
 
-    const backwardButton = this._controlPanel.shadowRoot
+    const speedDownButton = this._controlPanel.shadowRoot
       .querySelector('#speed-down-button')
-    backwardButton.addEventListener('click', () => this.speedDown())
+    speedDownButton.addEventListener('click', () => this.speedDown())
 
     const playPauseButton = this._controlPanel.shadowRoot
       .querySelector('#play-pause-button')
     playPauseButton.addEventListener('click', () => this.playPauseToggle())
 
-    const forwardButton = this._controlPanel.shadowRoot
+    const speedUpButton = this._controlPanel.shadowRoot
       .querySelector('#speed-up-button')
-    forwardButton.addEventListener('click', () => this.speedUp())
+    speedUpButton.addEventListener('click', () => this.speedUp())
+
+    const reCenterButton = this._controlPanel.shadowRoot
+      .querySelector('#re-center-button')
+    reCenterButton.addEventListener('click', () => this.reCenter())
+
+    const hardResetButton = this._controlPanel.shadowRoot
+      .querySelector('#hard-reset-button')
+    hardResetButton.addEventListener('click', () => this.hardReset())
   }
 
   speedDown() {
@@ -93,5 +107,14 @@ export class Controls {
     const { current, max } = simulation['speed']
     const newCurrent = Math.ceil(current + current * SPEED_FACTOR)
     simulation['speed'].current = newCurrent > max ? max : newCurrent
+  }
+
+  reCenter() {
+    this._world.resetCamera()
+  }
+
+  hardReset() {
+    const container = document.querySelector('#scene-container')
+    container.remove()
   }
 }

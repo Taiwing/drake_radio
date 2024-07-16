@@ -10,7 +10,8 @@ import { AxesHelper, CameraHelper } from './vendor/three.js'
 export class World {
   constructor({ container, stars, galaxySpec }) {
     this._container = container
-    this._camera = createCamera()
+    this._cameraStartingPoint = { x: 0, y: 3.5, z: 15 }
+    this._camera = createCamera(this._cameraStartingPoint)
     this._scene = createScene()
     this._renderer = new Renderer()
     this._container.append(this._renderer.domElement)
@@ -52,6 +53,13 @@ export class World {
     const cameraHelper = new CameraHelper(this._camera)
     this._scene.add(cameraHelper)
     */
+  }
+
+  resetCamera() {
+    const { x, y, z } = this._cameraStartingPoint
+    this._camera.position.set(x, y, z)
+    this._controls.target.set(0, 0, 0)
+    this._controls.update()
   }
 
   render() {
