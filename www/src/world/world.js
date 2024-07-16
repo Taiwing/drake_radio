@@ -39,7 +39,7 @@ export class World {
     this._loop.updatables.push(this._galaxy)
     this._scene.add(this._galaxy)
 
-    //TEMP
+    //TODO: debug functions
     /*
     const axesHelper = new AxesHelper(3)
     this._scene.add(axesHelper)
@@ -52,7 +52,6 @@ export class World {
     const cameraHelper = new CameraHelper(this._camera)
     this._scene.add(cameraHelper)
     */
-    //TEMP
   }
 
   render() {

@@ -12,7 +12,7 @@ import {
 import { Bubble } from './bubble.js'
 import { VISUAL_LIGHT_YEAR } from '../constants.js'
 
-//TODO: future debug functions
+//TODO: debug functions
 /*
 import {
   Curve,
