@@ -1,14 +1,16 @@
-import {
-  BufferGeometry,
-  PointsMaterial,
-  Points,
-  Float32BufferAttribute,
-  MathUtils,
-} from '../../vendor/three.js'
+import { MathUtils } from '../../vendor/three.js'
 import { GALAXY_ARM_COUNT } from './constants.js'
 import { randomSpherePoint, spherePoints } from './sphere.js'
 import { curvePoints } from './curve.js'
-import { rotateY } from './rotate.js'
+
+const rotateY = ({ point, angle }) => {
+  const { x, y, z } = point
+  return {
+    x: x * Math.cos(angle) - z * Math.sin(angle),
+    y,
+    z: z * Math.cos(angle) + x * Math.sin(angle),
+  }
+}
 
 const diskPoints = ({ count, radius, yMax }) => {
   const points = []
