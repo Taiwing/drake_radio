@@ -82,7 +82,7 @@ const updateEquationResult = () => {
   formYearlyResult.value = yearlyResult.toFixed(8)
 }
 
-const resetDrakeForm = () => {
+export const resetDrakeForm = () => {
   for (const name of fields) {
     const { def } = drakeEquation[name] || simulation[name]
     const element = document.getElementById(name)
@@ -92,7 +92,7 @@ const resetDrakeForm = () => {
   updateEquationResult()
 }
 
-const saveDrakeForm = () => {
+export const saveDrakeForm = () => {
   for (const name of fields) {
     const element = document.getElementById(name)
     if (element.type === 'text') {

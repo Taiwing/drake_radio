@@ -62,6 +62,18 @@ export class World {
     this._controls.update()
   }
 
+  reset({ stars, galaxySpec }) {
+    if (this._galaxy) {
+      this._scene.clear()
+      this._loop.updatables = []
+      this.resetCamera()
+    }
+
+    this._galaxy = new Galaxy({ stars, galaxySpec })
+    this._loop.updatables.push(this._galaxy)
+    this._scene.add(this._galaxy)
+  }
+
   render() {
     this._renderer._render(this._scene, this._camera)
   }
