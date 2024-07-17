@@ -137,41 +137,36 @@ export const drakeSimulation = ({ delta }) => {
   return civilizations
 }
 
-export const setupDrakeDialog = () => {
+export const setupDrakeDialog = ({ controls }) => {
   const resetButton = document.getElementById('reset-button')
   const randomButton = document.getElementById('random-button')
   const configButton = document.getElementById('config-button')
   const configDialog = document.getElementById('config-dialog')
   const form = document.getElementById('drake-form')
+  let restart
 
   resetButton.addEventListener('click', resetDrakeForm)
   randomButton.addEventListener('click', randomDrakeForm)
   configButton.addEventListener('click', () => {
     if (typeof configDialog.showModal === 'function') {
       initDrakeForm()
+      restart = controls.loop
+      if (controls.loop) controls.playPauseToggle()
       configDialog.showModal()
     } else {
       console.log('The <dialog> API is not implemented on this browser.')
     }
   })
   configDialog.addEventListener('submit', (e) => {
-    console.log('submit')
-    //TODO: fix this by pausing the simulation on dialog open and resuming on
-    // close (or stay paused if it was paused)
     const { returnValue } = configDialog
     if (returnValue === 'save' && !saveDrakeForm()) {
       e.preventDefault()
     }
   })
   configDialog.addEventListener('reset', () => configDialog.close())
-  /*
-  configDialog.addEventListener('close', (e) => {
-    const { returnValue } = configDialog
-    if (returnValue === 'save' && !saveDrakeForm()) {
-      e.preventDefault()
-    }
+  configDialog.addEventListener('close', () => {
+    if (restart) controls.playPauseToggle()
   })
-  */
   form.addEventListener('input', updateEquationResult)
   resetDrakeForm()
   saveDrakeForm()

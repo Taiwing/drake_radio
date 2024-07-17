@@ -13,8 +13,7 @@ const main = () => {
   })
   const world = new World({ container, stars, galaxySpec })
   const controls = new Controls({ world })
-  //setupDrakeDialog({ controls })
-  setupDrakeDialog()
+  setupDrakeDialog({ controls })
   world.render()
 }
 
