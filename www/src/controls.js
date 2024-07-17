@@ -1,5 +1,5 @@
 import { config } from './simulation/config.js'
-import { starPoints } from './simulation/stars.js'
+import { Simulation } from './simulation/index.js'
 import { galaxySpec } from './simulation/constants.js'
 
 const ControlPanelTemplate = document.createElement('template')
@@ -116,13 +116,9 @@ export class Controls {
   }
 
   hardReset() {
-    const stars = starPoints({
-      centerRadius: galaxySpec.CENTER_DIAMETER / 2,
-      radius: galaxySpec.DIAMETER / 2,
-      height: galaxySpec.HEIGHT,
-    })
+    const simulation = new Simulation()
     if (this.loop) this.playPauseToggle()
-    this._world.reset({ stars, galaxySpec })
+    this._world.reset({ simulation, galaxySpec })
     this._world.render()
   }
 }

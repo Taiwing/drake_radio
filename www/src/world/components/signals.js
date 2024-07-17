@@ -6,7 +6,7 @@ import {
   WireframeGeometry,
 } from '../vendor/three.js'
 
-import { VISUAL_LIGHT_YEAR } from '../constants.js'
+import { VISUAL_LIGHT_YEAR, ROTATION_PER_SEC } from '../constants.js'
 
 const MAX_OPACITY = 1
 const BASE_OPACITY = MAX_OPACITY / 2
@@ -33,7 +33,11 @@ export class Bubble extends LineSegments {
     this.scale.x = scale
     this.scale.y = scale
     this.scale.z = scale
-    this.position.set(x, y, z)
+    this.position.set(
+      x * VISUAL_LIGHT_YEAR,
+      y * VISUAL_LIGHT_YEAR,
+      z * VISUAL_LIGHT_YEAR
+    )
 
     console.log({ duration, x, y, z }) //TEST
   }
@@ -63,5 +67,41 @@ export class Bubble extends LineSegments {
       BASE_OPACITY * Math.abs(Math.sin(this.scale.x / speed * FLICKER))
 
     return true
+  }
+}
+
+export class Signals extends Group {
+  constructor({ radiusMax }) {
+    super()
+    this._bubbles = []
+    this._radiusMax = radiusMax
+  }
+
+  _createBubble({ delta, speed, civilization }) {
+    const { x, y, z } = civilization.coord
+    const duration = civilization.lifetime
+    const radiusMax = this._radiusMax
+    const bubble = new Bubble({ x, y, z, delta, duration, speed, radiusMax })
+    this.add(bubble)
+    this._bubbles.push(bubble)
+  }
+
+  tick({ delta, rotation, speed, civilizations }) {
+    if (rotation) this.rotation.y += ROTATION_PER_SEC * delta
+
+    const bubbles = []
+    while (this._bubbles.length > 0) {
+      const bubble = this._bubbles.pop()
+      if (!bubble.tick({ delta, speed })) {
+        this.remove(bubble)
+      } else {
+        bubbles.push(bubble)
+      }
+    }
+    this._bubbles = bubbles
+
+    for (const civilization of civilizations) {
+      this._createBubble({ delta, speed, civilization })
+    }
   }
 }

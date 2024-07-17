@@ -1,11 +1,3 @@
-STAR REFACTOR:
-- Create a separate "Simulation" Group for the Bubbles
-- Pass a function hook to the Loop system that will still use the
-  "drakeSimulation" function to play the simulation. It should return list of
-  created civilizations with the star coordinates (maybe just the index actually
-  so that I dont have to convert it from the light year system to ThreeJS), and
-  individual lifetimes.
-
 STAR REFACTOR MAYBE:
 - generate Events in the Drake Simulation function (like 'birth', 'death',
   'detection', 'contact', etc...) and catch them to illustrate (then no need to
@@ -37,8 +29,7 @@ MAYBE:
   stars might still be on the outside of the signal bubble when it disappears,
   maybe compute the actual radius needed (just add the distance from the origin
   point I think)
-- refactor the drake file, separate simulation logic from the dialog element and
-  the config initialization
+- refactor the drake file, separate dialog element and config initialization
 
 FIX:
 

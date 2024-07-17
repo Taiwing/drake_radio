@@ -1,6 +1,5 @@
 import {
   Group,
-  MathUtils,
   SphereGeometry,
   Mesh,
   MeshBasicMaterial,
@@ -9,8 +8,7 @@ import {
   Float32BufferAttribute,
   Points,
 } from '../vendor/three.js'
-import { Bubble } from './bubble.js'
-import { VISUAL_LIGHT_YEAR } from '../constants.js'
+import { VISUAL_LIGHT_YEAR, ROTATION_PER_SEC } from '../constants.js'
 
 //TODO: debug functions
 /*
@@ -76,8 +74,6 @@ export class Galaxy extends Group {
     this._starCount = this._starPositions.length / 3
     console.log({ startCount: this._starCount }) //TEST
     this.add(this._center, this._stars)
-    this._rotationPerSec = MathUtils.degToRad(10)
-    this._bubbles = []
   }
 
   _createSphere(opt = {}) {
@@ -101,38 +97,7 @@ export class Galaxy extends Group {
     return new Points(geometry, material)
   }
 
-  _createBubble({ delta, duration, speed, radiusMax }) {
-    const randomStar = Math.floor(Math.random() * this._starCount)
-    const index = randomStar * 3
-    const x = this._starPositions[index]
-    const y = this._starPositions[index + 1]
-    const z = this._starPositions[index + 2]
-    const bubble = new Bubble({ x, y, z, delta, duration, speed, radiusMax })
-    this.add(bubble)
-    this._bubbles.push(bubble)
-  }
-
-  tick({ delta, durations, speed, rotation }) {
-    if (rotation) this.rotation.y += this._rotationPerSec * delta
-
-    const bubbles = []
-    while (this._bubbles.length > 0) {
-      const bubble = this._bubbles.pop()
-      if (!bubble.tick({ delta, speed })) {
-        this.remove(bubble)
-      } else {
-        bubbles.push(bubble)
-      }
-    }
-    this._bubbles = bubbles
-
-    for (const duration of durations) {
-      this._createBubble({
-        delta,
-        duration,
-        speed,
-        radiusMax: this._spec.DIAMETER / 2,
-      })
-    }
+  tick({ delta, rotation }) {
+    if (rotation) this.rotation.y += ROTATION_PER_SEC * delta
   }
 }

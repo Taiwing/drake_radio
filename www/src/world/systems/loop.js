@@ -1,12 +1,12 @@
 import { Clock } from '../vendor/three.js'
-import { drakeSimulation } from '../../drake.js'
 import { config } from '../../simulation/config.js'
 
 export class Loop {
-  constructor({ camera, scene, renderer }) {
+  constructor({ camera, scene, renderer, simulation }) {
     this._camera = camera
     this._scene = scene
     this._renderer = renderer
+    this._simulation = simulation
     this._clock = new Clock()
     this._delta = this._clock.getDelta()
     this.updatables = []
@@ -26,13 +26,13 @@ export class Loop {
 
   _tick () {
     this._delta = this._clock.getDelta()
-    const durations = drakeSimulation({ delta: this._delta })
+    const civilizations = this._simulation.tick({ delta: this._delta })
     for (const object of this.updatables) {
       object.tick({
         delta: this._delta,
-        durations,
         speed: config['speed'].current,
         rotation: config['rotation'].current,
+        civilizations,
       })
     }
   }

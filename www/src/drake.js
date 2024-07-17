@@ -1,3 +1,4 @@
+import { randomFloat } from './simulation/math.js'
 import { config, drakeResult } from './simulation/config.js'
 
 const fields = Object.keys(config)
@@ -79,28 +80,6 @@ const initDrakeForm = () => {
   updateEquationResult()
 }
 
-const randomFloat = (min, max) => {
-  return Math.random() * max + min
-}
-
-const _2PI = Math.PI * 2
-
-function randomNormal(mean, stddev) {
-  if (randomNormal.z1 !== undefined) {
-    const result = randomNormal.z1 * stddev + mean
-    randomNormal.z1 = undefined
-    return result
-  }
-
-  const u1 = Math.random()
-  const u2 = Math.random()
-
-  const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(_2PI * u2)
-  randomNormal.z1 = Math.sqrt(-2.0 * Math.log(u1)) * Math.sin(_2PI * u2)
-
-  return z0 * stddev + mean
-}
-
 const randomDrakeForm = () => {
   for (const name of drakeParameters) {
     const { min, max, randomMax } = config[name]
@@ -108,34 +87,6 @@ const randomDrakeForm = () => {
     element.value = randomFloat(min, randomMax || max).toFixed(2)
   }
   updateEquationResult()
-}
-
-export const drakeSimulation = ({ delta }) => {
-  const { spawnRate } = drakeResult
-  const simulationSpeed = config['speed'].current
-
-  let elapsed = simulationSpeed * delta
-  let rate = spawnRate * delta
-  let spawnCount = 0
-  for (let year = 0; year < elapsed; year++) {
-    if (rate >= 1) {
-      const count = randomFloat(rate / 2, rate + rate / 2)
-      spawnCount += Math.round(count)
-    } else if (randomFloat(0, 1) <= rate) {
-      spawnCount++
-    }
-  }
-
-  const civilizations = []
-  const lifetime = config['civilization-lifetime'].current
-  const stddev = config['lifetime-stddev'].current
-  for (let i = 0; i < spawnCount; i++) {
-    let randomLifetime = Math.ceil(randomNormal(lifetime, stddev))
-    randomLifetime = randomLifetime < 1 ? 1 : randomLifetime
-    civilizations.push(randomLifetime)
-  }
-
-  return civilizations
 }
 
 export const setupDrakeConfig = () => {
