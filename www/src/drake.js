@@ -31,6 +31,16 @@ const resetDrakeForm = () => {
   updateEquationResult()
 }
 
+class SaveStatus {
+  static #_FAILURE = 0
+  static #_SUCCESS = 1
+  static #_HARD_RESET = 2
+
+  static get FAILURE() { return this.#_FAILURE }
+  static get SUCCESS() { return this.#_SUCCESS }
+  static get HARD_RESET() { return this.#_HARD_RESET }
+}
+
 const saveDrakeForm = () => {
   const values = {}
   let hardReset = []
@@ -47,25 +57,16 @@ const saveDrakeForm = () => {
   }
 
   // In case of hard reset prompt user to confirm
-  /*
   if (hardReset.length > 0) {
     const message = `The following parameters have been changed: ${hardReset.join(', ')}. This will trigger a hard reset. Do you want to proceed?`
-    if (!confirm(message)) return false
+    if (!confirm(message)) return SaveStatus.FAILURE
   }
-  */
 
   for (const name of fields) config[name].current = values[name]
   drakeResult.spawnRate = parseFloat(document.getElementById('Ny').value)
   drakeResult.total = parseFloat(document.getElementById('N').value)
 
-  /*
-  if (hardReset.length > 0) {
-    const event = new Event('hardReset')
-    document.getElementById('config-dialog').dispatchEvent(event)
-  }
-  */
-
-  return true
+  return hardReset.length > 0 ? SaveStatus.HARD_RESET : SaveStatus.SUCCESS
 }
 
 const initDrakeForm = () => {
@@ -159,8 +160,15 @@ export const setupDrakeDialog = ({ controls }) => {
   })
   configDialog.addEventListener('submit', (e) => {
     const { returnValue } = configDialog
-    if (returnValue === 'save' && !saveDrakeForm()) {
-      e.preventDefault()
+    if (returnValue === 'save') {
+      switch (saveDrakeForm()) {
+        case SaveStatus.FAILURE:      e.preventDefault()
+          break
+        case SaveStatus.HARD_RESET:   controls.hardReset()
+          break
+        case SaveStatus.SUCCESS:
+          break
+      }
     }
   })
   configDialog.addEventListener('reset', () => configDialog.close())
