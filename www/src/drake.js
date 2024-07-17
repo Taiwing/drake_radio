@@ -138,6 +138,11 @@ export const drakeSimulation = ({ delta }) => {
   return civilizations
 }
 
+export const setupDrakeConfig = () => {
+  resetDrakeForm()
+  saveDrakeForm()
+}
+
 export const setupDrakeDialog = ({ controls }) => {
   const resetButton = document.getElementById('reset-button')
   const randomButton = document.getElementById('random-button')
@@ -176,6 +181,4 @@ export const setupDrakeDialog = ({ controls }) => {
     if (restart) controls.playPauseToggle()
   })
   form.addEventListener('input', updateEquationResult)
-  resetDrakeForm()
-  saveDrakeForm()
 }

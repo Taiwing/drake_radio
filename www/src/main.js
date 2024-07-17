@@ -1,10 +1,11 @@
 import { World } from './world/world.js'
 import { Controls } from './controls.js'
-import { setupDrakeDialog } from './drake.js'
 import { starPoints } from './simulation/stars.js'
 import { galaxySpec } from './simulation/constants.js'
+import { setupDrakeConfig, setupDrakeDialog } from './drake.js'
 
 const main = () => {
+  setupDrakeConfig()
   const container = document.querySelector('#scene-container')
   const stars = starPoints({
     centerRadius: galaxySpec.CENTER_DIAMETER / 2,

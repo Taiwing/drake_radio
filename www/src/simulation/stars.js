@@ -2,6 +2,7 @@ import { MathUtils } from '../world/vendor/three.js'
 import { galaxySpec } from './constants.js'
 import { randomSpherePoint, spherePoints } from './sphere.js'
 import { curvePoints } from './curve.js'
+import { config } from './config.js'
 
 const rotateY = ({ point, angle }) => {
   const { x, y, z } = point
@@ -47,8 +48,10 @@ export const starPoints = ({ count = 20000, centerRadius, radius, height }) => {
   points = points.concat(disk)
 
   // Global Star Cloud
-  const global = spherePoints({ count, radius: radius * 2, inside: true })
-  points = points.concat(global)
+  if (config['star-cloud'].current) {
+    const global = spherePoints({ count, radius: radius * 2, inside: true })
+    points = points.concat(global)
+  }
 
   return points
 }

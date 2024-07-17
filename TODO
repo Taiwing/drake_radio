@@ -1,5 +1,4 @@
 STAR REFACTOR:
-- Make it possible to disable global star cloud
 - Create a separate "Simulation" Group for the Bubbles
 - Pass a function hook to the Loop system that will still use the
   "drakeSimulation" function to play the simulation. It should return list of
@@ -38,6 +37,8 @@ MAYBE:
   stars might still be on the outside of the signal bubble when it disappears,
   maybe compute the actual radius needed (just add the distance from the origin
   point I think)
+- refactor the drake file, separate simulation logic from the dialog element and
+  the config initialization
 
 FIX:
 
