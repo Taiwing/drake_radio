@@ -1,6 +1,6 @@
 import { starPoints } from './simulation/stars.js'
+import { config } from './drake.js'
 import { galaxySpec } from './simulation/constants.js'
-import { config, resetDrakeForm, saveDrakeForm } from './drake.js'
 
 const ControlPanelTemplate = document.createElement('template')
 ControlPanelTemplate.innerHTML = `
@@ -54,7 +54,7 @@ export class Controls {
   constructor({ world }) {
     this._controlPanel = document.querySelector('control-panel')
     this._world = world
-    this._loop = false
+    this.loop = false
 
     window.addEventListener('keydown', (key) => {
       switch (key.code) {
@@ -95,14 +95,14 @@ export class Controls {
   }
 
   playPauseToggle() {
-    if (this._loop) {
+    if (this.loop) {
       this._world.stop()
     } else {
       this._world.start()
     }
-    this._loop = !this._loop
+    this.loop = !this.loop
 
-    this._controlPanel.updatePlayPauseButton(this._loop)
+    this._controlPanel.updatePlayPauseButton(this.loop)
   }
 
   speedUp() {
@@ -121,7 +121,7 @@ export class Controls {
       radius: galaxySpec.DIAMETER / 2,
       height: galaxySpec.HEIGHT,
     })
-    if (this._loop) this.playPauseToggle()
+    if (this.loop) this.playPauseToggle()
     this._world.reset({ stars, galaxySpec })
     this._world.render()
   }
