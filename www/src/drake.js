@@ -1,73 +1,4 @@
-export const config = {
-  'new-stars-rate': {
-    def: 1.5,
-    min: 0,
-    max: 1_000_000,
-    randomMax: 5,
-    isDrakeParameter: true,
-   },
-  'planet-fraction': {
-    def: 0.9,
-    min: 0,
-    max: 1,
-    isDrakeParameter: true,
-  },
-  'habitable-average': {
-    def: 0.45,
-    min: 0,
-    max: 1_000_000,
-    randomMax: 1,
-    isDrakeParameter: true,
-  },
-  'life-fraction': {
-    def: 0.1,
-    min: 0,
-    max: 1,
-    isDrakeParameter: true,
-  },
-  'intelligence-fraction': {
-    //def: 0.01,
-    def: 0.0722, //TEMP
-    min: 0,
-    max: 1,
-    isDrakeParameter: true,
-  },
-  'communication-fraction': {
-    def: 0.75,
-    min: 0,
-    max: 1,
-    isDrakeParameter: true,
-  },
-  'civilization-lifetime': {
-    def: 304,
-    min: 0,
-    max: 1_000_000_000_000,
-    randomMax: 10_000,
-    isDrakeParameter: true,
-  },
-  'lifetime-stddev': {
-    def: 152,
-    min: 0,
-    max: 1_000_000_000_000,
-  },
-  'speed': {
-    def: 40_000,
-    min: 1,
-    max: 10_000_000,
-  },
-  'rotation': {
-    def: true,
-  },
-  'star-cloud': {
-    def: true,
-    hardReset: true,
-  }
-}
-
-export const drakeResult = {
-  'spawnRate': 0,
-  'total': 0,
-}
+import { config, drakeResult } from './simulation/config.js'
 
 const fields = Object.keys(config)
 const drakeParameters = fields.filter(name => config[name].isDrakeParameter)
@@ -90,7 +21,7 @@ const updateEquationResult = () => {
   formYearlyResult.value = yearlyResult.toFixed(8)
 }
 
-export const resetDrakeForm = () => {
+const resetDrakeForm = () => {
   for (const name of fields) {
     const { def } = config[name]
     const element = document.getElementById(name)
@@ -100,15 +31,41 @@ export const resetDrakeForm = () => {
   updateEquationResult()
 }
 
-export const saveDrakeForm = () => {
+const saveDrakeForm = () => {
+  const values = {}
+  let hardReset = []
   for (const name of fields) {
     const element = document.getElementById(name)
     const value = element.type === 'text' ? parseFloat(element.value)
       : element.type === 'checkbox' ? element.checked : undefined
-    if (config[name]) config[name].current = value
+    if (config[name].hardReset
+      && config[name].current !== undefined
+      && value !== config[name].current) {
+      hardReset.push(name)
+    }
+    values[name] = value
   }
-  drakeResult.spawnRate = document.getElementById('Ny').value
-  drakeResult.total = document.getElementById('N').value
+
+  // In case of hard reset prompt user to confirm
+  /*
+  if (hardReset.length > 0) {
+    const message = `The following parameters have been changed: ${hardReset.join(', ')}. This will trigger a hard reset. Do you want to proceed?`
+    if (!confirm(message)) return false
+  }
+  */
+
+  for (const name of fields) config[name].current = values[name]
+  drakeResult.spawnRate = parseFloat(document.getElementById('Ny').value)
+  drakeResult.total = parseFloat(document.getElementById('N').value)
+
+  /*
+  if (hardReset.length > 0) {
+    const event = new Event('hardReset')
+    document.getElementById('config-dialog').dispatchEvent(event)
+  }
+  */
+
+  return true
 }
 
 const initDrakeForm = () => {
@@ -180,7 +137,7 @@ export const drakeSimulation = ({ delta }) => {
   return civilizations
 }
 
-export default () => {
+export const setupDrakeDialog = () => {
   const resetButton = document.getElementById('reset-button')
   const randomButton = document.getElementById('random-button')
   const configButton = document.getElementById('config-button')
@@ -197,10 +154,24 @@ export default () => {
       console.log('The <dialog> API is not implemented on this browser.')
     }
   })
-  configDialog.addEventListener('close', () => {
+  configDialog.addEventListener('submit', (e) => {
+    console.log('submit')
+    //TODO: fix this by pausing the simulation on dialog open and resuming on
+    // close (or stay paused if it was paused)
     const { returnValue } = configDialog
-    if (returnValue === 'save') saveDrakeForm()
+    if (returnValue === 'save' && !saveDrakeForm()) {
+      e.preventDefault()
+    }
   })
+  configDialog.addEventListener('reset', () => configDialog.close())
+  /*
+  configDialog.addEventListener('close', (e) => {
+    const { returnValue } = configDialog
+    if (returnValue === 'save' && !saveDrakeForm()) {
+      e.preventDefault()
+    }
+  })
+  */
   form.addEventListener('input', updateEquationResult)
   resetDrakeForm()
   saveDrakeForm()

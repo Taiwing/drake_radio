@@ -1,5 +1,5 @@
+import { config } from './simulation/config.js'
 import { starPoints } from './simulation/stars.js'
-import { config } from './drake.js'
 import { galaxySpec } from './simulation/constants.js'
 
 const ControlPanelTemplate = document.createElement('template')

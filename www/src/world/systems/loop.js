@@ -1,5 +1,6 @@
 import { Clock } from '../vendor/three.js'
-import { config, drakeSimulation } from '../../drake.js'
+import { drakeSimulation } from '../../drake.js'
+import { config } from '../../simulation/config.js'
 
 export class Loop {
   constructor({ camera, scene, renderer }) {
