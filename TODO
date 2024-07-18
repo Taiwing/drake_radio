@@ -35,4 +35,8 @@ MAYBE:
 
 FIX:
 
+- Yearly spawn proability does not match the actual civilization spawn rate by
+  a long shot when it is small. This is probably because of a flaw in the JS
+  random function. Or it is because I dont know how to do math. Damn I think I
+  got this wrong.
 - enforce max values and value types for drakeEquation and simulation parameters
