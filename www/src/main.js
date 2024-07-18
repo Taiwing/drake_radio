@@ -2,7 +2,7 @@ import { World } from './world/world.js'
 import { Controls } from './controls.js'
 import { Simulation } from './simulation/index.js'
 import { galaxySpec } from './simulation/constants.js'
-import { setupDrakeConfig, setupDrakeDialog } from './drake.js'
+import { setupDrakeConfig, setupDrakeDialog } from './drake-form.js'
 
 const main = () => {
   setupDrakeConfig()
