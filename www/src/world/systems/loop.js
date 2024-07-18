@@ -1,4 +1,5 @@
 import { Clock } from '../vendor/three.js'
+import { ROTATION_PER_SEC } from '../constants.js'
 import { config } from '../../simulation/config.js'
 
 export class Loop {
@@ -28,10 +29,12 @@ export class Loop {
     this._delta = this._clock.getDelta()
     const civilizations = this._simulation.tick({ delta: this._delta })
     for (const object of this.updatables) {
+      if (config['rotation'].current) {
+        object.rotation.y += ROTATION_PER_SEC * this._delta
+      }
       object.tick({
         delta: this._delta,
         speed: config['speed'].current,
-        rotation: config['rotation'].current,
         civilizations,
       })
     }

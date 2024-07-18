@@ -6,7 +6,7 @@ import {
   WireframeGeometry,
 } from '../vendor/three.js'
 
-import { VISUAL_LIGHT_YEAR, ROTATION_PER_SEC } from '../constants.js'
+import { VISUAL_LIGHT_YEAR } from '../constants.js'
 
 const MAX_OPACITY = 1
 const BASE_OPACITY = MAX_OPACITY / 2
@@ -86,9 +86,7 @@ export class Signals extends Group {
     this._bubbles.push(bubble)
   }
 
-  tick({ delta, rotation, speed, civilizations }) {
-    if (rotation) this.rotation.y += ROTATION_PER_SEC * delta
-
+  tick({ delta, speed, civilizations }) {
     const bubbles = []
     while (this._bubbles.length > 0) {
       const bubble = this._bubbles.pop()

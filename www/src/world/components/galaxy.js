@@ -8,7 +8,7 @@ import {
   Float32BufferAttribute,
   Points,
 } from '../vendor/three.js'
-import { VISUAL_LIGHT_YEAR, ROTATION_PER_SEC } from '../constants.js'
+import { VISUAL_LIGHT_YEAR } from '../constants.js'
 
 //TODO: debug functions
 /*
@@ -97,7 +97,5 @@ export class Galaxy extends Group {
     return new Points(geometry, material)
   }
 
-  tick({ delta, rotation }) {
-    if (rotation) this.rotation.y += ROTATION_PER_SEC * delta
-  }
+  tick() {}
 }
