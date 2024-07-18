@@ -35,8 +35,10 @@ MAYBE:
 
 FIX:
 
-- Yearly spawn proability does not match the actual civilization spawn rate by
-  a long shot when it is small. This is probably because of a flaw in the JS
-  random function. Or it is because I dont know how to do math. Damn I think I
-  got this wrong.
+- Even on the conservative preset the number of bubbles becomes overwhelming
+  (at the center anyway). Maybe create a function that reduces bubble lifetimes
+  when there is a lot of them around. Since the probability becomes bigger and
+  bigger at the center diminish the radiusMax value depending on how close the
+  bubble is the origin point. Make it possible to disable this function in the
+  parameters menu.
 - enforce max values and value types for drakeEquation and simulation parameters

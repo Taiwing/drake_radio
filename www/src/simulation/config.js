@@ -26,8 +26,7 @@ export const config = {
     isDrakeParameter: true,
   },
   'intelligence-fraction': {
-    //def: 0.01,
-    def: 0.0722, //TEMP
+    def: 0.01,
     min: 0,
     max: 1,
     isDrakeParameter: true,
@@ -51,7 +50,7 @@ export const config = {
     max: 1_000_000_000_000,
   },
   'speed': {
-    def: 40_000,
+    def: 100,
     min: 1,
     max: 10_000_000,
   },

@@ -43,7 +43,7 @@ export class Simulation {
   _spawn({ delta, spawnRate, speed }) {
     const newCivilizations = []
     const elapsed = speed * delta
-    const rate = spawnRate * delta
+    const rate = spawnRate * elapsed
 
     for (let year = 0; year < elapsed; year++) {
       let count = 0

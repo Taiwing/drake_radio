@@ -38,8 +38,6 @@ export class Bubble extends LineSegments {
       y * VISUAL_LIGHT_YEAR,
       z * VISUAL_LIGHT_YEAR
     )
-
-    console.log({ duration, x, y, z }) //TEST
   }
 
   tick({ delta, speed }) {
