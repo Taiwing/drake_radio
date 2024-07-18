@@ -1,4 +1,20 @@
-STAR REFACTOR MAYBE:
+- create drake equation presets (something like 'conservative', 'probable',
+  'optimistic', 'star trek')
+- add a timer and a maybe a speed meter
+- add stats for events, number of living civilisations, dead civilisations,
+  detection count (when a civilisation detects an other), contact count (when
+  civilisations can actually communicate with each other, meaning sending a
+  signal to a civilisation and receiving a response) and duration (how long
+  contact is possible between the two civilisations), and averages for these
+  values (add 'animations' for these events)
+
+- expand README file explanations
+
+MAYBE:
+
+- make it possible to disable signal bubbles (do it by default for optimistic
+  presets where there are many long-lasting civlizations, as said below,
+  detection and contact vectors might be enough at that point)
 - generate Events in the Drake Simulation function (like 'birth', 'death',
   'detection', 'contact', etc...) and catch them to illustrate (then no need to
   actually send the lifetime when a Bubble is created, just send a death signal)
@@ -8,20 +24,6 @@ STAR REFACTOR MAYBE:
 - Show civ birth and death by changing the star color (green for live and blue
   for dead ? maybe do the same for the Bubbles ?), and maybe also by adding a
   "light wave effect"
-
-- add a timer and a maybe a speed meter
-- add stats for events, number of living civilisations, dead civilisations,
-  detection count (when a civilisation detects an other), contact count (when
-  civilisations can actually communicate with each other, meaning sending a
-  signal to a civilisation and receiving a response) and duration (how long
-  contact is possible between the two civilisations), and averages for these
-  values (add 'animations' for these events)
-- create drake equation presets (something like 'conservative', 'probable',
-  'optimistic', 'star trek')
-
-- expand README file explanations
-
-MAYBE:
 
 - add a scale for the distances (how to handle the zoom ?), or maybe just give
   the size info on an explication page

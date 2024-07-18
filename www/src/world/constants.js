@@ -8,3 +8,6 @@ export const VISUAL_LIGHT_YEAR = 1/VISUAL_UNIT  // ThreeJS distance
 
 // Galactic Rotation
 export const ROTATION_PER_SEC = MathUtils.degToRad(10)
+
+// Civilization color
+export const CIV_COLOR = 0x66acdc

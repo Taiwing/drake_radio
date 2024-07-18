@@ -7,8 +7,9 @@ import {
   PointsMaterial,
   Float32BufferAttribute,
   Points,
+  Color,
 } from '../vendor/three.js'
-import { VISUAL_LIGHT_YEAR } from '../constants.js'
+import { VISUAL_LIGHT_YEAR, CIV_COLOR } from '../constants.js'
 
 //TODO: debug functions
 /*
@@ -66,13 +67,12 @@ export class Galaxy extends Group {
     super()
 
     this._spec = galaxySpec
+    this._civColor = new Color(CIV_COLOR)
     this._center = this._createSphere({
       radius: this._spec.CENTER_DIAMETER / 2 * 3/5 * VISUAL_LIGHT_YEAR,
     })
     this._stars = this._createParticles({ points: stars })
-    this._starPositions = this._stars.geometry.attributes.position.array
-    this._starCount = this._starPositions.length / 3
-    console.log({ startCount: this._starCount }) //TEST
+    this._starColors = this._stars.geometry.attributes.color
     this.add(this._center, this._stars)
   }
 
@@ -85,17 +85,35 @@ export class Galaxy extends Group {
   }
 
   _createParticles({ points, size = 0.01 }) {
+    const positions = []
+    const colors = []
+    points.forEach((p) => {
+      positions.push(
+        p.x * VISUAL_LIGHT_YEAR,
+        p.y * VISUAL_LIGHT_YEAR,
+        p.z * VISUAL_LIGHT_YEAR
+      )
+      colors.push(1, 1, 1)
+    })
     const geometry = new BufferGeometry()
-    const material = new PointsMaterial({ color: 'white', size })
-    const particles = []
-    points.forEach(p => particles.push(
-      p.x * VISUAL_LIGHT_YEAR,
-      p.y * VISUAL_LIGHT_YEAR,
-      p.z * VISUAL_LIGHT_YEAR
-    ))
-    geometry.setAttribute('position', new Float32BufferAttribute(particles, 3))
+    geometry.setAttribute('position', new Float32BufferAttribute(positions, 3))
+    geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
+    const material = new PointsMaterial({ vertexColors: true, size })
     return new Points(geometry, material)
   }
 
-  tick() {}
+  _changeParticleColor({ index, color }) {
+    const i = index * 3
+    this._starColors.array[i] = color.r
+    this._starColors.array[i + 1] = color.g
+    this._starColors.array[i + 2] = color.b
+    this._starColors.needsUpdate = true
+  }
+
+  tick({ civilizations }) {
+    for (const civilization of civilizations) {
+      const { star } = civilization
+      this._changeParticleColor({ index: star, color: this._civColor })
+    }
+  }
 }
