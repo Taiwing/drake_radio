@@ -4,24 +4,6 @@ import { config, presets, drakeResult } from './simulation/config.js'
 const fields = Object.keys(config)
 const drakeParameters = fields.filter(name => config[name].isDrakeParameter)
 
-const updateEquationResult = () => {
-  const formResult = document.getElementById('N')
-  const formYearlyResult = document.getElementById('Ny')
-
-  let result = 1
-  let yearlyResult = 1
-  for (name of drakeParameters) {
-    const element = document.getElementById(name)
-    const value = parseFloat(element.value)
-    result *= Number.isNaN(value) ? 0 : value
-    if (name !== 'civilization-lifetime') {
-      yearlyResult *= Number.isNaN(value) ? 0 : value
-    }
-  }
-  formResult.value = result.toFixed(4)
-  formYearlyResult.value = yearlyResult.toFixed(8)
-}
-
 const setFormValue = ({ name, value }) => {
   const element = document.getElementById(name)
   switch (element.tagName) {
@@ -30,6 +12,7 @@ const setFormValue = ({ name, value }) => {
       else if (element.type === 'checkbox') element.checked = value
       break
     case 'SELECT':
+    case 'OUTPUT':
       element.value = value.toString()
       break
   }
@@ -45,7 +28,24 @@ const getFormValue = ({ name }) => {
     case 'SELECT':
       return element.value
       break
+    case 'OUTPUT':
+      return parseFloat(element.value)
+      break
   }
+}
+
+const updateEquationResult = () => {
+  let result = 1
+  let yearlyResult = 1
+  for (name of drakeParameters) {
+    const value = getFormValue({ name })
+    result *= Number.isNaN(value) ? 0 : value
+    if (name !== 'civilization-lifetime') {
+      yearlyResult *= Number.isNaN(value) ? 0 : value
+    }
+  }
+  setFormValue({ name: 'N', value: result })
+  setFormValue({ name: 'Ny', value: yearlyResult })
 }
 
 const applyPreset = ({ name }) => {
@@ -94,8 +94,8 @@ const saveDrakeForm = () => {
   }
 
   for (const name of fields) config[name].current = values[name]
-  drakeResult.spawnRate = parseFloat(document.getElementById('Ny').value)
-  drakeResult.total = parseFloat(document.getElementById('N').value)
+  drakeResult.spawnRate = getFormValue({ name: 'Ny' })
+  drakeResult.total = getFormValue({ name: 'N' })
 
   return hardReset.length > 0 ? SaveStatus.HARD_RESET : SaveStatus.SUCCESS
 }
