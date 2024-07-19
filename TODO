@@ -39,6 +39,5 @@ FIX:
   bigger at the center diminish the radiusMax value depending on how close the
   bubble is the origin point. Make it possible to disable this function in the
   parameters menu.
-- First submit does not work in the parameter form
 - enforce max values and value types for drakeEquation and simulation parameters
 - handle really small values (like for pessimistic and conservative presets)

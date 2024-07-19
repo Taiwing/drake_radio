@@ -146,16 +146,13 @@ export const setupDrakeDialog = ({ controls }) => {
     }
   })
   configDialog.addEventListener('submit', (e) => {
-    const { returnValue } = configDialog
-    if (returnValue === 'save') {
-      switch (saveDrakeForm()) {
-        case SaveStatus.FAILURE:      e.preventDefault()
-          break
-        case SaveStatus.HARD_RESET:   controls.hardReset()
-          break
-        case SaveStatus.SUCCESS:
-          break
-      }
+    switch (saveDrakeForm()) {
+      case SaveStatus.FAILURE:      e.preventDefault()
+        break
+      case SaveStatus.HARD_RESET:   controls.hardReset()
+        break
+      case SaveStatus.SUCCESS:
+        break
     }
   })
   configDialog.addEventListener('reset', () => configDialog.close())
