@@ -68,7 +68,7 @@ export const presets = {
     'communication-fraction': 0.2,
     'civilization-lifetime': 304,
     'lifetime-stddev': 152,
-    'speed': 100,
+    'speed': 1e8,
   },
   /* Intelligent Life is Rare */
   'conservative': {
@@ -80,7 +80,7 @@ export const presets = {
     'communication-fraction': 0.2,
     'civilization-lifetime': 304,
     'lifetime-stddev': 152,
-    'speed': 100,
+    'speed': 2e6,
   },
   /* Middle of the Road Estimations */
   'reasonable': {
@@ -92,7 +92,7 @@ export const presets = {
     'communication-fraction': 0.75,
     'civilization-lifetime': 304,
     'lifetime-stddev': 152,
-    'speed': 100,
+    'speed': 500,
   },
   /* Longer Lifetime for Civilizations */
   'optimistic': {
