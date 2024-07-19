@@ -33,11 +33,22 @@ MAYBE:
 
 FIX:
 
-- Even on the conservative preset the number of bubbles becomes overwhelming
+- Even on the reasonable preset the number of bubbles becomes overwhelming
   (at the center anyway). Maybe create a function that reduces bubble lifetimes
   when there is a lot of them around. Since the probability becomes bigger and
   bigger at the center diminish the radiusMax value depending on how close the
   bubble is the origin point. Make it possible to disable this function in the
   parameters menu.
+- The conservative and pessimistic presets have the inverse problem. The
+  simulation shows nothing. This makes sense because the preset speeds are so
+  high that the bubbles exit the galaxy at the first tick. To see something
+  (besides the stats), there would need be be effects on civ birth and death
+  that have fixed duration (that do not depend on the speed parameter). Also
+  maybe leave an 'artefact' representing the dead civilization (like a little
+  sphere that would show for the use without having to zoom to the star
+  particle).
 - enforce max values and value types for drakeEquation and simulation parameters
-- handle really small values (like for pessimistic and conservative presets)
+- Come up with a "smart" truncating function for the floating point values in
+  the drake form (for N and Ny). Because right now floating point imprecision
+  absurdities are shown to the user and it is pretty ugly (takes all the space for
+  no good reason anyway).
