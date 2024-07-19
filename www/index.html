@@ -25,6 +25,17 @@
 				<fieldset>
 					<legend>Drake Equation</legend>
 					<label class="form-line">
+						<label for="preset">Preset</label>
+						<select name="preset" id="preset">
+							<option value="">-- None --</option>
+							<option value="pessimistic">Pessimistic</option>
+							<option value="conservative">Conservative</option>
+							<option value="reasonable">Reasonable</option>
+							<option value="optimistic">Optimistic</option>
+							<option value="star-trek">Star Trek</option>
+						</select>
+					</label>
+					<label class="form-line">
 						<modal-button>
 							<span slot="button">R<sub>*</sub></span>
 							<div slot="modal">

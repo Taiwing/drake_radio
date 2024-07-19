@@ -1,56 +1,47 @@
 export const config = {
   'new-stars-rate': {
-    def: 1.5,
     min: 0,
     max: 1_000_000,
     randomMax: 5,
     isDrakeParameter: true,
    },
   'planet-fraction': {
-    def: 0.9,
     min: 0,
     max: 1,
     isDrakeParameter: true,
   },
   'habitable-average': {
-    def: 0.45,
     min: 0,
     max: 1_000_000,
     randomMax: 1,
     isDrakeParameter: true,
   },
   'life-fraction': {
-    def: 0.1,
     min: 0,
     max: 1,
     isDrakeParameter: true,
   },
   'intelligence-fraction': {
-    def: 0.01,
     min: 0,
     max: 1,
     isDrakeParameter: true,
   },
   'communication-fraction': {
-    def: 0.75,
     min: 0,
     max: 1,
     isDrakeParameter: true,
   },
   'civilization-lifetime': {
-    def: 304,
     min: 0,
     max: 1_000_000_000_000,
     randomMax: 10_000,
     isDrakeParameter: true,
   },
   'lifetime-stddev': {
-    def: 152,
     min: 0,
     max: 1_000_000_000_000,
   },
   'speed': {
-    def: 100,
     min: 1,
     max: 10_000_000,
   },
@@ -60,7 +51,73 @@ export const config = {
   'star-cloud': {
     def: true,
     hardReset: true,
-  }
+  },
+  'preset': {
+    def: 'reasonable',
+  },
+}
+
+export const presets = {
+  /* Rare Earth Hypothesis */
+  'pessimistic': {
+    'new-stars-rate': 1.5,
+    'planet-fraction': 0.9,
+    'habitable-average': 0.45,
+    'life-fraction': 2.47e-5,
+    'intelligence-fraction': 1e-9,
+    'communication-fraction': 0.2,
+    'civilization-lifetime': 304,
+    'lifetime-stddev': 152,
+    'speed': 100,
+  },
+  /* Intelligent Life is Rare */
+  'conservative': {
+    'new-stars-rate': 1.5,
+    'planet-fraction': 0.9,
+    'habitable-average': 0.45,
+    'life-fraction': 0.1,
+    'intelligence-fraction': 1e-9,
+    'communication-fraction': 0.2,
+    'civilization-lifetime': 304,
+    'lifetime-stddev': 152,
+    'speed': 100,
+  },
+  /* Middle of the Road Estimations */
+  'reasonable': {
+    'new-stars-rate': 1.5,
+    'planet-fraction': 0.9,
+    'habitable-average': 0.45,
+    'life-fraction': 0.1,
+    'intelligence-fraction': 0.01,
+    'communication-fraction': 0.75,
+    'civilization-lifetime': 304,
+    'lifetime-stddev': 152,
+    'speed': 100,
+  },
+  /* Longer Lifetime for Civilizations */
+  'optimistic': {
+    'new-stars-rate': 2,
+    'planet-fraction': 1,
+    'habitable-average': 0.45,
+    'life-fraction': 0.13,
+    'intelligence-fraction': 0.05,
+    'communication-fraction': 0.75,
+    'civilization-lifetime': 10_000,
+    'lifetime-stddev': 1000,
+    'speed': 100,
+  },
+  /* Largest Estimates */
+  'star-trek': {
+    'new-stars-rate': 3,
+    'planet-fraction': 1,
+    'habitable-average': 0.2,
+    'life-fraction': 0.13,
+    'intelligence-fraction': 1,
+    'communication-fraction': 0.2,
+    'civilization-lifetime': 1e9,
+    'lifetime-stddev': 1e6,
+    'speed': 100,
+  },
 }
 
 export const drakeResult = {

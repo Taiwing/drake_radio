@@ -1,5 +1,5 @@
 import { randomFloat } from './simulation/math.js'
-import { config, drakeResult } from './simulation/config.js'
+import { config, presets, drakeResult } from './simulation/config.js'
 
 const fields = Object.keys(config)
 const drakeParameters = fields.filter(name => config[name].isDrakeParameter)
@@ -22,14 +22,46 @@ const updateEquationResult = () => {
   formYearlyResult.value = yearlyResult.toFixed(8)
 }
 
+const setFormValue = ({ name, value }) => {
+  const element = document.getElementById(name)
+  switch (element.tagName) {
+    case 'INPUT':
+      if (element.type === 'text') element.value = value.toString()
+      else if (element.type === 'checkbox') element.checked = value
+      break
+    case 'SELECT':
+      element.value = value.toString()
+      break
+  }
+}
+
+const getFormValue = ({ name }) => {
+  const element = document.getElementById(name)
+  switch (element.tagName) {
+    case 'INPUT':
+      if (element.type === 'text') return parseFloat(element.value)
+      else if (element.type === 'checkbox') return element.checked
+      break
+    case 'SELECT':
+      return element.value
+      break
+  }
+}
+
+const applyPreset = ({ name }) => {
+  const preset = presets[name]
+  for (const field in preset) {
+    const value = preset[field]
+    setFormValue({ name: field, value })
+  }
+}
+
 const resetDrakeForm = () => {
   for (const name of fields) {
+    if (config[name].def === undefined) continue
     const { def } = config[name]
-    const element = document.getElementById(name)
-    if (element.type === 'text') element.value = def.toString()
-    else if (element.type === 'checkbox') element.checked = def
+    setFormValue({ name, value: def })
   }
-  updateEquationResult()
 }
 
 class SaveStatus {
@@ -46,9 +78,7 @@ const saveDrakeForm = () => {
   const values = {}
   let hardReset = []
   for (const name of fields) {
-    const element = document.getElementById(name)
-    const value = element.type === 'text' ? parseFloat(element.value)
-      : element.type === 'checkbox' ? element.checked : undefined
+    const value = getFormValue({ name })
     if (config[name].hardReset
       && config[name].current !== undefined
       && value !== config[name].current) {
@@ -73,9 +103,7 @@ const saveDrakeForm = () => {
 const initDrakeForm = () => {
   for (const name of fields) {
     const { current } = config[name]
-    const element = document.getElementById(name)
-    if (element.type === 'text') element.value = current.toString()
-    else if (element.type === 'checkbox') element.checked = current
+    setFormValue({ name, value: current })
   }
   updateEquationResult()
 }
@@ -91,6 +119,8 @@ const randomDrakeForm = () => {
 
 export const setupDrakeConfig = () => {
   resetDrakeForm()
+  applyPreset({ name: config['preset'].def })
+  updateEquationResult()
   saveDrakeForm()
 }
 
@@ -100,6 +130,7 @@ export const setupDrakeDialog = ({ controls }) => {
   const configButton = document.getElementById('config-button')
   const configDialog = document.getElementById('config-dialog')
   const form = document.getElementById('drake-form')
+  const preset = document.getElementById('preset')
   let restart
 
   resetButton.addEventListener('click', resetDrakeForm)
@@ -131,5 +162,19 @@ export const setupDrakeDialog = ({ controls }) => {
   configDialog.addEventListener('close', () => {
     if (restart) controls.playPauseToggle()
   })
-  form.addEventListener('input', updateEquationResult)
+  form.addEventListener('input', (e) => {
+    updateEquationResult()
+    const { id } = e.target
+    const preset = config['preset'].current
+    // Remove current preset setting if one of its values is modified
+    if (preset && presets[preset][id] !== undefined) {
+      setFormValue({ name: 'preset', value: "" })
+    }
+  })
+  preset.addEventListener('input', (e) => {
+    const { value } = e.target
+    if (!value) return
+    applyPreset({ name: value })
+    updateEquationResult()  //TODO: checkout if is useful
+  })
 }
