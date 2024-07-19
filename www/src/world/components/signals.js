@@ -13,7 +13,7 @@ const BASE_OPACITY = MAX_OPACITY / 2
 const FLICKER = 1
 
 export class Bubble extends LineSegments {
-  constructor({ x, y, z, delta, duration, speed, radiusMax }) {
+  constructor({ x, y, z, delta, speed }) {
     const scale = speed * delta
     const sphereGeometry = new SphereGeometry(VISUAL_LIGHT_YEAR, 32, 32)
     const geometry = new WireframeGeometry(sphereGeometry)
@@ -27,9 +27,7 @@ export class Bubble extends LineSegments {
 
     this._material = material
     this._baseOpacity = BASE_OPACITY
-    this._duration = duration
-    this._radiusMax = radiusMax
-    this._radiusMiddle = radiusMax / 2
+    this._dto = this._distanceToOrigin({ x, y, z })
     this.scale.x = scale
     this.scale.y = scale
     this.scale.z = scale
@@ -38,6 +36,18 @@ export class Bubble extends LineSegments {
       y * VISUAL_LIGHT_YEAR,
       z * VISUAL_LIGHT_YEAR
     )
+  }
+
+  _distanceToOrigin({ x, y, z }) {
+    return Math.sqrt(x * x + y * y + z * z)
+  }
+
+  get _radiusMax() {
+    return this._dto
+  }
+
+  get _radiusMiddle() {
+    return this._radiusMax / 2
   }
 
   tick({ delta, speed }) {
@@ -49,8 +59,8 @@ export class Bubble extends LineSegments {
       this.scale.z += growth
     }
 
-    // Pop the bubble if it reached its maximum size and if civilization is dead
-    if (this.scale.x >= this._radiusMax && this.scale.x >= this._duration) {
+    // Pop the bubble if it reached its maximum size
+    if (this.scale.x >= this._radiusMax) {
       return false
     }
 
@@ -69,17 +79,14 @@ export class Bubble extends LineSegments {
 }
 
 export class Signals extends Group {
-  constructor({ radiusMax }) {
+  constructor() {
     super()
     this._bubbles = []
-    this._radiusMax = radiusMax
   }
 
   _createBubble({ delta, speed, civilization }) {
     const { x, y, z } = civilization.coord
-    const duration = civilization.lifetime
-    const radiusMax = this._radiusMax
-    const bubble = new Bubble({ x, y, z, delta, duration, speed, radiusMax })
+    const bubble = new Bubble({ x, y, z, delta, speed })
     this.add(bubble)
     this._bubbles.push(bubble)
   }

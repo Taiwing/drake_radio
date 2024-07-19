@@ -70,7 +70,7 @@ export class World {
     }
 
     this._galaxy = new Galaxy({ stars: simulation.stars, galaxySpec })
-    this._signals = new Signals({ radiusMax: galaxySpec.DIAMETER / 2 })
+    this._signals = new Signals()
     this._loop.updatables.push(this._galaxy, this._signals)
     this._scene.add(this._galaxy, this._signals)
   }
