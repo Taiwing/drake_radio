@@ -7,6 +7,7 @@ import {
 } from '../vendor/three.js'
 
 import { VISUAL_LIGHT_YEAR, CIV_COLOR } from '../constants.js'
+import { galaxySpec } from '../../simulation/constants.js'
 
 const MAX_OPACITY = 1
 const BASE_OPACITY = MAX_OPACITY / 2
@@ -43,30 +44,38 @@ export class Bubble extends LineSegments {
   }
 
   get _radiusMax() {
-    return this._dto
+    //return this._dto
+    return galaxySpec.DIAMETER / 2
   }
 
   get _radiusMiddle() {
     return this._radiusMax / 2
   }
 
-  tick({ delta, speed }) {
+  _reduction(x) {
+    const k1 = Math.log(19) / 40
+    return 1 / (1 + Math.exp(k1 * x))
+  }
+
+  tick({ delta, speed, count }) {
+    const decay = this._reduction(count)
+
     // Make the sphere grow as per the simulation parameters
     const growth = speed * delta
-    if (this.scale.x < this._radiusMax) {
+    if (this.scale.x < this._radiusMax * decay) {
       this.scale.x += growth
       this.scale.y += growth
       this.scale.z += growth
     }
 
     // Pop the bubble if it reached its maximum size
-    if (this.scale.x >= this._radiusMax) {
+    if (this.scale.x >= this._radiusMax * decay) {
       return false
     }
 
     // Dimming the sphere when it is passed its middle life
-    if (this.scale.x >= this._radiusMiddle) {
-      const dim = BASE_OPACITY / (this._radiusMiddle / growth)
+    if (this.scale.x >= this._radiusMiddle * decay) {
+      const dim = BASE_OPACITY / (this._radiusMiddle * decay / growth)
       this._baseOpacity -= dim
     }
 
@@ -77,6 +86,9 @@ export class Bubble extends LineSegments {
     return true
   }
 }
+
+// Roughly what my computer can handle
+const MAX_BUBBLES = 50
 
 export class Signals extends Group {
   constructor() {
@@ -93,9 +105,10 @@ export class Signals extends Group {
 
   tick({ delta, speed, civilizations }) {
     const bubbles = []
+    const count = this._bubbles.length
     while (this._bubbles.length > 0) {
       const bubble = this._bubbles.pop()
-      if (!bubble.tick({ delta, speed })) {
+      if (!bubble.tick({ delta, speed, count })) {
         this.remove(bubble)
       } else {
         bubbles.push(bubble)
@@ -104,6 +117,7 @@ export class Signals extends Group {
     this._bubbles = bubbles
 
     for (const civilization of civilizations) {
+      if (this._bubbles.length >= MAX_BUBBLES) break
       this._createBubble({ delta, speed, civilization })
     }
   }
