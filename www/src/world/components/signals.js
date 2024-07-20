@@ -86,7 +86,6 @@ export class Bubble extends LineSegments {
     return true
   }
 }
-}
 
 export class Signals extends Group {
   constructor() {
