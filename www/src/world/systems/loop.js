@@ -11,6 +11,7 @@ export class Loop {
     this._clock = new Clock()
     this._delta = this._clock.getDelta()
     this.updatables = []
+    this.on = false
   }
 
   start() {
@@ -19,17 +20,19 @@ export class Loop {
       this._tick()
       this._renderer._render(this._scene, this._camera)
     })
+    this.on = true
   }
 
   stop() {
     this._renderer.setAnimationLoop(null)
+    this.on = false
   }
 
   _tick () {
     this._delta = this._clock.getDelta()
     const civilizations = this._simulation.tick({ delta: this._delta })
     for (const object of this.updatables) {
-      if (config['rotation'].current) {
+      if (config['rotation'].current && object.rotation) {
         object.rotation.y += ROTATION_PER_SEC * this._delta
       }
       object.tick({

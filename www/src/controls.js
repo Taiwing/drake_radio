@@ -31,10 +31,10 @@ class ControlPanel extends HTMLElement {
     this.shadowRoot.append(ControlPanelTemplate.content.cloneNode(true))
   }
 
-  updatePlayPauseButton(loop) {
+  updatePlayPauseButton(on) {
     const icon = this.shadowRoot.querySelector('#play-pause-icon')
     const button = this.shadowRoot.querySelector('#play-pause-button')
-    if (loop) {
+    if (on) {
       icon.classList.remove('fa-play')
       icon.classList.add('fa-pause')
       button.title = 'Pause'
@@ -54,7 +54,6 @@ export class Controls {
   constructor({ world }) {
     this._controlPanel = document.querySelector('control-panel')
     this._world = world
-    this.loop = false
 
     window.addEventListener('keydown', (key) => {
       switch (key.code) {
@@ -88,6 +87,10 @@ export class Controls {
     hardResetButton.addEventListener('click', () => this.hardReset())
   }
 
+  get on() {
+    return this._world.on
+  }
+
   speedDown() {
     const { current, min } = config['speed']
     const newCurrent = Math.floor(current - current * SPEED_FACTOR)
@@ -95,14 +98,13 @@ export class Controls {
   }
 
   playPauseToggle() {
-    if (this.loop) {
+    if (this.on) {
       this._world.stop()
     } else {
       this._world.start()
     }
-    this.loop = !this.loop
 
-    this._controlPanel.updatePlayPauseButton(this.loop)
+    this._controlPanel.updatePlayPauseButton(this.on)
   }
 
   speedUp() {
@@ -117,7 +119,7 @@ export class Controls {
 
   hardReset() {
     const simulation = new Simulation()
-    if (this.loop) this.playPauseToggle()
+    if (this.on) this.playPauseToggle()
     this._world.reset({ simulation, galaxySpec })
     this._world.render()
   }

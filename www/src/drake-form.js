@@ -138,8 +138,8 @@ export const setupDrakeDialog = ({ controls }) => {
   configButton.addEventListener('click', () => {
     if (typeof configDialog.showModal === 'function') {
       initDrakeForm()
-      restart = controls.loop
-      if (controls.loop) controls.playPauseToggle()
+      restart = controls.on
+      if (controls.on) controls.playPauseToggle()
       configDialog.showModal()
     } else {
       console.log('The <dialog> API is not implemented on this browser.')
