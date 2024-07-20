@@ -104,7 +104,7 @@ export const presets = {
     'communication-fraction': 0.75,
     'civilization-lifetime': 10_000,
     'lifetime-stddev': 1000,
-    'speed': 100,
+    'speed': 250,
   },
   /* Largest Estimates */
   'star-trek': {
@@ -116,7 +116,7 @@ export const presets = {
     'communication-fraction': 0.2,
     'civilization-lifetime': 1e9,
     'lifetime-stddev': 1e6,
-    'speed': 100,
+    'speed': 200,
   },
 }
 
