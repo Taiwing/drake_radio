@@ -86,9 +86,7 @@ export class Bubble extends LineSegments {
     return true
   }
 }
-
-// Roughly what my computer can handle
-const MAX_BUBBLES = 50
+}
 
 export class Signals extends Group {
   constructor() {
@@ -117,7 +115,6 @@ export class Signals extends Group {
     this._bubbles = bubbles
 
     for (const civilization of civilizations) {
-      if (this._bubbles.length >= MAX_BUBBLES) break
       this._createBubble({ delta, speed, civilization })
     }
   }
