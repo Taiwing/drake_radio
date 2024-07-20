@@ -7,7 +7,7 @@ import { Renderer } from './systems/renderer.js'
 import { Resizer } from './systems/resizer.js'
 import { Loop } from './systems/loop.js'
 import { AxesHelper, CameraHelper } from './vendor/three.js'
-import { Stats } from './vendor/stats.js'
+import { FrameRate } from './vendor/frame-rate.js'
 
 export class World {
   constructor({ container, simulation, galaxySpec }) {
@@ -17,8 +17,8 @@ export class World {
     this._scene = createScene()
     this._renderer = new Renderer()
     this._container.append(this._renderer.domElement)
-    this._stats = new Stats()
-    this._container.append(this._stats.dom)
+    this._frameRate = new FrameRate()
+    this._container.append(this._frameRate.dom)
 
     this._controls = createControls({
       camera: this._camera,
@@ -74,7 +74,7 @@ export class World {
 
     this._galaxy = new Galaxy({ stars: simulation.stars, galaxySpec })
     this._signals = new Signals()
-    this._loop.updatables.push(this._galaxy, this._signals, this._stats)
+    this._loop.updatables.push(this._galaxy, this._signals, this._frameRate)
     this._scene.add(this._galaxy, this._signals)
   }
 
@@ -85,7 +85,7 @@ export class World {
 
   render() {
     this._renderer._render(this._scene, this._camera)
-    this._stats.tick()
+    this._frameRate.tick()
   }
 
   start() {
