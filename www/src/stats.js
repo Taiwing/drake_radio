@@ -22,30 +22,73 @@ StatsPanelTemplate.innerHTML = `
     }
   </style>
 
-  <div class="stats-panel-row">
-    <div class="stats-panel-label">Year:</div>
-    <div class="stats-panel-value" id="year-value"></div>
-  </div>
-  <div class="stats-panel-row">
-    <div class="stats-panel-label">Speed:</div>
-    <div class="stats-panel-value" id="speed-value"></div>
-  </div>
-  <div class="stats-panel-row">
-    <div class="stats-panel-label">Living:</div>
-    <div class="stats-panel-value" id="living-value"></div>
-  </div>
-  <div class="stats-panel-row">
-    <div class="stats-panel-label">Dead:</div>
-    <div class="stats-panel-value" id="dead-value"></div>
-  </div>
-  <div class="stats-panel-row">
-    <div class="stats-panel-label">Gone:</div>
-    <div class="stats-panel-value" id="gone-value"></div>
-  </div>
-  <div class="stats-panel-row">
-    <div class="stats-panel-label">Total:</div>
-    <div class="stats-panel-value" id="total-value"></div>
-  </div>
+  <modal-button data-time="3000">
+    <div slot="button" class="stats-panel-row">
+      <div class="stats-panel-label">Year:</div>
+      <div class="stats-panel-value" id="year-value"></div>
+    </div>
+    <div slot="modal">
+      <p>
+        Current simulation year.
+      </p>
+    </div>
+  </modal-button>
+  <modal-button data-time="3000">
+    <div slot="button" class="stats-panel-row">
+      <div class="stats-panel-label">Speed:</div>
+      <div class="stats-panel-value" id="speed-value"></div>
+    </div>
+    <div slot="modal">
+      <p>
+        Simulation speed in year(s) per second.
+      </p>
+    </div>
+  </modal-button>
+  <modal-button data-time="3000">
+    <div slot="button" class="stats-panel-row">
+      <div class="stats-panel-label">Living:</div>
+      <div class="stats-panel-value" id="living-value"></div>
+    </div>
+    <div slot="modal">
+      <p>
+        Number of civilizations currently emitting signals.
+      </p>
+    </div>
+  </modal-button>
+  <modal-button data-time="3000">
+    <div slot="button" class="stats-panel-row">
+      <div class="stats-panel-label">Dead:</div>
+      <div class="stats-panel-value" id="dead-value"></div>
+    </div>
+    <div slot="modal">
+      <p>
+        Number of civilizations that have stopped emitting.
+      </p>
+    </div>
+  </modal-button>
+  <modal-button data-time="5000">
+    <div slot="button" class="stats-panel-row">
+      <div class="stats-panel-label">Gone:</div>
+      <div class="stats-panel-value" id="gone-value"></div>
+    </div>
+    <div slot="modal">
+      <p>
+        Number of dead civilizations whose signals have completely exited the
+        galaxy. They cannot be detected anymore.
+      </p>
+    </div>
+  </modal-button>
+  <modal-button data-time="3000">
+    <div slot="button" class="stats-panel-row">
+      <div class="stats-panel-label">Total:</div>
+      <div class="stats-panel-value" id="total-value"></div>
+    </div>
+    <div slot="modal">
+      <p>
+        Total civilization count.
+      </p>
+    </div>
+  </modal-button>
 `
 
 class StatsPanel extends HTMLElement {
