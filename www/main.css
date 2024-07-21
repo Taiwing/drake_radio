@@ -13,6 +13,7 @@ body {
 h2 {
 	padding: 0.5em;
 	text-align: center;
+	white-space: nowrap;
 }
 
 h3 {
@@ -24,10 +25,37 @@ h3 {
 	left: 0;
 	right: 0;
 	z-index: 1;
-	display: flex;
-	flex-direction: row;
-	align-content: center;
-	justify-content: center;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+@media only screen and (max-width: 1000px) {
+	h2 {
+		white-space: initial;
+	}
+
+	#header {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+#header > * {
+	width: fit-content;
+	height: fit-content;
+}
+
+.two {
+	grid-column: 2;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.three {
+	grid-column: 3;
+	margin-left: auto;
+	margin-right: 1em;
+	margin-top: 1em;
 }
 
 .main-button {
@@ -100,4 +128,8 @@ input[type="text"] {
 	padding: 0.5em;
 	border-radius: 10px;
 	background: rgba(0, 0, 0, 0.8);
+}
+
+stats-panel {
+	margin: 1em;
 }

@@ -54,6 +54,7 @@ export class Controls {
   constructor({ world }) {
     this._controlPanel = document.querySelector('control-panel')
     this._world = world
+    this._statsPanel = document.querySelector('stats-panel')
 
     window.addEventListener('keydown', (key) => {
       switch (key.code) {
@@ -95,6 +96,7 @@ export class Controls {
     const { current, min } = config['speed']
     const newCurrent = Math.floor(current - current * SPEED_FACTOR)
     config['speed'].current = newCurrent < min ? min : newCurrent
+    this._statsPanel.tick()
   }
 
   playPauseToggle() {
@@ -111,6 +113,7 @@ export class Controls {
     const { current, max } = config['speed']
     const newCurrent = Math.ceil(current + current * SPEED_FACTOR)
     config['speed'].current = newCurrent > max ? max : newCurrent
+    this._statsPanel.tick()
   }
 
   reCenter() {
@@ -120,6 +123,7 @@ export class Controls {
   hardReset() {
     const simulation = new Simulation()
     if (this.on) this.playPauseToggle()
+    this._statsPanel.setup({ simulation })
     this._world.reset({ simulation, galaxySpec })
     this._world.render()
   }

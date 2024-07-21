@@ -12,6 +12,9 @@ const main = () => {
   const controls = new Controls({ world })
   setupDrakeDialog({ controls })
   world.render()
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('stats-panel').setup({ simulation })
+  })
 }
 
 main()

@@ -73,6 +73,9 @@ export class Simulation {
     this.civilizations = this.civilizations.concat(newCivilizations)
     this.time += speed * delta
 
+    if (newCivilizations.length > 0) console.log(...newCivilizations)
+    if (this.onTick) this.onTick()
+
     return newCivilizations
   }
 }
