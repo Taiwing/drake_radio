@@ -69,7 +69,7 @@ export class Galaxy extends Group {
     this._spec = galaxySpec
     this._civColor = new Color(CIV_COLOR)
     this._center = this._createSphere({
-      radius: this._spec.CENTER_DIAMETER / 2 * 3/5 * VISUAL_LIGHT_YEAR,
+      radius: this._spec.CENTER_RADIUS * 3/5 * VISUAL_LIGHT_YEAR,
     })
     this._stars = this._createParticles({ points: stars })
     this._starColors = this._stars.geometry.attributes.color

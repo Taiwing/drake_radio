@@ -1,6 +1,6 @@
 import { config } from './simulation/config.js'
-import { Simulation } from './simulation/index.js'
 import { galaxySpec } from './simulation/constants.js'
+import { Civilization, Simulation } from './simulation/index.js'
 
 const ControlPanelTemplate = document.createElement('template')
 ControlPanelTemplate.innerHTML = `
@@ -122,6 +122,7 @@ export class Controls {
 
   hardReset() {
     const simulation = new Simulation()
+    Civilization.reset()
     if (this.on) this.playPauseToggle()
     this._statsPanel.setup({ simulation })
     this._world.reset({ simulation, galaxySpec })

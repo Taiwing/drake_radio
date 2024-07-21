@@ -19,3 +19,7 @@ export function randomNormal(mean, stddev) {
 
   return z0 * stddev + mean
 }
+
+export const distanceToOrigin = ({ x, y, z }) => {
+  return Math.sqrt(x * x + y * y + z * z)
+}

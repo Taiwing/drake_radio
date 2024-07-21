@@ -28,7 +28,6 @@ export class Bubble extends LineSegments {
 
     this._material = material
     this._baseOpacity = BASE_OPACITY
-    this._dto = this._distanceToOrigin({ x, y, z })
     this.scale.x = scale
     this.scale.y = scale
     this.scale.z = scale
@@ -39,13 +38,8 @@ export class Bubble extends LineSegments {
     )
   }
 
-  _distanceToOrigin({ x, y, z }) {
-    return Math.sqrt(x * x + y * y + z * z)
-  }
-
   get _radiusMax() {
-    //return this._dto
-    return galaxySpec.DIAMETER / 2
+    return galaxySpec.RADIUS
   }
 
   get _radiusMiddle() {

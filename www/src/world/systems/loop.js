@@ -30,7 +30,8 @@ export class Loop {
 
   _tick () {
     this._delta = this._clock.getDelta()
-    const civilizations = this._simulation.tick({ delta: this._delta })
+    const events = this._simulation.tick({ delta: this._delta })
+    const civilizations = events.birth
     for (const object of this.updatables) {
       if (config['rotation'].current && object.rotation) {
         object.rotation.y += ROTATION_PER_SEC * this._delta
