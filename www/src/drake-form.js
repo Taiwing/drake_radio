@@ -62,6 +62,7 @@ const resetDrakeForm = () => {
     const { def } = config[name]
     setFormValue({ name, value: def })
   }
+  applyPreset({ name: config['preset'].def })
 }
 
 class SaveStatus {
@@ -119,7 +120,6 @@ const randomDrakeForm = () => {
 
 export const setupDrakeConfig = () => {
   resetDrakeForm()
-  applyPreset({ name: config['preset'].def })
   updateEquationResult()
   saveDrakeForm()
 }
