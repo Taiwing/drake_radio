@@ -13,8 +13,11 @@ export class Civilization {
     const lifetime = config['civilization-lifetime'].current
     const stddev = config['lifetime-stddev'].current
     const randomLifetime = Math.ceil(randomNormal(lifetime, stddev))
+    const dto = distanceToOrigin(this.coord)
+
     this.lifetime = randomLifetime < 1 ? 1 : randomLifetime
     this.death = this.birth + this.lifetime
+    this.gone = this.death + galaxySpec.TOTAL_RADIUS + dto
   }
 
   get id() {
@@ -39,10 +42,7 @@ export class Civilization {
   }
 
   isVisible(time) {
-    if (this.isAlive(time)) return true
-    const dto = distanceToOrigin(this.coord)
-    const lastSignal = time - this.death
-    return lastSignal <= galaxySpec.TOTAL_RADIUS + dto
+    return time < this.gone
   }
 }
 
