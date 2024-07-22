@@ -116,27 +116,27 @@ class StatsPanel extends HTMLElement {
   tick() {
     this.setValue({
       name: 'year',
-      value: formatNumber(Math.floor(this._simulation.time), 6, 4),
+      value: formatNumber(Math.floor(this._simulation.time)),
     })
     this.setValue({
       name: 'speed',
-      value: formatNumber(config['speed'].current, 6, 4),
+      value: formatNumber(config['speed'].current),
     })
     this.setValue({
       name: 'living',
-      value: formatNumber(this._simulation.living.length, 6, 4),
+      value: formatNumber(this._simulation.living.length),
     })
     this.setValue({
       name: 'visible',
-      value: formatNumber(this._simulation.visible.length, 6, 4),
+      value: formatNumber(this._simulation.visible.length),
     })
     this.setValue({
       name: 'gone',
-      value: formatNumber(this._simulation.gone.length, 6, 4),
+      value: formatNumber(this._simulation.gone.length),
     })
     this.setValue({
       name: 'total',
-      value: formatNumber(Civilization.count, 6, 4),
+      value: formatNumber(Civilization.count),
     })
   }
 }

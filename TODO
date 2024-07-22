@@ -48,7 +48,3 @@ FIX:
   sphere that would show for the use without having to zoom to the star
   particle).
 - enforce max values and value types for drakeEquation and simulation parameters
-- Come up with a "smart" truncating function for the floating point values in
-  the drake form (for N and Ny). Because right now floating point imprecision
-  absurdities are shown to the user and it is pretty ugly (takes all the space for
-  no good reason anyway).

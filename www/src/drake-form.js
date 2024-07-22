@@ -1,3 +1,4 @@
+import { formatNumber } from './utils.js'
 import { randomFloat } from './simulation/math.js'
 import { config, presets, drakeResult } from './simulation/config.js'
 
@@ -8,12 +9,17 @@ const setFormValue = ({ name, value }) => {
   const element = document.getElementById(name)
   switch (element.tagName) {
     case 'INPUT':
-      if (element.type === 'text') element.value = value.toString()
-      else if (element.type === 'checkbox') element.checked = value
+      if (element.type === 'text') {
+          element.value = formatNumber(value, 8, 6, true)
+      } else if (element.type === 'checkbox') {
+        element.checked = value
+      }
       break
     case 'SELECT':
+      element.value = value
+      break
     case 'OUTPUT':
-      element.value = value.toString()
+      element.value = formatNumber(value, 8, 6, true)
       break
   }
 }
