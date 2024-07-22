@@ -4,7 +4,7 @@ import { Civilization, Simulation } from './simulation/index.js'
 
 const ControlPanelTemplate = document.createElement('template')
 ControlPanelTemplate.innerHTML = `
-	<link href="./main.css" rel="stylesheet" type="text/css" />
+  <link href="./main.css" rel="stylesheet" type="text/css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
 
   <button title="Speed Down" id="speed-down-button" class="main-button">
