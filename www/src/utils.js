@@ -1,9 +1,10 @@
 const removeTrailingZeros = (value) => {
   if (value.includes('.') ) {
     if (value.includes('e')) {
-      return value.replace(/0*e/, 'e')
+      return value.replace(/0*e/, 'e').replace(/.e/, 'e')
     } else {
-      return value.replace(/0*$/, '')
+      const noZero = value.replace(/0*$/, '')
+      return noZero.endsWith('.') ? noZero.slice(0, -1) : noZero
     }
   }
   return value
