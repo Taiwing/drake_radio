@@ -48,7 +48,8 @@ export class Bubble extends LineSegments {
 
   _reduction(x) {
     const k1 = Math.log(19) / 40
-    return 1 / (1 + Math.exp(k1 * x))
+    const reduction = 1 / (1 + Math.exp(k1 * x))
+    return reduction < 0.1 ? 0.1 : reduction
   }
 
   tick({ delta, speed, count }) {
@@ -81,6 +82,8 @@ export class Bubble extends LineSegments {
   }
 }
 
+const MAX_SIGNALS = 75
+
 export class Signals extends Group {
   constructor() {
     super()
@@ -108,6 +111,7 @@ export class Signals extends Group {
     this._bubbles = bubbles
 
     for (const civilization of civilizations) {
+      if (this._bubbles.length >= MAX_SIGNALS) break
       this._createBubble({ delta, speed, civilization })
     }
   }
