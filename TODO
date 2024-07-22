@@ -10,9 +10,9 @@
 
 MAYBE:
 
-- make it possible to disable signal bubbles (do it by default for optimistic
-  presets where there are many long-lasting civlizations, as said below,
-  detection and contact vectors might be enough at that point)
+- disable signal bubbles by default for optimistic presets where there are many
+  long-lasting civlizations, as said below, detection and contact vectors might
+  be enough at that point)
 - generate Events in the Drake Simulation function (like 'birth', 'death',
   'detection', 'contact', etc...) and catch them to illustrate (then no need to
   actually send the lifetime when a Bubble is created, just send a death signal)
@@ -22,6 +22,8 @@ MAYBE:
 - Show civ birth and death by changing the star color (green for live and blue
   for dead ? maybe do the same for the Bubbles ?), and maybe also by adding a
   "light wave effect"
+- As a "bonus" turn the galactic center blue when almost every star inside has
+  turned this color (do it progressively maybe)
 
 - add a scale for the distances (how to handle the zoom ?), or maybe just give
   the size info on an explication page

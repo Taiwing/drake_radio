@@ -8,6 +8,7 @@ import { Resizer } from './systems/resizer.js'
 import { Loop } from './systems/loop.js'
 import { AxesHelper, CameraHelper } from './vendor/three.js'
 import { FrameRate } from './vendor/frame-rate.js'
+import { config } from '../simulation/config.js'
 
 export class World {
   constructor({ container, simulation, galaxySpec }) {
@@ -68,14 +69,21 @@ export class World {
 
     if (this._galaxy) {
       this._scene.clear()
+      this._galaxy = undefined
+      this._signals = undefined
       this._loop.updatables = []
       this.resetCamera()
     }
 
     this._galaxy = new Galaxy({ stars: simulation.stars, galaxySpec })
-    this._signals = new Signals()
-    this._loop.updatables.push(this._galaxy, this._signals, this._frameRate)
-    this._scene.add(this._galaxy, this._signals)
+    this._loop.updatables.push(this._galaxy)
+    this._scene.add(this._galaxy)
+    if (config['bubbles'].current) {
+      this._signals = new Signals()
+      this._loop.updatables.push(this._signals)
+      this._scene.add(this._signals)
+    }
+    this._loop.updatables.push(this._frameRate)
   }
 
   _render() {

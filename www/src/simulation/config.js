@@ -52,6 +52,10 @@ export const config = {
     def: true,
     hardReset: true,
   },
+  'bubbles': {
+    def: true,
+    hardReset: true,
+  },
   'preset': {
     def: 'reasonable',
   },
