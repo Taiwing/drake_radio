@@ -73,7 +73,7 @@ export class Simulation {
   _spawn({ delta, spawnRate, speed }) {
     const born = []
     const elapsed = speed * delta
-    const rate = spawnRate * elapsed
+    const rate = elapsed < 1 ? spawnRate * elapsed : spawnRate
 
     for (let year = 0; year < elapsed; year++) {
       let count = 0
@@ -92,6 +92,7 @@ export class Simulation {
         insertSorted(this.living, civilization, (a, b) => b.death - a.death)
       }
     }
+
     return born
   }
 
