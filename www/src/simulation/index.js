@@ -1,4 +1,5 @@
 import { starPoints } from './stars.js'
+import { insertSorted } from '../utils.js'
 import { galaxySpec } from './constants.js'
 import { config, drakeResult } from './config.js'
 import { randomFloat, randomNormal, distanceToOrigin } from './math.js'
@@ -88,38 +89,42 @@ export class Simulation {
         const birth = this.time + year
         const civilization = new Civilization({ birth, index, x, y, z })
         born.push(civilization)
+        insertSorted(this.living, civilization, (a, b) => b.death - a.death)
       }
     }
-    this.living = this.living.concat(born)
     return born
   }
 
   // Move dead civilizations to visible
   _kill() {
-    const living = []
     const dead = []
 
-    while (this.living.length > 0) {
-      const civ = this.living.pop()
-      if (civ.isAlive(this.time)) living.push(civ)
-      else dead.push(civ)
+    let lastLiving = this.living.length - 1
+    while (lastLiving >= 0) {
+      const civ = this.living[lastLiving]
+      if (civ.isAlive(this.time)) break
+      else {
+        dead.push(civ)
+        insertSorted(this.visible, civ, (a, b) => b.gone - a.gone)
+      }
+      lastLiving--
     }
-    this.living = living
-    this.visible = this.visible.concat(dead)
+    this.living = this.living.slice(0, lastLiving + 1)
     return dead
   }
 
   // Move civilizations that are not visible anymore to gone
   _forget() {
-    const visible = []
     const gone = []
 
-    while (this.visible.length > 0) {
-      const civ = this.visible.pop()
-      if (civ.isVisible(this.time)) visible.push(civ)
-      else gone.push(visible)
+    let lastVisible = this.visible.length - 1
+    while (lastVisible >= 0) {
+      const civ = this.visible[lastVisible]
+      if (civ.isVisible(this.time)) break
+      else gone.push(civ)
+      lastVisible--
     }
-    this.visible = visible
+    this.visible = this.visible.slice(0, lastVisible + 1)
     this.gone = this.gone.concat(gone)
     return gone
   }

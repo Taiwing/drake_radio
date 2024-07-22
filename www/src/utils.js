@@ -1,3 +1,24 @@
+const compareNumbers = (a, b) => a - b
+
+export const insertSorted = (arr, element, cmp = compareNumbers) => {
+  let low = 0
+  let high = arr.length
+
+  // Binary search to find the correct insertion point
+  while (low < high) {
+    let mid = Math.floor((low + high) / 2)
+    if (cmp(arr[mid], element) < 0) {
+      low = mid + 1
+    } else {
+      high = mid
+    }
+  }
+
+  // Insert the element at the correct position
+  arr.splice(low, 0, element)
+  return arr
+}
+
 const removeTrailingZeros = (value) => {
   if (value.includes('.') ) {
     if (value.includes('e')) {
