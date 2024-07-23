@@ -112,6 +112,7 @@ export const presets = {
     'communication-fraction': 0.2,
     'civilization-lifetime': 1.282051e+7,
     'speed': 200,
+    'bubbles': false,
   },
   /* Debug (one) */
   // TODO: Remove this preset or only show in dev mode
