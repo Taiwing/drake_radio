@@ -73,23 +73,26 @@ export class Simulation {
   _spawn({ delta, spawnRate, speed }) {
     const born = []
     const elapsed = speed * delta
-    const rate = elapsed < 1 ? spawnRate * elapsed : spawnRate
+    const rate = spawnRate * elapsed
 
-    for (let year = 0; year < elapsed; year++) {
-      let count = 0
-      if (rate >= 1) {
-        count = Math.round(randomFloat(rate / 2, rate + rate / 2))
-      } else if (randomFloat(0, 1) <= rate) {
-        count++
-      }
+    let count = 0
+    if (rate >= 1) {
+      count = Math.round(randomFloat(rate / 2, rate + rate / 2))
+    } else if (randomFloat(0, 1) <= rate) {
+      count = 1
+    }
 
+    if (count > 0) {
+      const timeSlice = elapsed / count
+      let timeOffset = 0
       for (let i = 0; i < count; i++) {
         const index = Math.floor(Math.random() * this.starCount)
         const { x, y, z } = this.stars[index]
-        const birth = this.time + year
+        const birth = this.time + timeOffset
         const civilization = new Civilization({ birth, index, x, y, z })
         born.push(civilization)
         insertSorted(this.living, civilization, (a, b) => b.death - a.death)
+        timeOffset += timeSlice
       }
     }
 

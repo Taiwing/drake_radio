@@ -13,8 +13,6 @@
 
 MAYBE:
 
-- Optimize spawn function by computing count for all the years elapsed at once.
-  Then divide elapsed by count to "distribute" civilization births over time.
 - Try and see how to efficiently compute detections and contacts events and if
   it cant be handled do it probabilistically (based on current N, average
   lifetime and galaxy dimensions). Maybe switch methods at a some point.
@@ -61,7 +59,6 @@ FIX:
   maybe leave an 'artefact' representing the dead civilization (like a little
   sphere that would show for the use without having to zoom to the star
   particle).
-- Enforce max values and value types for drakeEquation and simulation parameters,
-  and add a max value for the results too (N and Ny max).
+- Enforce max values and value types for drakeEquation and simulation parameters
 - Time value overflow. Depending on the speed the year count can easily reach
   into the billions. This value should be a BigInt.
