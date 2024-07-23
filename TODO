@@ -61,6 +61,7 @@ FIX:
   maybe leave an 'artefact' representing the dead civilization (like a little
   sphere that would show for the use without having to zoom to the star
   particle).
-- enforce max values and value types for drakeEquation and simulation parameters
+- Enforce max values and value types for drakeEquation and simulation parameters,
+  and add a max value for the results too (N and Ny max).
 - Time value overflow. Depending on the speed the year count can easily reach
   into the billions. This value should be a BigInt.
