@@ -1,8 +1,7 @@
-- add stats for events like detection count (when a civilisation detects an
-  other), contact count (when civilisations can actually communicate with each
-  other, meaning sending a signal to a civilisation and receiving a response)
-  and duration (how long contact is possible between the two civilisations), and
-  averages for these values (add 'animations' for these events)
+- Efficiently compute detections in simulation (a civilization sees an other for
+  the first time). If it cant be handled do it probabilistically (based on
+  current N, average lifetime and galaxy dimensions). Maybe switch methods at a
+  some point. Also show their stats.
 
 - expand README file explanations
 - add a documentation page (about how the simulation works, what the bubbles and
@@ -10,26 +9,19 @@
 
 MAYBE:
 
-- Try and see how to efficiently compute detections and contacts events and if
-  it cant be handled do it probabilistically (based on current N, average
-  lifetime and galaxy dimensions). Maybe switch methods at a some point.
-- disable signal bubbles by default for optimistic presets where there are many
-  long-lasting civlizations, as said below, detection and contact vectors might
-  be enough at that point)
-- generate Events in the Drake Simulation function (like 'birth', 'death',
-  'detection', 'contact', etc...) and catch them to illustrate (then no need to
-  actually send the lifetime when a Bubble is created, just send a death signal)
-- Illustrate detections and contact events with vector lines between the
+- Compute the following events in simulation (and show their stats):
+  - contact: a signal is sent by Alice, detected by Bob which sends its own
+    signal, that is then detected by Alice
+  - dialog: is mutual contact (contact signal goes back to Bob)
+- Compute average detection/contact/dialog duration
+
+- illustrate detections and contact events with vector lines between the
   corresponding stars (use different colors, or maybe make them simple then
   double arrows)
-- Show civ birth and death by changing the star color (green for live and blue
-  for dead ? maybe do the same for the Bubbles ?), and maybe also by adding a
-  "light wave effect"
-- As a "bonus" turn the galactic center blue when almost every star inside has
-  turned this color (do it progressively maybe)
-- Once death is a random event like birth, create "death signal" bubbles if the
-  "birth signal" bubble has burst (like blue for birth and red for death, when
-  the signal is "leaving" the galaxy).
+- show civ death by changing the star color (ignore mutliple civ on same star ?)
+- As a "bonus" change the galactic center color depending on blue and red stars
+- Create "death signal" bubbles if the "birth signal" bubble has burst (like
+  blue for birth and red for death, when the signal is "leaving" the galaxy).
 
 - A VERY VERY COOL FEATURE would be an automatic slow down on pessimistic
   configurations, so that the user can actually see something happening when
@@ -55,20 +47,6 @@ MAYBE:
 
 FIX:
 
-- Even on the reasonable preset the number of bubbles becomes overwhelming
-  (at the center anyway). Maybe create a function that reduces bubble lifetimes
-  when there is a lot of them around. Since the probability becomes bigger and
-  bigger at the center diminish the radiusMax value depending on how close the
-  bubble is the origin point. Make it possible to disable this function in the
-  parameters menu.
-- The conservative and pessimistic presets have the inverse problem. The
-  simulation shows nothing. This makes sense because the preset speeds are so
-  high that the bubbles exit the galaxy at the first tick. To see something
-  (besides the stats), there would need be be effects on civ birth and death
-  that have fixed duration (that do not depend on the speed parameter). Also
-  maybe leave an 'artefact' representing the dead civilization (like a little
-  sphere that would show for the use without having to zoom to the star
-  particle).
 - Enforce max values and value types for drakeEquation and simulation parameters
 - Time value overflow. Depending on the speed the year count can easily reach
   into the billions. This value should be a BigInt.
