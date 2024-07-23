@@ -97,7 +97,7 @@ export class Signals extends Group {
     this._bubbles.push(bubble)
   }
 
-  tick({ delta, speed, civilizations }) {
+  tick({ delta, speed, events }) {
     const bubbles = []
     const count = this._bubbles.length
     while (this._bubbles.length > 0) {
@@ -110,7 +110,8 @@ export class Signals extends Group {
     }
     this._bubbles = bubbles
 
-    for (const civilization of civilizations) {
+    const { birth } = events
+    for (const civilization of birth) {
       if (this._bubbles.length >= MAX_SIGNALS) break
       this._createBubble({ delta, speed, civilization })
     }

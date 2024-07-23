@@ -110,8 +110,9 @@ export class Galaxy extends Group {
     this._starColors.needsUpdate = true
   }
 
-  tick({ civilizations }) {
-    for (const civilization of civilizations) {
+  tick({ events }) {
+    const { birth } = events
+    for (const civilization of birth) {
       const { star } = civilization
       this._changeParticleColor({ index: star, color: this._civColor })
     }
