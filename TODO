@@ -31,6 +31,19 @@ MAYBE:
   "birth signal" bubble has burst (like blue for birth and red for death, when
   the signal is "leaving" the galaxy).
 
+- A VERY VERY COOL FEATURE would be an automatic slow down on pessimistic
+  configurations, so that the user can actually see something happening when
+  it does. Like slow enough so that life and death bubbles woud be seen
+  appearing and disappearing (like 10 seconds maybe ? depending on the lifetime
+  parameter too). In order for this to work the extremely low probability events
+  should be biased toward happening at the end of tick (like right at the end
+  actually), so that the speed can be updated before the next tick. It could
+  also happen for more optimistic configurations where some other events are
+  really rare, like detection and contact. MAYBE also automatically move the
+  camera to actually witness the event. Then speed up to the previous speed when
+  the event is not visible anymore (except if the user has paused or changed
+  speed in between).
+
 - add a scale for the distances (how to handle the zoom ?), or maybe just give
   the size info on an explication page
 - not to be a stickler but if a civilization is not exactly at the center some
