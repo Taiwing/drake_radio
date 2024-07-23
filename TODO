@@ -9,19 +9,19 @@
 
 MAYBE:
 
-- Compute the following events in simulation (and show their stats):
+- compute the following events in simulation (and show their stats):
   - contact: a signal is sent by Alice, detected by Bob which sends its own
     signal, that is then detected by Alice
   - dialog: is mutual contact (contact signal goes back to Bob)
-- Compute average detection/contact/dialog duration
+- compute average detection/contact/dialog duration
 
 - illustrate detections and contact events with vector lines between the
   corresponding stars (use different colors, or maybe make them simple then
   double arrows)
 - show civ death by changing the star color (ignore mutliple civ on same star ?)
-- As a "bonus" change the galactic center color depending on blue and red stars
-- Create "death signal" bubbles if the "birth signal" bubble has burst (like
-  blue for birth and red for death, when the signal is "leaving" the galaxy).
+- as a "bonus" change the galactic center color depending on blue and red stars
+- create "death signal" bubbles if the "birth signal" bubble has burst (like
+  blue for birth and red for death, when the signal is "leaving" the galaxy)
 
 - A VERY VERY COOL FEATURE would be an automatic slow down on pessimistic
   configurations, so that the user can actually see something happening when
@@ -47,6 +47,6 @@ MAYBE:
 
 FIX:
 
-- Enforce max values and value types for drakeEquation and simulation parameters
-- Time value overflow. Depending on the speed the year count can easily reach
+- enforce max values and value types for drakeEquation and simulation parameters
+- Time value overflows. Depending on the speed the year count can easily reach
   into the billions. This value should be a BigInt.
