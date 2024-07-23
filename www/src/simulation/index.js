@@ -115,7 +115,7 @@ export class Simulation {
       const timeSlice = elapsed / count
       // TODO: maybe find a way to efficiently randomize this (shuffle and
       // splice count or randomize indexes and splice each one)
-      let dead = this.living.splice(0, count)
+      dead = this.living.splice(0, count)
       for (const civ of dead) {
         let death = this.time + timeOffset
         death = death <= civ.birth ? civ.birth + timeSlice : death
