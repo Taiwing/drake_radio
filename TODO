@@ -18,8 +18,6 @@ MAYBE:
 - illustrate detections and contact events with vector lines between the
   corresponding stars (use different colors, or maybe make them simple then
   double arrows)
-- show civ death by changing the star color (ignore mutliple civ on same star ?)
-- as a "bonus" change the galactic center color depending on blue and red stars
 - create "death signal" bubbles if the "birth signal" bubble has burst (like
   blue for birth and red for death, when the signal is "leaving" the galaxy)
 

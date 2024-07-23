@@ -9,7 +9,11 @@ import {
   Points,
   Color,
 } from '../vendor/three.js'
-import { VISUAL_LIGHT_YEAR, CIV_COLOR } from '../constants.js'
+import {
+  VISUAL_LIGHT_YEAR,
+  CIV_LIFE_COLOR,
+  CIV_DEATH_COLOR,
+} from '../constants.js'
 
 //TODO: debug functions
 /*
@@ -67,12 +71,14 @@ export class Galaxy extends Group {
     super()
 
     this._spec = galaxySpec
-    this._civColor = new Color(CIV_COLOR)
+    this._civLifeColor = new Color(CIV_LIFE_COLOR)
+    this._civDeathColor = new Color(CIV_DEATH_COLOR)
     this._center = this._createSphere({
       radius: this._spec.CENTER_RADIUS * 3/5 * VISUAL_LIGHT_YEAR,
     })
     this._stars = this._createParticles({ points: stars })
     this._starColors = this._stars.geometry.attributes.color
+    this._starCivCount = Array(stars.length).fill(0)
     this.add(this._center, this._stars)
   }
 
@@ -111,10 +117,20 @@ export class Galaxy extends Group {
   }
 
   tick({ events }) {
-    const { birth } = events
-    for (const civilization of birth) {
-      const { star } = civilization
-      this._changeParticleColor({ index: star, color: this._civColor })
+    const { birth, death } = events
+
+    for (const born of birth) {
+      const { star } = born
+      this._starCivCount[star] += 1
+      this._changeParticleColor({ index: star, color: this._civLifeColor })
+    }
+
+    for (const dead of death) {
+      const { star } = dead
+      this._starCivCount[star] -= 1
+      if (this._starCivCount[star] === 0) {
+        this._changeParticleColor({ index: star, color: this._civDeathColor })
+      }
     }
   }
 }

@@ -6,7 +6,7 @@ import {
   WireframeGeometry,
 } from '../vendor/three.js'
 
-import { VISUAL_LIGHT_YEAR, CIV_COLOR } from '../constants.js'
+import { VISUAL_LIGHT_YEAR, CIV_LIFE_COLOR } from '../constants.js'
 import { galaxySpec } from '../../simulation/constants.js'
 
 const MAX_OPACITY = 1
@@ -19,7 +19,7 @@ export class Bubble extends LineSegments {
     const sphereGeometry = new SphereGeometry(VISUAL_LIGHT_YEAR, 32, 32)
     const geometry = new WireframeGeometry(sphereGeometry)
     const material = new LineBasicMaterial({
-      color: CIV_COLOR,
+      color: CIV_LIFE_COLOR,
       transparent: true,
       opacity: BASE_OPACITY + BASE_OPACITY * Math.abs(Math.sin(delta * FLICKER)),
     })
