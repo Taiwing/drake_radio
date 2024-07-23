@@ -1,8 +1,8 @@
 export const config = {
   'new-stars-rate': {
     min: 0,
-    max: 1_000_000,
-    randomMax: 5,
+    max: 1000,
+    randomMax: 4,
     isDrakeParameter: true,
    },
   'planet-fraction': {
@@ -12,7 +12,7 @@ export const config = {
   },
   'habitable-average': {
     min: 0,
-    max: 1_000_000,
+    max: 1000,
     randomMax: 1,
     isDrakeParameter: true,
   },
@@ -33,13 +33,9 @@ export const config = {
   },
   'civilization-lifetime': {
     min: 0,
-    max: 1_000_000_000_000,
+    max: 1_000_000_000,
     randomMax: 10_000,
     isDrakeParameter: true,
-  },
-  'lifetime-stddev': {
-    min: 0,
-    max: 1_000_000_000_000,
   },
   'speed': {
     min: 1,
@@ -71,7 +67,6 @@ export const presets = {
     'intelligence-fraction': 1e-9,
     'communication-fraction': 0.2,
     'civilization-lifetime': 304,
-    'lifetime-stddev': 152,
     'speed': 1e8,
   },
   /* Intelligent Life is Rare */
@@ -83,7 +78,6 @@ export const presets = {
     'intelligence-fraction': 1e-9,
     'communication-fraction': 0.2,
     'civilization-lifetime': 304,
-    'lifetime-stddev': 152,
     'speed': 2e6,
   },
   /* Middle of the Road Estimations */
@@ -95,7 +89,6 @@ export const presets = {
     'intelligence-fraction': 0.01,
     'communication-fraction': 0.75,
     'civilization-lifetime': 304,
-    'lifetime-stddev': 152,
     'speed': 500,
   },
   /* Longer Lifetime for Civilizations */
@@ -107,7 +100,6 @@ export const presets = {
     'intelligence-fraction': 0.05,
     'communication-fraction': 0.75,
     'civilization-lifetime': 10_000,
-    'lifetime-stddev': 1000,
     'speed': 250,
   },
   /* Largest Estimates */
@@ -118,11 +110,36 @@ export const presets = {
     'life-fraction': 0.13,
     'intelligence-fraction': 1,
     'communication-fraction': 0.2,
-    'civilization-lifetime': 1e9,
-    'lifetime-stddev': 1e6,
+    'civilization-lifetime': 1.282051e+7,
     'speed': 200,
   },
+  /* Debug (one) */
+  // TODO: Remove this preset or only show in dev mode
+  'debug': {
+    'new-stars-rate': 1,
+    'planet-fraction': 1,
+    'habitable-average': 1,
+    'life-fraction': 1,
+    'intelligence-fraction': 1,
+    'communication-fraction': 1,
+    'civilization-lifetime': 1,
+    'speed': 200,
+    'bubbles': false,
+  },
 }
+
+/*
+export const drakeResult = {
+  'spawnRate': {
+    min: 0,
+    max: 1000,
+  },
+  'total': {
+    min: 0,
+    max: 200_000,
+  },
+}
+*/
 
 export const drakeResult = {
   'spawnRate': 0,
