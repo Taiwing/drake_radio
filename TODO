@@ -1,3 +1,6 @@
+- Do not set lifetime at civilization creation instead compute a killRate based
+  on the current spawnRate and number of civilizations. This way it is not
+  useful to keep living civilizations in any specific order. More efficient.
 - add stats for events like detection count (when a civilisation detects an
   other), contact count (when civilisations can actually communicate with each
   other, meaning sending a signal to a civilisation and receiving a response)
@@ -10,6 +13,11 @@
 
 MAYBE:
 
+- Optimize spawn function by computing count for all the years elapsed at once.
+  Then divide elapsed by count to "distribute" civilization births over time.
+- Try and see how to efficiently compute detections and contacts events and if
+  it cant be handled do it probabilistically (based on current N, average
+  lifetime and galaxy dimensions). Maybe switch methods at a some point.
 - disable signal bubbles by default for optimistic presets where there are many
   long-lasting civlizations, as said below, detection and contact vectors might
   be enough at that point)
@@ -24,6 +32,9 @@ MAYBE:
   "light wave effect"
 - As a "bonus" turn the galactic center blue when almost every star inside has
   turned this color (do it progressively maybe)
+- Once death is a random event like birth, create "death signal" bubbles if the
+  "birth signal" bubble has burst (like blue for birth and red for death, when
+  the signal is "leaving" the galaxy).
 
 - add a scale for the distances (how to handle the zoom ?), or maybe just give
   the size info on an explication page
