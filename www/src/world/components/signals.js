@@ -14,7 +14,7 @@ const BASE_OPACITY = MAX_OPACITY / 2
 const FLICKER = 1
 
 export class Bubble extends LineSegments {
-  constructor({ x, y, z, dto, delta, speed }) {
+  constructor({ x, y, z, dto, count, delta, speed }) {
     const scale = speed * delta
     const sphereGeometry = new SphereGeometry(VISUAL_LIGHT_YEAR, 32, 32)
     const geometry = new WireframeGeometry(sphereGeometry)
@@ -36,8 +36,8 @@ export class Bubble extends LineSegments {
       y * VISUAL_LIGHT_YEAR,
       z * VISUAL_LIGHT_YEAR
     )
-    this._radiusMax = dto
-    //this._radiusMax = radiusMax
+    const decay = Math.pow(1/(count+1), 1/2)
+    this._radiusMax = dto + galaxySpec.TOTAL_RADIUS * decay
   }
 
   get _radiusMiddle() {
@@ -86,10 +86,10 @@ export class Signals extends Group {
     this._bubbles = []
   }
 
-  _createBubble({ delta, speed, civilization }) {
+  _createBubble({ delta, speed, civilization, count }) {
     const { x, y, z } = civilization.coord
     const dto = civilization.distanceToOrigin
-    const bubble = new Bubble({ x, y, z, dto, delta, speed })
+    const bubble = new Bubble({ x, y, z, dto, count, delta, speed })
     this.add(bubble)
     this._bubbles.push(bubble)
   }
@@ -110,7 +110,12 @@ export class Signals extends Group {
     const { birth } = events
     for (const civilization of birth) {
       if (this._bubbles.length >= MAX_SIGNALS) break
-      this._createBubble({ delta, speed, civilization })
+      this._createBubble({
+        delta,
+        speed,
+        civilization,
+        count: this._bubbles.length
+      })
     }
   }
 }
