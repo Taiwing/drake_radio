@@ -12,7 +12,8 @@ export class Civilization {
     this.star = index
     this.coord = { x, y, z }
     this._id = Civilization.counter
-    this.goneRadius = galaxySpec.TOTAL_RADIUS + distanceToOrigin(this.coord)
+    this.distanceToOrigin = distanceToOrigin(this.coord)
+    this.goneRadius = galaxySpec.TOTAL_RADIUS + this.distanceToOrigin
   }
 
   get id() {
