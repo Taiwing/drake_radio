@@ -36,8 +36,7 @@ export class Bubble extends LineSegments {
       y * VISUAL_LIGHT_YEAR,
       z * VISUAL_LIGHT_YEAR
     )
-    const decay = Math.pow(1/(count+1), 1/2)
-    this._radiusMax = dto + galaxySpec.TOTAL_RADIUS * decay
+    this._radiusMax = dto + galaxySpec.TOTAL_RADIUS * this._reduction(count+1)
   }
 
   get _radiusMiddle() {
