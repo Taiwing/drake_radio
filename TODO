@@ -36,10 +36,6 @@ MAYBE:
 
 - add a scale for the distances (how to handle the zoom ?), or maybe just give
   the size info on an explication page
-- not to be a stickler but if a civilization is not exactly at the center some
-  stars might still be on the outside of the signal bubble when it disappears,
-  maybe compute the actual radius needed (just add the distance from the origin
-  point I think)
 - refactor the drake file, separate dialog element and config initialization
 - refactor controls into control-panel element
 
