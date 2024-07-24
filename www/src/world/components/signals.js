@@ -5,11 +5,7 @@ import {
   LineBasicMaterial,
   Float32BufferAttribute,
 } from '../vendor/three.js'
-import {
-  CIV_LIFE_COLOR,
-  CIV_DEATH_COLOR,
-  VISUAL_LIGHT_YEAR,
-} from '../constants.js'
+import { VISUAL_LIGHT_YEAR } from '../constants.js'
 import { galaxySpec } from '../../simulation/constants.js'
 
 // Create a circle geometry
@@ -87,18 +83,18 @@ export class Bubble extends Line {
 const MAX_SIGNALS = 50
 
 export class Signals extends Group {
-  constructor({ camera, showFirst, showLast}) {
+  constructor({ camera, color, eventName }) {
     super()
+    this._color = color
+    this._eventName = eventName
     Bubble.camera = camera
-    this._showFirst = showFirst
-    this._showLast = showLast
-    this._firstCount = 0
-    this._lastCount = 0
   }
 
-  _createBubble({ delta, speed, civ, count, color }) {
+  _createBubble({ delta, speed, civ }) {
     const { x, y, z } = civ.coord
     const dto = civ.distanceToOrigin
+    const count = this.children.length
+    const color = this._color
     this.add(new Bubble({ x, y, z, dto, count, delta, speed, color }))
   }
 
@@ -106,46 +102,25 @@ export class Signals extends Group {
     const { length } = this.children
     for (let i = length - 1; i >= 0; i--) {
       const bubble = this.children[i]
-      if (bubble.color === CIV_LIFE_COLOR) {
-        if (!bubble.tick({ delta, speed, count: this._firstCount })) {
-          this.remove(bubble)
-          this._firstCount--
-        }
-      } else {
-        if (!bubble.tick({ delta, speed, count: this._lastCount })) {
-          this.remove(bubble)
-          this._lastCount--
-        }
+      if (!bubble.tick({ delta, speed, count: this.children.length })) {
+        this.remove(bubble)
       }
     }
   }
 
-  _handleEvents({ delta, speed, events }) {
-    const { birth, death } = events
+  _handleEvent({ delta, speed, events }) {
+    const civilizations = events[this._eventName]
 
-    if (this._showFirst) {
-      const color = CIV_LIFE_COLOR
-      for (const civ of birth) {
-        if (this._firstCount >= MAX_SIGNALS) break
-        this._createBubble({ delta, speed, civ, count: this._firstCount, color })
-        this._firstCount++
-      }
-    }
-
-    if (this._showLast) {
-      const color = CIV_DEATH_COLOR
-      for (const civ of death) {
-        if (this._lastCount >= MAX_SIGNALS) break
-        this._createBubble({ delta, speed, civ, count: this._lastCount, color })
-        this._lastCount++
-      }
+    for (const civ of civilizations) {
+      if (this.children.length >= MAX_SIGNALS) break
+      this._createBubble({ delta, speed, civ })
     }
   }
 
   tick({ isRunning, delta, speed, events }) {
     if (isRunning) {
       this._inflateBubbles({ delta, speed })
-      this._handleEvents({ delta, speed, events })
+      this._handleEvent({ delta, speed, events })
     } else {
       this.children.forEach((bubble) => bubble.cameraTick())
     }

@@ -9,6 +9,7 @@ import { Loop } from './systems/loop.js'
 import { AxesHelper, CameraHelper } from './vendor/three.js'
 import { FrameRate } from './vendor/frame-rate.js'
 import { config } from '../simulation/config.js'
+import { CIV_LIFE_COLOR, CIV_DEATH_COLOR } from './constants.js'
 
 export class World {
   constructor({ container, simulation, galaxySpec }) {
@@ -58,7 +59,12 @@ export class World {
   }
 
   reset({ simulation, galaxySpec }) {
-    if (this._loop) this._loop.stop()
+    if (this._loop) {
+      this._loop.stop()
+      this._scene.clear()
+      this.resetCamera()
+    }
+
     this._loop = new Loop({
       camera: this._camera,
       scene: this._scene,
@@ -66,26 +72,30 @@ export class World {
       simulation,
     })
 
-    if (this._galaxy) {
-      this._scene.clear()
-      this._galaxy = undefined
-      this._signals = undefined
-      this._loop.updatables = []
-      this.resetCamera()
+    const galaxy = new Galaxy({ stars: simulation.stars, galaxySpec })
+    this._loop.updatables.push(galaxy)
+    this._scene.add(galaxy)
+
+    if (config['first-signals'].current) {
+      const firstSignals = new Signals({
+        camera: this._camera,
+        color: CIV_LIFE_COLOR,
+        eventName: 'birth',
+      })
+      this._loop.updatables.push(firstSignals)
+      this._scene.add(firstSignals)
     }
 
-    this._galaxy = new Galaxy({ stars: simulation.stars, galaxySpec })
-    this._loop.updatables.push(this._galaxy)
-    this._scene.add(this._galaxy)
-    if (config['first-signals'].current || config['last-signals'].current) {
-      this._signals = new Signals({
+    if (config['last-signals'].current) {
+      const lastSignals = new Signals({
         camera: this._camera,
-        showFirst: config['first-signals'].current,
-        showLast: config['last-signals'].current,
+        color: CIV_DEATH_COLOR,
+        eventName: 'death',
       })
-      this._loop.updatables.push(this._signals)
-      this._scene.add(this._signals)
+      this._loop.updatables.push(lastSignals)
+      this._scene.add(lastSignals)
     }
+
     this._loop.updatables.push(this._frameRate)
   }
 
