@@ -77,8 +77,12 @@ export class World {
     this._galaxy = new Galaxy({ stars: simulation.stars, galaxySpec })
     this._loop.updatables.push(this._galaxy)
     this._scene.add(this._galaxy)
-    if (config['bubbles'].current) {
-      this._signals = new Signals({ camera: this._camera })
+    if (config['first-signals'].current || config['last-signals'].current) {
+      this._signals = new Signals({
+        camera: this._camera,
+        showFirst: config['first-signals'].current,
+        showLast: config['last-signals'].current,
+      })
       this._loop.updatables.push(this._signals)
       this._scene.add(this._signals)
     }

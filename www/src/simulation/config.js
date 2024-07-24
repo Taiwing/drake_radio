@@ -48,7 +48,11 @@ export const config = {
     def: true,
     hardReset: true,
   },
-  'bubbles': {
+  'first-signals': {
+    def: true,
+    hardReset: true,
+  },
+  'last-signals': {
     def: true,
     hardReset: true,
   },
@@ -112,7 +116,8 @@ export const presets = {
     'communication-fraction': 0.2,
     'civilization-lifetime': 1.282051e+7,
     'speed': 200,
-    'bubbles': false,
+    'first-signals': false,
+    'last-signals': false,
   },
   /* Debug (one) */
   // TODO: Remove this preset or only show in dev mode
@@ -125,7 +130,8 @@ export const presets = {
     'communication-fraction': 1,
     'civilization-lifetime': 1,
     'speed': 200,
-    'bubbles': false,
+    'first-signals': false,
+    'last-signals': false,
   },
 }
 

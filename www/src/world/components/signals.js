@@ -87,26 +87,35 @@ export class Bubble extends Line {
 const MAX_SIGNALS = 50
 
 export class Signals extends Group {
-  constructor({ camera }) {
+  constructor({ camera, showFirst, showLast}) {
     super()
     Bubble.camera = camera
-    this.civSignalCount = 0
+    this._showFirst = showFirst
+    this._showLast = showLast
+    this._firstCount = 0
+    this._lastCount = 0
   }
 
-  _createBubble({ delta, speed, civ, count }) {
+  _createBubble({ delta, speed, civ, count, color }) {
     const { x, y, z } = civ.coord
     const dto = civ.distanceToOrigin
-    const color = civ.death === -1 ? CIV_LIFE_COLOR : CIV_DEATH_COLOR
     this.add(new Bubble({ x, y, z, dto, count, delta, speed, color }))
   }
 
   _inflateBubbles({ delta, speed }) {
-    const count = this.children.length
-    for (let i = count - 1; i >= 0; i--) {
+    const { length } = this.children
+    for (let i = length - 1; i >= 0; i--) {
       const bubble = this.children[i]
-      if (!bubble.tick({ delta, speed, count: this.civSignalCount })) {
-        if (bubble.color === CIV_LIFE_COLOR) this.civSignalCount--
-        this.remove(bubble)
+      if (bubble.color === CIV_LIFE_COLOR) {
+        if (!bubble.tick({ delta, speed, count: this._firstCount })) {
+          this.remove(bubble)
+          this._firstCount--
+        }
+      } else {
+        if (!bubble.tick({ delta, speed, count: this._lastCount })) {
+          this.remove(bubble)
+          this._lastCount--
+        }
       }
     }
   }
@@ -114,16 +123,22 @@ export class Signals extends Group {
   _handleEvents({ delta, speed, events }) {
     const { birth, death } = events
 
-    for (const civ of birth) {
-      if (this.civSignalCount >= MAX_SIGNALS) break
-      this._createBubble({ delta, speed, civ, count: this.civSignalCount })
-      civ.signalCount = this.civSignalCount
-      this.civSignalCount++
+    if (this._showFirst) {
+      const color = CIV_LIFE_COLOR
+      for (const civ of birth) {
+        if (this._firstCount >= MAX_SIGNALS) break
+        this._createBubble({ delta, speed, civ, count: this._firstCount, color })
+        this._firstCount++
+      }
     }
 
-    for (const civ of death) {
-      if (civ.signalCount === undefined) continue
-      this._createBubble({ delta, speed, civ, count: civ.signalCount })
+    if (this._showLast) {
+      const color = CIV_DEATH_COLOR
+      for (const civ of death) {
+        if (this._lastCount >= MAX_SIGNALS) break
+        this._createBubble({ delta, speed, civ, count: this._lastCount, color })
+        this._lastCount++
+      }
     }
   }
 
