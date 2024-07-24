@@ -79,7 +79,7 @@ export class World {
     this._loop.updatables.push(this._galaxy)
     this._scene.add(this._galaxy)
     if (config['bubbles'].current) {
-      this._signals = new Signals()
+      this._signals = new Signals({ camera: this._camera })
       this._loop.updatables.push(this._signals)
       this._scene.add(this._signals)
     }

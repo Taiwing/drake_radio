@@ -1,33 +1,40 @@
 import {
+  Line,
   Group,
-  LineSegments,
+  BufferGeometry,
   LineBasicMaterial,
-  SphereGeometry,
-  WireframeGeometry,
+  Float32BufferAttribute,
 } from '../vendor/three.js'
-
-import { VISUAL_LIGHT_YEAR, CIV_LIFE_COLOR } from '../constants.js'
 import { galaxySpec } from '../../simulation/constants.js'
+import { VISUAL_LIGHT_YEAR, CIV_LIFE_COLOR } from '../constants.js'
 
-const MAX_OPACITY = 1
-const BASE_OPACITY = MAX_OPACITY / 2
-const FLICKER = 1
+// Create a circle geometry
+const createCircle = (radius, color, segments = 64) => {
+  const geometry = new BufferGeometry()
+  const vertices = []
 
-export class Bubble extends LineSegments {
+  for (let i = 0; i <= segments; i++) {
+      const theta = (i / segments) * Math.PI * 2
+      vertices.push(radius * Math.cos(theta), radius * Math.sin(theta), 0)
+  }
+
+  geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3))
+  const material = new LineBasicMaterial({ color })
+  return { geometry, material }
+}
+
+export class Bubble extends Line {
+  static camera = null
+
   constructor({ x, y, z, dto, count, delta, speed }) {
     const scale = speed * delta
-    const sphereGeometry = new SphereGeometry(VISUAL_LIGHT_YEAR, 32, 32)
-    const geometry = new WireframeGeometry(sphereGeometry)
-    const material = new LineBasicMaterial({
-      color: CIV_LIFE_COLOR,
-      transparent: true,
-      opacity: BASE_OPACITY + BASE_OPACITY * Math.abs(Math.sin(delta * FLICKER)),
-    })
+    const radius = VISUAL_LIGHT_YEAR
+    const color = CIV_LIFE_COLOR
+    const { geometry, material } = createCircle(radius, color)
 
     super(geometry, material)
 
     this._material = material
-    this._baseOpacity = BASE_OPACITY
     this.scale.x = scale
     this.scale.y = scale
     this.scale.z = scale
@@ -63,15 +70,7 @@ export class Bubble extends LineSegments {
       return false
     }
 
-    // Dimming the sphere when it is passed its middle life
-    if (this.scale.x >= this._radiusMiddle * decay) {
-      const dim = BASE_OPACITY / (this._radiusMiddle * decay / growth)
-      this._baseOpacity -= dim
-    }
-
-    // Flickering effect
-    this._material.opacity = this._baseOpacity +
-      BASE_OPACITY * Math.abs(Math.sin(this.scale.x / speed * FLICKER))
+    this.lookAt(Bubble.camera.position)
 
     return true
   }
@@ -80,9 +79,10 @@ export class Bubble extends LineSegments {
 const MAX_SIGNALS = 50
 
 export class Signals extends Group {
-  constructor() {
+  constructor({ camera }) {
     super()
     this._bubbles = []
+    Bubble.camera = camera
   }
 
   _createBubble({ delta, speed, civilization, count }) {
@@ -113,7 +113,7 @@ export class Signals extends Group {
         delta,
         speed,
         civilization,
-        count: this._bubbles.length
+        count: this._bubbles.length,
       })
     }
   }
