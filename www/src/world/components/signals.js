@@ -54,6 +54,10 @@ export class Bubble extends Line {
     return Math.pow(1/x, 1/2)
   }
 
+  cameraTick() {
+    this.lookAt(Bubble.camera.position)
+  }
+
   tick({ delta, speed, count }) {
     const decay = this._reduction(count)
 
@@ -70,7 +74,7 @@ export class Bubble extends Line {
       return false
     }
 
-    this.lookAt(Bubble.camera.position)
+    this.cameraTick()
 
     return true
   }
@@ -93,7 +97,7 @@ export class Signals extends Group {
     this._bubbles.push(bubble)
   }
 
-  tick({ delta, speed, events }) {
+  _inflateBubbles({ delta, speed }) {
     const bubbles = []
     const count = this._bubbles.length
     while (this._bubbles.length > 0) {
@@ -105,7 +109,9 @@ export class Signals extends Group {
       }
     }
     this._bubbles = bubbles
+  }
 
+  _handleEvents({ delta, speed, events }) {
     const { birth } = events
     for (const civilization of birth) {
       if (this._bubbles.length >= MAX_SIGNALS) break
@@ -115,6 +121,15 @@ export class Signals extends Group {
         civilization,
         count: this._bubbles.length,
       })
+    }
+  }
+
+  tick({ isRunning, delta, speed, events }) {
+    if (isRunning) {
+      this._inflateBubbles({ delta, speed })
+      this._handleEvents({ delta, speed, events })
+    } else {
+      this.children.forEach((bubble) => bubble.cameraTick())
     }
   }
 }

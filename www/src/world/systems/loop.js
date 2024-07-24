@@ -11,7 +11,6 @@ export class Loop {
     this._clock = new Clock()
     this._delta = this._clock.getDelta()
     this.updatables = []
-    this.on = false
   }
 
   start() {
@@ -20,26 +19,28 @@ export class Loop {
       this._tick()
       this._renderer._render(this._scene, this._camera)
     })
-    this.on = true
   }
 
   stop() {
     this._renderer.setAnimationLoop(null)
-    this.on = false
   }
 
   _tick () {
     this._delta = this._clock.getDelta()
-    const events = this._simulation.tick({ delta: this._delta })
+    const speed = config['speed'].current
+    const rotation = config['rotation'].current
+    const { isRunning } = this._simulation
+
+    let events
+    if (isRunning) {
+      events = this._simulation.tick({ delta: this._delta })
+    }
+
     for (const object of this.updatables) {
-      if (config['rotation'].current && object.rotation) {
+      if (isRunning && rotation && object.rotation) {
         object.rotation.y += ROTATION_PER_SEC * this._delta
       }
-      object.tick({
-        delta: this._delta,
-        speed: config['speed'].current,
-        events,
-      })
+      object.tick({ isRunning, delta: this._delta, speed, events })
     }
   }
 }

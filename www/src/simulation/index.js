@@ -59,6 +59,9 @@ export class Simulation {
     this.living = []    // Still emitting signals
     this.visible = []   // Dead but signals still visible
     this.gone = []      // Dead and all signals have left the galaxy
+
+    // Simulation state
+    this.isRunning = false
   }
 
   get starCount() {
@@ -144,6 +147,8 @@ export class Simulation {
     this.gone = this.gone.concat(gone)
     return gone
   }
+
+  onTick() {}
 
   tick({ delta }) {
     const elapsed = config['speed'].current * delta

@@ -27,14 +27,12 @@ export class World {
       dist: 20,
       pan: 6,
     })
-    this._controls.addEventListener('change', () => this._render())
     this._renderer.updatables.push(this._controls)
     this._resizer = new Resizer({
       container: this._container,
       camera: this._camera,
       renderer: this._renderer,
     })
-    this._resizer.onResize = () => this._render()
     this.reset({ simulation, galaxySpec })
 
     //TODO: debug functions
@@ -60,6 +58,7 @@ export class World {
   }
 
   reset({ simulation, galaxySpec }) {
+    if (this._loop) this._loop.stop()
     this._loop = new Loop({
       camera: this._camera,
       scene: this._scene,
@@ -86,25 +85,13 @@ export class World {
     this._loop.updatables.push(this._frameRate)
   }
 
-  _render() {
-    // Only render on camera and resize events if the animation loop is off
-    if (!this.on) this.render()
-  }
-
   render() {
     this._renderer._render(this._scene, this._camera)
     this._frameRate.tick()
   }
 
   start() {
+    this.render()
     this._loop.start()
-  }
-
-  stop() {
-    this._loop.stop()
-  }
-
-  get on() {
-    return this._loop ? this._loop.on : false
   }
 }

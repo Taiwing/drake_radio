@@ -51,9 +51,10 @@ customElements.define('control-panel', ControlPanel)
 const SPEED_FACTOR = 25 / 100
 
 export class Controls {
-  constructor({ world }) {
-    this._controlPanel = document.querySelector('control-panel')
+  constructor({ simulation, world }) {
+    this._simulation = simulation
     this._world = world
+    this._controlPanel = document.querySelector('control-panel')
     this._statsPanel = document.querySelector('stats-panel')
 
     window.addEventListener('keydown', (key) => {
@@ -88,10 +89,6 @@ export class Controls {
     hardResetButton.addEventListener('click', () => this.hardReset())
   }
 
-  get on() {
-    return this._world.on
-  }
-
   speedDown() {
     const { current, min } = config['speed']
     const newCurrent = Math.floor(current - current * SPEED_FACTOR)
@@ -100,13 +97,8 @@ export class Controls {
   }
 
   playPauseToggle() {
-    if (this.on) {
-      this._world.stop()
-    } else {
-      this._world.start()
-    }
-
-    this._controlPanel.updatePlayPauseButton(this.on)
+    this._simulation.isRunning = !this._simulation.isRunning
+    this._controlPanel.updatePlayPauseButton(this._simulation.isRunning)
   }
 
   speedUp() {
@@ -121,11 +113,12 @@ export class Controls {
   }
 
   hardReset() {
+    if (this._simulation.isRunning) this.playPauseToggle()
     const simulation = new Simulation()
+    this._simulation = simulation
     Civilization.reset()
-    if (this.on) this.playPauseToggle()
     this._statsPanel.setup({ simulation })
     this._world.reset({ simulation, galaxySpec })
-    this._world.render()
+    this._world.start()
   }
 }

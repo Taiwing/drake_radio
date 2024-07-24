@@ -117,6 +117,7 @@ export class Galaxy extends Group {
   }
 
   tick({ events }) {
+    if (!events) return
     const { birth, death } = events
 
     for (const born of birth) {

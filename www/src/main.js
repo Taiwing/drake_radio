@@ -9,9 +9,9 @@ const main = () => {
   const simulation = new Simulation()
   const container = document.querySelector('#scene-container')
   const world = new World({ container, simulation, galaxySpec })
-  const controls = new Controls({ world })
+  const controls = new Controls({ simulation, world })
   setupDrakeDialog({ controls })
-  world.render()
+  world.start()
   window.addEventListener('DOMContentLoaded', () => {
     document.querySelector('stats-panel').setup({ simulation })
   })
