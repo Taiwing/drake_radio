@@ -26,22 +26,18 @@ const createCircle = (radius, color, segments = 64) => {
 export class Bubble extends Line {
   static camera = null
 
-  constructor({ x, y, z, dto, count, delta, speed, color }) {
-    const scale = speed * delta
-    const radius = VISUAL_LIGHT_YEAR
-    const { geometry, material } = createCircle(radius, color)
-
+  constructor({ origin, dto, count, scale, color }) {
+    const { geometry, material } = createCircle(VISUAL_LIGHT_YEAR, color)
     super(geometry, material)
 
-    this.color = color
     this._material = material
     this.scale.x = scale
     this.scale.y = scale
     this.scale.z = scale
     this.position.set(
-      x * VISUAL_LIGHT_YEAR,
-      y * VISUAL_LIGHT_YEAR,
-      z * VISUAL_LIGHT_YEAR
+      origin.x * VISUAL_LIGHT_YEAR,
+      origin.y * VISUAL_LIGHT_YEAR,
+      origin.z * VISUAL_LIGHT_YEAR
     )
     this._radiusMax = dto + galaxySpec.TOTAL_RADIUS * this._reduction(count+1)
   }
@@ -91,11 +87,10 @@ export class Signals extends Group {
   }
 
   _createBubble({ delta, speed, civ }) {
-    const { x, y, z } = civ.coord
-    const dto = civ.distanceToOrigin
+    const { coord: origin, distanceToOrigin: dto } = civ
     const count = this.children.length
-    const color = this._color
-    this.add(new Bubble({ x, y, z, dto, count, delta, speed, color }))
+    const scale = speed * delta
+    this.add(new Bubble({ origin, dto, count, scale, color: this._color }))
   }
 
   _inflateBubbles({ delta, speed }) {
