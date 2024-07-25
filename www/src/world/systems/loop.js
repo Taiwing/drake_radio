@@ -27,20 +27,20 @@ export class Loop {
 
   _tick () {
     this._delta = this._clock.getDelta()
-    const speed = config['speed'].current
     const rotation = config['rotation'].current
-    const { isRunning } = this._simulation
+    const elapsed = config['speed'].current * this._delta
 
     let events
-    if (isRunning) {
+    if (this._simulation.isRunning) {
       events = this._simulation.tick({ delta: this._delta })
     }
 
+    const { time, isRunning } = this._simulation
     for (const object of this.updatables) {
       if (isRunning && rotation && object.rotation) {
         object.rotation.y += ROTATION_PER_SEC * this._delta
       }
-      object.tick({ isRunning, delta: this._delta, speed, events })
+      object.tick({ time, isRunning, elapsed, events })
     }
   }
 }

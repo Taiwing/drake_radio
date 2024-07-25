@@ -6,7 +6,7 @@ import { randomFloat, distanceToOrigin } from './math.js'
 
 export class Civilization {
   constructor({ birth, index, x, y, z }) {
-    this.birth = Math.floor(birth)
+    this.birth = birth
     this.death = -1
     this.gone = -1
     this.star = index

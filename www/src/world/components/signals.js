@@ -54,15 +54,14 @@ export class Bubble extends Line {
     this.lookAt(Bubble.camera.position)
   }
 
-  tick({ delta, speed, count }) {
+  tick({ elapsed, count }) {
     const decay = this._reduction(count)
 
     // Make the sphere grow as per the simulation parameters
-    const growth = speed * delta
     if (this.scale.x < this._radiusMax * decay) {
-      this.scale.x += growth
-      this.scale.y += growth
-      this.scale.z += growth
+      this.scale.x += elapsed
+      this.scale.y += elapsed
+      this.scale.z += elapsed
     }
 
     // Pop the bubble if it reached its maximum size
@@ -86,36 +85,41 @@ export class Signals extends Group {
     Bubble.camera = camera
   }
 
-  _createBubble({ delta, speed, civ }) {
-    const { coord: origin, distanceToOrigin: dto } = civ
-    const count = this.children.length
-    const scale = speed * delta
-    this.add(new Bubble({ origin, dto, count, scale, color: this._color }))
+  _createBubble({ elapsed, civ }) {
+    const bubble = new Bubble({
+      origin: civ.coord,
+      dto: civ.distanceToOrigin,
+      count: this.children.length,
+      scale: elapsed,
+      color: this._color,
+    })
+    this.add(bubble)
   }
 
-  _inflateBubbles({ delta, speed }) {
+  _inflateBubbles({ elapsed }) {
     const { length } = this.children
     for (let i = length - 1; i >= 0; i--) {
       const bubble = this.children[i]
-      if (!bubble.tick({ delta, speed, count: this.children.length })) {
+      if (!bubble.tick({ elapsed, count: this.children.length })) {
         this.remove(bubble)
       }
     }
   }
 
-  _handleEvent({ delta, speed, events }) {
+  _handleEvent({ time, events }) {
     const civilizations = events[this._eventName]
 
     for (const civ of civilizations) {
       if (this.children.length >= MAX_SIGNALS) break
-      this._createBubble({ delta, speed, civ })
+      const elapsed = time - civ[this._eventName]
+      this._createBubble({ elapsed, civ })
     }
   }
 
-  tick({ isRunning, delta, speed, events }) {
+  tick({ time, isRunning, elapsed, events }) {
     if (isRunning) {
-      this._inflateBubbles({ delta, speed })
-      this._handleEvent({ delta, speed, events })
+      this._inflateBubbles({ elapsed })
+      this._handleEvent({ time, events })
     } else {
       this.children.forEach((bubble) => bubble.cameraTick())
     }
