@@ -39,6 +39,5 @@ MAYBE:
 
 FIX:
 
-- enforce max values and value types for drakeEquation and simulation parameters
 - Time value overflows. Depending on the speed the year count can easily reach
   into the billions. This value should be a BigInt.

@@ -180,4 +180,21 @@ export const setupDrakeDialog = ({ controls }) => {
     if (!value) return
     applyPreset({ name: value })
   })
+  form.querySelectorAll('input[type="text"]').forEach((input) => {
+    input.addEventListener('input', ({ target }) => {
+      target.setCustomValidity('')
+      const value = parseFloat(target.value)
+      const { min, max } = config[target.id]
+      if (target.value === '') {
+        target.setCustomValidity('Value required')
+      } else if (isNaN(value)) {
+        target.setCustomValidity('Not a number')
+      } else if (value < min) {
+        target.setCustomValidity(`Value too low (min: ${min})`)
+      } else if (value > max) {
+        target.setCustomValidity(`Value too high (max: ${max})`)
+      }
+      target.checkValidity()
+    })
+  })
 }
