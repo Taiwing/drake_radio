@@ -144,8 +144,8 @@ export const setupDrakeDialog = ({ controls }) => {
   configButton.addEventListener('click', () => {
     if (typeof configDialog.showModal === 'function') {
       initDrakeForm()
-      restart = controls.on
-      if (controls.on) controls.playPauseToggle()
+      restart = controls.isPlaying
+      if (controls.isPlaying) controls.playPauseToggle()
       configDialog.showModal()
     } else {
       console.log('The <dialog> API is not implemented on this browser.')
@@ -170,7 +170,8 @@ export const setupDrakeDialog = ({ controls }) => {
     const { id } = e.target
     const preset = config['preset'].current
     // Remove current preset setting if one of its values is modified
-    if (preset && presets[preset][id] !== undefined) {
+    if (preset && presets[preset][id] !== undefined
+      && drakeParameters.includes(id)) {
       setFormValue({ name: 'preset', value: "" })
     }
   })

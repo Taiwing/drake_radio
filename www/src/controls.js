@@ -89,6 +89,10 @@ export class Controls {
     hardResetButton.addEventListener('click', () => this.hardReset())
   }
 
+  get isPlaying() {
+    return this._simulation.isRunning
+  }
+
   speedDown() {
     const { current, min } = config['speed']
     const newCurrent = Math.floor(current - current * SPEED_FACTOR)
@@ -113,7 +117,7 @@ export class Controls {
   }
 
   hardReset() {
-    if (this._simulation.isRunning) this.playPauseToggle()
+    if (this.isPlaying) this.playPauseToggle()
     const simulation = new Simulation()
     this._simulation = simulation
     Civilization.reset()
