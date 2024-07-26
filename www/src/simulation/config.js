@@ -39,7 +39,7 @@ export const config = {
   },
   'speed': {
     min: 1,
-    max: 10_000_000,
+    max: 1e+8,
   },
   'rotation': {
     def: true,
