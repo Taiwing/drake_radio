@@ -179,6 +179,5 @@ export const setupDrakeDialog = ({ controls }) => {
     const { value } = e.target
     if (!value) return
     applyPreset({ name: value })
-    updateEquationResult()  //TODO: checkout if is useful
   })
 }
