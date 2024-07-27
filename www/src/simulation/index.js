@@ -1,7 +1,7 @@
 import { starPoints } from './stars.js'
 import { insertSorted } from '../utils.js'
 import { galaxySpec } from './constants.js'
-import { config, drakeResult } from './config.js'
+import { config } from './config.js'
 import { randomFloat, distanceToOrigin } from './math.js'
 
 export class Civilization {
@@ -98,7 +98,7 @@ export class Simulation {
   _kill({ spawnRate, elapsed }) {
     let dead = []
     const currentN = this.living.length
-    const averageN = drakeResult.total
+    const averageN = config['N'].current
 
     let killRate
     if (averageN > 0) {
@@ -152,7 +152,7 @@ export class Simulation {
 
   tick({ delta }) {
     const elapsed = config['speed'].current * delta
-    const spawnRate = drakeResult.spawnRate * elapsed
+    const spawnRate = config['Ny'].current * elapsed
 
     const birth = this._spawn({ spawnRate, elapsed })
     this.time += elapsed

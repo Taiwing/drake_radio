@@ -156,21 +156,6 @@
 					</label>
 					<label class="form-line">
 						<modal-button>
-							<span slot="button">N:</span>
-							<div slot="modal">
-								<p>
-									The number of civilizations in the galaxy
-									with which communication might be possible.
-								</p>
-							</div>
-						</modal-button>
-						<output name="result" id="N">0</output>
-					</label>
-				</fieldset>
-				<fieldset>
-					<legend>Simulation</legend>
-					<label class="form-line">
-						<modal-button>
 							<span slot="button">N<sub>y</sub>:</span>
 							<div slot="modal">
 								<p>
@@ -180,8 +165,23 @@
 								</p>
 							</div>
 						</modal-button>
-						<output name="yearly-result" id="Ny">0</output>
+						<output id="Ny">0</output>
 					</label>
+					<label class="form-line">
+						<modal-button>
+							<span slot="button">N:</span>
+							<div slot="modal">
+								<p>
+									The number of civilizations in the galaxy
+									with which communication might be possible.
+								</p>
+							</div>
+						</modal-button>
+						<output id="N">0</output>
+					</label>
+				</fieldset>
+				<fieldset>
+					<legend>Simulation</legend>
 					<label class="form-line">
 						<modal-button>
 							<span slot="button">Speed</span>

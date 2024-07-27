@@ -39,8 +39,5 @@ MAYBE:
 
 FIX:
 
-- Enforce max values for drakeResult too (probably turn output elements into
-  readonly input and validate them like the rest) and check the presets for
-  validity violation.
 - Time value overflows. Depending on the speed the year count can easily reach
   into the billions. This value should be a BigInt.

@@ -37,6 +37,14 @@ export const config = {
     randomMax: 10_000,
     isDrakeParameter: true,
   },
+  'Ny': {
+    min: 0,
+    max: 1,
+  },
+  'N': {
+    min: 0,
+    max: 2e+5,
+  },
   'speed': {
     min: 1,
     max: 1e+8,
@@ -133,22 +141,4 @@ export const presets = {
     'first-signals': false,
     'last-signals': false,
   },
-}
-
-/*
-export const drakeResult = {
-  'spawnRate': {
-    min: 0,
-    max: 1000,
-  },
-  'total': {
-    min: 0,
-    max: 200_000,
-  },
-}
-*/
-
-export const drakeResult = {
-  'spawnRate': 0,
-  'total': 0,
 }

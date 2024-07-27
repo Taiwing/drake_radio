@@ -1,6 +1,6 @@
 import { formatNumber } from './utils.js'
 import { randomFloat } from './simulation/math.js'
-import { config, presets, drakeResult } from './simulation/config.js'
+import { config, presets } from './simulation/config.js'
 
 const fields = Object.keys(config)
 const drakeParameters = fields.filter(name => config[name].isDrakeParameter)
@@ -10,7 +10,8 @@ const setFormValue = ({ name, value }) => {
   switch (element.tagName) {
     case 'INPUT':
       if (element.type === 'text') {
-          element.value = formatNumber(value, 8, 6, true)
+        element.value = formatNumber(value, 8, 6, true)
+        validate({ target: element })
       } else if (element.type === 'checkbox') {
         element.checked = value
       }
@@ -101,8 +102,6 @@ const saveDrakeForm = () => {
   }
 
   for (const name of fields) config[name].current = values[name]
-  drakeResult.spawnRate = getFormValue({ name: 'Ny' })
-  drakeResult.total = getFormValue({ name: 'N' })
 
   return hardReset.length > 0 ? SaveStatus.HARD_RESET : SaveStatus.SUCCESS
 }
@@ -112,7 +111,6 @@ const initDrakeForm = () => {
     const { current } = config[name]
     setFormValue({ name, value: current })
   }
-  updateEquationResult()
 }
 
 const randomDrakeForm = () => {
@@ -128,6 +126,23 @@ export const setupDrakeConfig = () => {
   resetDrakeForm()
   updateEquationResult()
   saveDrakeForm()
+}
+
+const validate = ({ target }) => {
+  const value = parseFloat(target.value)
+  const { min, max } = config[target.id]
+  let validity = ''
+  if (target.value === '') {
+    validity = 'Value required'
+  } else if (isNaN(value)) {
+    validity = 'Not a number'
+  } else if (value < min) {
+    validity = `Value too low (min: ${min})`
+  } else if (value > max) {
+    validity = `Value too high (max: ${max})`
+  }
+  target.setCustomValidity(validity)
+  return validity
 }
 
 export const setupDrakeDialog = ({ controls }) => {
@@ -152,6 +167,15 @@ export const setupDrakeDialog = ({ controls }) => {
     }
   })
   configDialog.addEventListener('submit', (e) => {
+    const outputs = form.querySelectorAll('output')
+    for (const output of outputs) {
+      const validity = validate({ target: output })
+      if (validity !== '') {
+        alert(`${output.id}: ${validity}`)
+        e.preventDefault()
+        return
+      }
+    }
     switch (saveDrakeForm()) {
       case SaveStatus.FAILURE:      e.preventDefault()
         break
@@ -165,36 +189,19 @@ export const setupDrakeDialog = ({ controls }) => {
   configDialog.addEventListener('close', () => {
     if (restart) controls.playPauseToggle()
   })
-  form.addEventListener('input', (e) => {
+  form.addEventListener('input', ({ target }) => {
+    const { id } = target
+    if (!drakeParameters.includes(id)) return
     updateEquationResult()
-    const { id } = e.target
-    const preset = config['preset'].current
-    // Remove current preset setting if one of its values is modified
-    if (preset && presets[preset][id] !== undefined
-      && drakeParameters.includes(id)) {
-      setFormValue({ name: 'preset', value: "" })
-    }
+    if (config['preset'].current) setFormValue({ name: 'preset', value: "" })
   })
-  preset.addEventListener('input', (e) => {
-    const { value } = e.target
+  preset.addEventListener('input', ({ target }) => {
+    const { value } = target
     if (!value) return
     applyPreset({ name: value })
+    updateEquationResult()
   })
-  form.querySelectorAll('input[type="text"]').forEach((input) => {
-    input.addEventListener('input', ({ target }) => {
-      target.setCustomValidity('')
-      const value = parseFloat(target.value)
-      const { min, max } = config[target.id]
-      if (target.value === '') {
-        target.setCustomValidity('Value required')
-      } else if (isNaN(value)) {
-        target.setCustomValidity('Not a number')
-      } else if (value < min) {
-        target.setCustomValidity(`Value too low (min: ${min})`)
-      } else if (value > max) {
-        target.setCustomValidity(`Value too high (max: ${max})`)
-      }
-      target.checkValidity()
-    })
+  form.querySelectorAll('input[type="text"]').forEach((element) => {
+    element.addEventListener('input', validate)
   })
 }
