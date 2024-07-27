@@ -57,7 +57,7 @@ export class Simulation {
 
     // Civilizations
     this.living = []    // Still emitting signals
-    this.visible = []   // Dead but signals still visible
+    this.dead = []      // Dead but signals still visible
     this.gone = []      // Dead and all signals have left the galaxy
 
     // Simulation state
@@ -94,7 +94,7 @@ export class Simulation {
     return born
   }
 
-  // Kill civilizations and move them to visible
+  // Kill civilizations and move them to dead
   _kill({ spawnRate, elapsed }) {
     let dead = []
     const currentN = this.living.length
@@ -125,25 +125,25 @@ export class Simulation {
         death = death <= civ.birth ? civ.birth + timeSlice : death
         death = death > this.time ? this.time : death
         civ.kill(death)
-        insertSorted(this.visible, civ, (a, b) => b.gone - a.gone)
+        insertSorted(this.dead, civ, (a, b) => b.gone - a.gone)
         timeOffset += timeSlice
       }
     }
     return dead
   }
 
-  // Move civilizations that are not visible anymore to gone
+  // Move civilizations that are not dead anymore to gone
   _forget() {
     const gone = []
 
-    let lastVisible = this.visible.length - 1
-    while (lastVisible >= 0) {
-      const civ = this.visible[lastVisible]
+    let lastDead = this.dead.length - 1
+    while (lastDead >= 0) {
+      const civ = this.dead[lastDead]
       if (civ.isVisible(this.time)) break
       else gone.push(civ)
-      lastVisible--
+      lastDead--
     }
-    this.visible = this.visible.slice(0, lastVisible + 1)
+    this.dead = this.dead.slice(0, lastDead + 1)
     this.gone = this.gone.concat(gone)
     return gone
   }

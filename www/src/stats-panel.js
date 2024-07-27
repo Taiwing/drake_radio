@@ -58,8 +58,8 @@ StatsPanelTemplate.innerHTML = `
   </modal-button>
   <modal-button data-time="3000">
     <div slot="button" class="stats-panel-row">
-      <div class="stats-panel-label">Visible:</div>
-      <div class="stats-panel-value" id="visible-value"></div>
+      <div class="stats-panel-label">Dead:</div>
+      <div class="stats-panel-value" id="dead-value"></div>
     </div>
     <div slot="modal">
       <p>
@@ -127,8 +127,8 @@ class StatsPanel extends HTMLElement {
       value: formatNumber(this._simulation.living.length),
     })
     this.setValue({
-      name: 'visible',
-      value: formatNumber(this._simulation.visible.length),
+      name: 'dead',
+      value: formatNumber(this._simulation.dead.length),
     })
     this.setValue({
       name: 'gone',
