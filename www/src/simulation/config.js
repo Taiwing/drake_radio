@@ -69,6 +69,14 @@ export const config = {
   },
 }
 
+export const fields = Object.keys(config)
+export const drakeParameters = fields.filter(
+  name => config[name].isDrakeParameter
+)
+export const yearlyParameters = drakeParameters.filter(
+  name => name !== 'civilization-lifetime'
+)
+
 export const presets = {
   /* Rare Earth Hypothesis */
   'pessimistic': {
@@ -127,4 +135,25 @@ export const presets = {
     'first-signals': true,
     'last-signals': true,
   },
+}
+
+export const applyConfig = (values) => {
+  for (const name in values) {
+    config[name].current = values[name]
+  }
+}
+
+const configMultiply = (result, name) => result * config[name].current
+
+export const initConfig = () => {
+  for (const name in config) {
+    const { def } = config[name]
+    if (def !== undefined) {
+      config[name].current = def
+    }
+  }
+  const { def } = config['preset']
+  applyConfig(presets[def])
+  config['N'].current = drakeParameters.reduce(configMultiply, 1)
+  config['Ny'].current = yearlyParameters.reduce(configMultiply, 1)
 }

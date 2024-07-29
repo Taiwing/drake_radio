@@ -1,9 +1,13 @@
 import { formatNumber } from './utils.js'
 import { randomFloat } from './simulation/math.js'
-import { config, presets } from './simulation/config.js'
-
-const fields = Object.keys(config)
-const drakeParameters = fields.filter(name => config[name].isDrakeParameter)
+import {
+  config,
+  presets,
+  applyConfig,
+  fields,
+  drakeParameters,
+  yearlyParameters,
+} from './simulation/config.js'
 
 const setFormValue = ({ name, value }) => {
   const element = document.getElementById(name)
@@ -41,18 +45,14 @@ const getFormValue = ({ name }) => {
   }
 }
 
+const formMultiply = (result, name) => {
+  const value = getFormValue({ name })
+  return result * (Number.isNaN(value) ? 0 : value)
+}
+
 const updateEquationResult = () => {
-  let result = 1
-  let yearlyResult = 1
-  for (name of drakeParameters) {
-    const value = getFormValue({ name })
-    result *= Number.isNaN(value) ? 0 : value
-    if (name !== 'civilization-lifetime') {
-      yearlyResult *= Number.isNaN(value) ? 0 : value
-    }
-  }
-  setFormValue({ name: 'N', value: result })
-  setFormValue({ name: 'Ny', value: yearlyResult })
+  setFormValue({ name: 'N', value: drakeParameters.reduce(formMultiply, 1) })
+  setFormValue({ name: 'Ny', value: yearlyParameters.reduce(formMultiply, 1) })
 }
 
 const applyPreset = ({ name }) => {
@@ -72,7 +72,7 @@ const resetDrakeForm = () => {
   applyPreset({ name: config['preset'].def })
 }
 
-class SaveStatus {
+class ApplyStatus {
   static #_FAILURE = 0
   static #_SUCCESS = 1
   static #_HARD_RESET = 2
@@ -82,7 +82,7 @@ class SaveStatus {
   static get HARD_RESET() { return this.#_HARD_RESET }
 }
 
-const saveDrakeForm = () => {
+const applyDrakeForm = () => {
   const values = {}
   let hardReset = []
   for (const name of fields) {
@@ -98,12 +98,12 @@ const saveDrakeForm = () => {
   // In case of hard reset prompt user to confirm
   if (hardReset.length > 0) {
     const message = `The following parameters have been changed: ${hardReset.join(', ')}. This will trigger a hard reset. Do you want to proceed?`
-    if (!confirm(message)) return SaveStatus.FAILURE
+    if (!confirm(message)) return ApplyStatus.FAILURE
   }
 
-  for (const name of fields) config[name].current = values[name]
+  applyConfig(values)
 
-  return hardReset.length > 0 ? SaveStatus.HARD_RESET : SaveStatus.SUCCESS
+  return hardReset.length > 0 ? ApplyStatus.HARD_RESET : ApplyStatus.SUCCESS
 }
 
 const initDrakeForm = () => {
@@ -120,12 +120,6 @@ const randomDrakeForm = () => {
     element.value = randomFloat(min, randomMax || max).toFixed(2)
   }
   updateEquationResult()
-}
-
-export const setupDrakeConfig = () => {
-  resetDrakeForm()
-  updateEquationResult()
-  saveDrakeForm()
 }
 
 const validate = ({ target }) => {
@@ -176,12 +170,12 @@ export const setupDrakeDialog = ({ controls }) => {
         return
       }
     }
-    switch (saveDrakeForm()) {
-      case SaveStatus.FAILURE:      e.preventDefault()
+    switch (applyDrakeForm()) {
+      case ApplyStatus.FAILURE:      e.preventDefault()
         break
-      case SaveStatus.HARD_RESET:   controls.hardReset()
+      case ApplyStatus.HARD_RESET:   controls.hardReset()
         break
-      case SaveStatus.SUCCESS:
+      case ApplyStatus.SUCCESS:
         break
     }
   })
