@@ -3,6 +3,7 @@ import { insertSorted } from '../utils.js'
 import { galaxySpec } from './constants.js'
 import { config } from './config.js'
 import { randomFloat, distanceToOrigin } from './math.js'
+import { RBush3D } from './rbush-3d.js'
 
 export class Civilization {
   constructor({ birth, index, x, y, z }) {
@@ -41,6 +42,42 @@ export class Civilization {
   isVisible(time) {
     return this.gone < 0 || time < this.gone
   }
+
+  // Getters for RBush3D
+  get minX() { return this.coord.x }
+  get minY() { return this.coord.y }
+  get minZ() { return this.coord.z }
+  get maxX() { return this.coord.x }
+  get maxY() { return this.coord.y }
+  get maxZ() { return this.coord.z }
+
+  lifeBox(time) {
+    const radius = time - this.birth
+    return {
+      minX: this.minX - radius,
+      minY: this.minY - radius,
+      minZ: this.minZ - radius,
+      maxX: this.maxX + radius,
+      maxY: this.maxY + radius,
+      maxZ: this.maxZ + radius,
+      radius,
+    }
+  }
+
+  deathBox(time) {
+    if (this.death === -1) return null
+    const r = time - this.death
+    const radius = ((2 * r * Math.sqrt(3)) / 3) / 2
+    return {
+      minX: this.minX - radius,
+      minY: this.minY - radius,
+      minZ: this.minZ - radius,
+      maxX: this.maxX + radius,
+      maxY: this.maxY + radius,
+      maxZ: this.maxZ + radius,
+      radius,
+    }
+  }
 }
 
 export class Simulation {
@@ -56,9 +93,10 @@ export class Simulation {
     this.time = 0
 
     // Civilizations
-    this.living = []    // Still emitting signals
-    this.dead = []      // Dead but signals still visible
-    this.gone = []      // Dead and all signals have left the galaxy
+    this.living = []              // Still emitting signals
+    this.dead = []                // Dead but signals still visible
+    this.gone = []                // Dead and all signals have left the galaxy
+    this.visible = new RBush3D()
 
     // Simulation state
     this.isRunning = false
@@ -90,6 +128,7 @@ export class Simulation {
         timeOffset += timeSlice
       }
       this.living = this.living.concat(born)
+      this.visible.load(born)
     }
     return born
   }
@@ -128,6 +167,7 @@ export class Simulation {
         insertSorted(this.dead, civ, (a, b) => b.gone - a.gone)
         timeOffset += timeSlice
       }
+      this.visible.load(dead)
     }
     return dead
   }
@@ -140,13 +180,41 @@ export class Simulation {
     while (lastDead >= 0) {
       const civ = this.dead[lastDead]
       if (civ.isVisible(this.time)) break
-      else gone.push(civ)
+      else {
+        gone.push(civ)
+        this.visible.remove(civ)
+      }
       lastDead--
     }
     this.dead = this.dead.slice(0, lastDead + 1)
     this.gone = this.gone.concat(gone)
     return gone
   }
+
+  /*
+  _detections() {
+    const visible = this.visible.all()
+    const isInsideSphere = (point, center, box) => {
+      const distance = Math.sqrt(
+        Math.pow(center.minX - point.minX, 2) +
+        Math.pow(center.minY - point.minY, 2) +
+        Math.pow(center.minZ - point.minZ, 2)
+      )
+      return distance <= box.radius
+    }
+
+    for (const civ of visible) {
+      const lifeBox = civ.lifeBox(this.time)
+      const deathBox = civ.deathBox(this.time)
+      let results = this.visible.search(lifeBox)
+      results = results.filter((p) => isInsideSphere(p, civ, lifeBox))
+      if (deathBox) {
+        let exclude = this.visible.search(deathBox)
+        exclude = exclude.filter((p) => isInsideSphere(p, civ, deathBox))
+      }
+    }
+  }
+  */
 
   onTick() {}
 
