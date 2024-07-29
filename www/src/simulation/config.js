@@ -69,8 +69,7 @@ export const config = {
   },
 }
 
-export const fields = Object.keys(config)
-export const drakeParameters = fields.filter(
+export const drakeParameters = Object.keys(config).filter(
   name => config[name].isDrakeParameter
 )
 export const yearlyParameters = drakeParameters.filter(

@@ -4,7 +4,6 @@ import {
   config,
   presets,
   applyConfig,
-  fields,
   drakeParameters,
   yearlyParameters,
 } from './simulation/config.js'
@@ -64,7 +63,7 @@ const applyPreset = ({ name }) => {
 }
 
 const resetDrakeForm = () => {
-  for (const name of fields) {
+  for (const name in config) {
     if (config[name].def === undefined) continue
     const { def } = config[name]
     setFormValue({ name, value: def })
@@ -85,7 +84,7 @@ class ApplyStatus {
 const applyDrakeForm = () => {
   const values = {}
   let hardReset = []
-  for (const name of fields) {
+  for (const name in config) {
     const value = getFormValue({ name })
     if (config[name].hardReset
       && config[name].current !== undefined
@@ -107,7 +106,7 @@ const applyDrakeForm = () => {
 }
 
 const initDrakeForm = () => {
-  for (const name of fields) {
+  for (const name in config) {
     const { current } = config[name]
     setFormValue({ name, value: current })
   }
