@@ -1,5 +1,4 @@
 import { World } from './world/world.js'
-import { Controls } from './controls.js'
 import { Simulation } from './simulation/index.js'
 import { galaxySpec } from './simulation/constants.js'
 import { initConfig } from './simulation/config.js'
@@ -10,11 +9,13 @@ const main = () => {
   const simulation = new Simulation()
   const container = document.querySelector('#scene-container')
   const world = new World({ container, simulation, galaxySpec })
-  const controls = new Controls({ simulation, world })
-  setupDrakeDialog({ controls })
   world.start()
   window.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('stats-panel').setup({ simulation })
+    const statsPanel = document.querySelector('stats-panel')
+    const controlPanel = document.querySelector('control-panel')
+    statsPanel.setup({ simulation })
+    controlPanel.setup({ simulation, world, statsPanel })
+    setupDrakeDialog({ controlPanel })
   })
 }
 

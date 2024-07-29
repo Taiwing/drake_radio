@@ -24,38 +24,13 @@ ControlPanelTemplate.innerHTML = `
   </button>
 `
 
+const SPEED_FACTOR = 25 / 100
+
 class ControlPanel extends HTMLElement {
   constructor() {
     super()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.append(ControlPanelTemplate.content.cloneNode(true))
-  }
-
-  updatePlayPauseButton(on) {
-    const icon = this.shadowRoot.querySelector('#play-pause-icon')
-    const button = this.shadowRoot.querySelector('#play-pause-button')
-    if (on) {
-      icon.classList.remove('fa-play')
-      icon.classList.add('fa-pause')
-      button.title = 'Pause'
-    } else {
-      icon.classList.remove('fa-pause')
-      icon.classList.add('fa-play')
-      button.title = 'Play'
-    }
-  }
-}
-
-customElements.define('control-panel', ControlPanel)
-
-const SPEED_FACTOR = 25 / 100
-
-export class Controls {
-  constructor({ simulation, world }) {
-    this._simulation = simulation
-    this._world = world
-    this._controlPanel = document.querySelector('control-panel')
-    this._statsPanel = document.querySelector('stats-panel')
 
     window.addEventListener('keydown', (key) => {
       switch (key.code) {
@@ -68,25 +43,40 @@ export class Controls {
       key.preventDefault()
     })
 
-    const speedDownButton = this._controlPanel.shadowRoot
-      .querySelector('#speed-down-button')
+    const speedDownButton = this.shadowRoot.querySelector('#speed-down-button')
     speedDownButton.addEventListener('click', () => this.speedDown())
 
-    const playPauseButton = this._controlPanel.shadowRoot
-      .querySelector('#play-pause-button')
+    const playPauseButton = this.shadowRoot.querySelector('#play-pause-button')
     playPauseButton.addEventListener('click', () => this.playPauseToggle())
 
-    const speedUpButton = this._controlPanel.shadowRoot
-      .querySelector('#speed-up-button')
+    const speedUpButton = this.shadowRoot.querySelector('#speed-up-button')
     speedUpButton.addEventListener('click', () => this.speedUp())
 
-    const reCenterButton = this._controlPanel.shadowRoot
-      .querySelector('#re-center-button')
+    const reCenterButton = this.shadowRoot.querySelector('#re-center-button')
     reCenterButton.addEventListener('click', () => this.reCenter())
 
-    const hardResetButton = this._controlPanel.shadowRoot
-      .querySelector('#hard-reset-button')
+    const hardResetButton = this.shadowRoot.querySelector('#hard-reset-button')
     hardResetButton.addEventListener('click', () => this.hardReset())
+  }
+
+  _updatePlayPauseButton(on) {
+    const icon = this.shadowRoot.querySelector('#play-pause-icon')
+    const button = this.shadowRoot.querySelector('#play-pause-button')
+    if (on) {
+      icon.classList.remove('fa-play')
+      icon.classList.add('fa-pause')
+      button.title = 'Pause'
+    } else {
+      icon.classList.remove('fa-pause')
+      icon.classList.add('fa-play')
+      button.title = 'Play'
+    }
+  }
+
+  setup({ simulation, world, statsPanel }) {
+    this._simulation = simulation
+    this._world = world
+    this._statsPanel = statsPanel
   }
 
   get isPlaying() {
@@ -102,7 +92,7 @@ export class Controls {
 
   playPauseToggle() {
     this._simulation.isRunning = !this._simulation.isRunning
-    this._controlPanel.updatePlayPauseButton(this._simulation.isRunning)
+    this._updatePlayPauseButton(this._simulation.isRunning)
   }
 
   speedUp() {
@@ -126,3 +116,5 @@ export class Controls {
     this._world.start()
   }
 }
+
+customElements.define('control-panel', ControlPanel)

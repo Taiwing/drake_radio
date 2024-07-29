@@ -138,7 +138,7 @@ const validate = ({ target }) => {
   return validity
 }
 
-export const setupDrakeDialog = ({ controls }) => {
+export const setupDrakeDialog = ({ controlPanel }) => {
   const resetButton = document.getElementById('reset-button')
   const randomButton = document.getElementById('random-button')
   const configButton = document.getElementById('config-button')
@@ -152,8 +152,8 @@ export const setupDrakeDialog = ({ controls }) => {
   configButton.addEventListener('click', () => {
     if (typeof configDialog.showModal === 'function') {
       initDrakeForm()
-      restart = controls.isPlaying
-      if (controls.isPlaying) controls.playPauseToggle()
+      restart = controlPanel.isPlaying
+      if (controlPanel.isPlaying) controlPanel.playPauseToggle()
       configDialog.showModal()
     } else {
       console.log('The <dialog> API is not implemented on this browser.')
@@ -172,7 +172,7 @@ export const setupDrakeDialog = ({ controls }) => {
     switch (applyDrakeForm()) {
       case ApplyStatus.FAILURE:      e.preventDefault()
         break
-      case ApplyStatus.HARD_RESET:   controls.hardReset()
+      case ApplyStatus.HARD_RESET:   controlPanel.hardReset()
         break
       case ApplyStatus.SUCCESS:
         break
@@ -180,7 +180,7 @@ export const setupDrakeDialog = ({ controls }) => {
   })
   configDialog.addEventListener('reset', () => configDialog.close())
   configDialog.addEventListener('close', () => {
-    if (restart) controls.playPauseToggle()
+    if (restart) controlPanel.playPauseToggle()
   })
   form.addEventListener('input', ({ target }) => {
     const { id } = target
