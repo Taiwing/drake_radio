@@ -101,7 +101,7 @@ export const presets = {
     'intelligence-fraction': 0.01,
     'communication-fraction': 0.75,
     'civilization-lifetime': 304,
-    'speed': 500,
+    'speed': 4000,
   },
   /* Longer Lifetime for Civilizations */
   'optimistic': {
@@ -112,7 +112,7 @@ export const presets = {
     'intelligence-fraction': 0.05,
     'communication-fraction': 0.75,
     'civilization-lifetime': 10_000,
-    'speed': 250,
+    'speed': 1000,
   },
   /* Largest Estimates */
   'star-trek': {
@@ -123,22 +123,8 @@ export const presets = {
     'intelligence-fraction': 1,
     'communication-fraction': 0.2,
     'civilization-lifetime': 1.282051e+7,
-    'speed': 200,
-    'first-signals': false,
-    'last-signals': false,
-  },
-  /* Debug (one) */
-  // TODO: Remove this preset or only show in dev mode
-  'debug': {
-    'new-stars-rate': 1,
-    'planet-fraction': 1,
-    'habitable-average': 1,
-    'life-fraction': 1,
-    'intelligence-fraction': 1,
-    'communication-fraction': 1,
-    'civilization-lifetime': 1,
-    'speed': 200,
-    'first-signals': false,
-    'last-signals': false,
+    'speed': 1000,
+    'first-signals': true,
+    'last-signals': true,
   },
 }
