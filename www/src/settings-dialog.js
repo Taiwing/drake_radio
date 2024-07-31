@@ -209,7 +209,7 @@ const SettingsDialogHTML = `
 </form>
 
 <div class="button-line">
-	<input form="drake-form" type="submit" value="Save" />
+	<input form="drake-form" type="submit" value="Apply" />
 	<button title="Random" id="random-button">
 		<i class="fa-solid fa-dice-six"></i>
 	</button>
@@ -220,70 +220,6 @@ const SettingsDialogHTML = `
 </div>
 `
 
-const setFormValue = ({ name, value }) => {
-  const element = document.getElementById(name)
-  switch (element.tagName) {
-    case 'INPUT':
-      if (element.type === 'text') {
-        element.value = formatNumber(value, 8, 6, true)
-        validate({ target: element })
-      } else if (element.type === 'checkbox') {
-        element.checked = value
-      }
-      break
-    case 'SELECT':
-      element.value = value
-      break
-    case 'OUTPUT':
-      element.value = formatNumber(value, 8, 6, true)
-      break
-  }
-}
-
-const getFormValue = ({ name }) => {
-  const element = document.getElementById(name)
-  switch (element.tagName) {
-    case 'INPUT':
-      if (element.type === 'text') return parseFloat(element.value)
-      else if (element.type === 'checkbox') return element.checked
-      break
-    case 'SELECT':
-      return element.value
-      break
-    case 'OUTPUT':
-      return parseFloat(element.value)
-      break
-  }
-}
-
-const formMultiply = (result, name) => {
-  const value = getFormValue({ name })
-  return result * (Number.isNaN(value) ? 0 : value)
-}
-
-const updateEquationResult = () => {
-  setFormValue({ name: 'N', value: drakeParameters.reduce(formMultiply, 1) })
-  setFormValue({ name: 'Ny', value: yearlyParameters.reduce(formMultiply, 1) })
-}
-
-const applyPreset = ({ name }) => {
-  const preset = presets[name]
-  for (const field in preset) {
-    const value = preset[field]
-    setFormValue({ name: field, value })
-  }
-}
-
-const resetDrakeForm = () => {
-  for (const name in config) {
-    if (config[name].def === undefined) continue
-    const { def } = config[name]
-    setFormValue({ name, value: def })
-  }
-  applyPreset({ name: config['preset'].def })
-  updateEquationResult()
-}
-
 class ApplyStatus {
   static #_FAILURE = 0
   static #_SUCCESS = 1
@@ -292,47 +228,6 @@ class ApplyStatus {
   static get FAILURE() { return this.#_FAILURE }
   static get SUCCESS() { return this.#_SUCCESS }
   static get HARD_RESET() { return this.#_HARD_RESET }
-}
-
-const applyDrakeForm = () => {
-  const values = {}
-  let hardReset = []
-  for (const name in config) {
-    const value = getFormValue({ name })
-    if (config[name].hardReset
-      && config[name].current !== undefined
-      && value !== config[name].current) {
-      hardReset.push(name)
-    }
-    values[name] = value
-  }
-
-  // In case of hard reset prompt user to confirm
-  if (hardReset.length > 0) {
-    const message = `The following parameters have been changed: ${hardReset.join(', ')}. This will trigger a hard reset. Do you want to proceed?`
-    if (!confirm(message)) return ApplyStatus.FAILURE
-  }
-
-  applyConfig(values)
-
-  return hardReset.length > 0 ? ApplyStatus.HARD_RESET : ApplyStatus.SUCCESS
-}
-
-const initDrakeForm = () => {
-  for (const name in config) {
-    const { current } = config[name]
-    setFormValue({ name, value: current })
-  }
-}
-
-const randomDrakeForm = () => {
-  for (const name of drakeParameters) {
-    const { min, max, randomMax } = config[name]
-    const element = document.getElementById(name)
-    element.value = randomFloat(min, randomMax || max).toFixed(2)
-  }
-  updateEquationResult()
-  if (config['preset'].current) setFormValue({ name: 'preset', value: "" })
 }
 
 const validate = ({ target }) => {
@@ -359,9 +254,9 @@ class SettingsDialog extends CustomDialog {
 
     this._restart
     const resetButton = this.querySelector('#reset-button')
-    resetButton.addEventListener('click', resetDrakeForm)
+    resetButton.addEventListener('click', () => this._resetForm())
     const randomButton = this.querySelector('#random-button')
-    randomButton.addEventListener('click', randomDrakeForm)
+    randomButton.addEventListener('click', () => this._randomForm())
 
     this._form = this.querySelector('#drake-form')
     this._form.querySelectorAll('input[type="text"]').forEach((element) => {
@@ -370,22 +265,24 @@ class SettingsDialog extends CustomDialog {
     this._form.addEventListener('input', ({ target }) => {
       const { id } = target
       if (!drakeParameters.includes(id)) return
-      updateEquationResult()
-      if (config['preset'].current) setFormValue({ name: 'preset', value: "" })
+      this._updateResults()
+      if (config['preset'].current) {
+        this._setFormValue({ name: 'preset', value: "" })
+      }
     })
 
     const preset = this.querySelector('#preset')
     preset.addEventListener('input', ({ target }) => {
       const { value } = target
       if (!value) return
-      applyPreset({ name: value })
-      updateEquationResult()
+      this._applyPreset({ name: value })
+      this._updateResults()
     })
   }
 
   setup({ settingsButton, controlPanel }) {
     settingsButton.addEventListener('click', () => {
-      initDrakeForm()
+      this._initForm()
       this._restart = controlPanel.isPlaying
       if (controlPanel.isPlaying) controlPanel.playPauseToggle()
       this.showModal()
@@ -401,7 +298,7 @@ class SettingsDialog extends CustomDialog {
           return
         }
       }
-      switch (applyDrakeForm()) {
+      switch (this._applyForm()) {
         case ApplyStatus.FAILURE:      e.preventDefault()
           break
         case ApplyStatus.HARD_RESET:   controlPanel.hardReset()
@@ -414,6 +311,118 @@ class SettingsDialog extends CustomDialog {
     this.addEventListener('close', () => {
       if (this._restart) controlPanel.playPauseToggle()
     })
+  }
+
+  _setFormValue({ name, value }) {
+    const element = this._form.querySelector(`#${name}`)
+    switch (element.tagName) {
+      case 'INPUT':
+        if (element.type === 'text') {
+          element.value = formatNumber(value, 8, 6, true)
+          validate({ target: element })
+        } else if (element.type === 'checkbox') {
+          element.checked = value
+        }
+        break
+      case 'SELECT':
+        element.value = value
+        break
+      case 'OUTPUT':
+        element.value = formatNumber(value, 8, 6, true)
+        break
+    }
+  }
+
+  _getFormValue({ name }) {
+    const element = this._form.querySelector(`#${name}`)
+    switch (element.tagName) {
+      case 'INPUT':
+        if (element.type === 'text') return parseFloat(element.value)
+        else if (element.type === 'checkbox') return element.checked
+        break
+      case 'SELECT':
+        return element.value
+        break
+      case 'OUTPUT':
+        return parseFloat(element.value)
+        break
+    }
+  }
+
+  _initForm() {
+    for (const name in config) {
+      const { current } = config[name]
+      this._setFormValue({ name, value: current })
+    }
+  }
+
+  _applyPreset({ name }) {
+    const preset = presets[name]
+    for (const field in preset) {
+      const value = preset[field]
+      this._setFormValue({ name: field, value })
+    }
+  }
+
+  _updateResults() {
+    const formMultiply = (result, name) => {
+      const value = this._getFormValue({ name })
+      return result * (Number.isNaN(value) ? 0 : value)
+    }
+    this._setFormValue({
+      name: 'N',
+      value: drakeParameters.reduce(formMultiply, 1),
+    })
+    this._setFormValue({
+      name: 'Ny',
+      value: yearlyParameters.reduce(formMultiply, 1),
+    })
+  }
+
+  _applyForm() {
+    const values = {}
+    let hardReset = []
+    for (const name in config) {
+      const value = this._getFormValue({ name })
+      if (config[name].hardReset
+        && config[name].current !== undefined
+        && value !== config[name].current) {
+        hardReset.push(name)
+      }
+      values[name] = value
+    }
+
+    // In case of hard reset prompt user to confirm
+    if (hardReset.length > 0) {
+      const message = `The following parameters have been changed: ${hardReset.join(', ')}. This will trigger a hard reset. Do you want to proceed?`
+      if (!confirm(message)) return ApplyStatus.FAILURE
+    }
+
+    applyConfig(values)
+
+    return hardReset.length > 0 ? ApplyStatus.HARD_RESET : ApplyStatus.SUCCESS
+  }
+
+  _randomForm() {
+    for (const name of drakeParameters) {
+      const { min, max, randomMax } = config[name]
+      const element = this._form.querySelector(`#${name}`)
+      element.value = randomFloat(min, randomMax || max).toFixed(2)
+    }
+    this._updateResults()
+    if (config['preset'].current) {
+      this._setFormValue({ name: 'preset', value: "" })
+    }
+  }
+
+  _resetForm() {
+    for (const name in config) {
+      if (config[name].def === undefined) continue
+      const { def } = config[name]
+      this._setFormValue({ name, value: def })
+    }
+    this._applyPreset({ name: config['preset'].def })
+    this._updateResults()
   }
 }
 

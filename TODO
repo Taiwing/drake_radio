@@ -37,7 +37,6 @@ MAYBE:
 
 - add a scale for the distances (how to handle the zoom ?), or maybe just give
   the size info on an explication page
-- refactor the drake file
 
 FIX:
 
