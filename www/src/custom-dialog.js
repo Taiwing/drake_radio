@@ -13,7 +13,7 @@ function dialogOutsideClickClose(e) {
   }
 }
 
-class CustomDialog extends HTMLDialogElement {
+export class CustomDialog extends HTMLDialogElement {
   constructor() {
     super()
     this.addEventListener('click', dialogOutsideClickClose)

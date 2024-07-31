@@ -2,7 +2,6 @@ import { World } from './world/world.js'
 import { Simulation } from './simulation/index.js'
 import { galaxySpec } from './simulation/constants.js'
 import { initConfig } from './simulation/config.js'
-import { setupDrakeDialog } from './drake-form.js'
 
 const main = () => {
   initConfig()
@@ -13,9 +12,11 @@ const main = () => {
   window.addEventListener('DOMContentLoaded', () => {
     const statsPanel = document.querySelector('stats-panel')
     const controlPanel = document.querySelector('control-panel')
+    const settingsDialog = document.querySelector('[is="settings-dialog"]')
+    const settingsButton = document.querySelector('#settings-button')
     statsPanel.setup({ simulation })
     controlPanel.setup({ simulation, world, statsPanel })
-    setupDrakeDialog({ controlPanel })
+    settingsDialog.setup({ settingsButton, controlPanel })
   })
 }
 
