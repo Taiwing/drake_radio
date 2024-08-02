@@ -1,4 +1,4 @@
-import { formatNumber } from './utils.js'
+import { formatNumber, capitalize } from './utils.js'
 import { randomFloat } from './simulation/math.js'
 import {
   config,
@@ -18,11 +18,6 @@ const SettingsDialogHTML = `
 			<span>Preset</span>
 			<select name="preset" id="preset">
 				<option value="">-- None --</option>
-				<option value="pessimistic">Pessimistic</option>
-				<option value="conservative">Conservative</option>
-				<option value="reasonable">Reasonable</option>
-				<option value="optimistic">Optimistic</option>
-				<option value="star-trek">Star Trek</option>
 			</select>
 		</label>
 		<label class="form-line">
@@ -271,8 +266,11 @@ class SettingsDialog extends CustomDialog {
       }
     })
 
-    const preset = this.querySelector('#preset')
-    preset.addEventListener('input', ({ target }) => {
+    this._preset = this.querySelector('#preset')
+    for (const preset in presets) {
+      this._addPresetOption(preset)
+    }
+    this._preset.addEventListener('input', ({ target }) => {
       const { value } = target
       if (!value) return
       this._applyPreset({ name: value })
@@ -354,6 +352,13 @@ class SettingsDialog extends CustomDialog {
       const { current } = config[name]
       this._setFormValue({ name, value: current })
     }
+  }
+
+  _addPresetOption(name) {
+    const option = document.createElement('option')
+    option.value = name
+    option.textContent = capitalize(name.replace('-', ' '))
+    this._preset.append(option)
   }
 
   _applyPreset({ name }) {
