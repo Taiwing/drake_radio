@@ -441,9 +441,7 @@ class SettingsDialog extends CustomDialog {
       element.value = randomFloat(min, randomMax || max).toFixed(2)
     }
     this._updateResults()
-    if (config['preset'].current) {
-      this._setFormValue({ name: 'preset', value: "" })
-    }
+    this._setFormValue({ name: 'preset', value: "" })
   }
 
   _resetForm() {
