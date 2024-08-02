@@ -11,17 +11,16 @@ import { CustomDialog } from './custom-dialog.js'
 
 const SettingsDialogHTML = `
 <h3>Settings</h3>
+<dialog is="presets-dialog"></dialog>
 <form id="drake-form" method="dialog">
 	<fieldset class="fieldset-grid">
 		<legend>Drake Equation</legend>
 		<label class="grid-label" for="preset">Preset</label>
     <div class="grid-field" id="presets-field">
 		  <select name="preset" id="preset"></select>
-      <!--
-			<button title="Edit Presets" id="presets-button">
+			<button type="button" title="Edit Presets" id="presets-button">
 				<i class="fa-solid fa-pen-to-square"></i>
 			</button>
-      -->
     </div>
 		<label class="grid-label" for="new-stars-rate">
 			<modal-button>
@@ -317,6 +316,18 @@ class SettingsDialog extends CustomDialog {
     this.addEventListener('close', () => {
       if (this._restart) controlPanel.playPauseToggle()
     })
+
+    const presetsButton = this.querySelector('#presets-button')
+    const presetDialog = this.querySelector('[is="presets-dialog"]')
+    presetDialog.setup({ presetsButton })
+    presetDialog.onSubmit = (presetMap) => {
+      const selected = this._preset.value
+      const { current } = config['preset']
+      this._reloadPresets()
+      const newSelected = selected in presetMap ? presetMap[selected] : ''
+      config['preset'].current = current in presetMap ? presetMap[current] : ''
+      this._setFormValue({ name: 'preset', value: newSelected })
+    }
   }
 
   _setFormValue({ name, value }) {
@@ -356,6 +367,7 @@ class SettingsDialog extends CustomDialog {
   }
 
   _initForm() {
+    this._reloadPresets()
     for (const name in config) {
       const { current } = config[name]
       this._setFormValue({ name, value: current })

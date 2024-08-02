@@ -136,7 +136,7 @@ const defaultPresets = {
   },
 }
 
-export const presets = {}
+export let presets = {}
 
 export const applyConfig = (values) => {
   for (const name in values) {
@@ -144,7 +144,7 @@ export const applyConfig = (values) => {
   }
 }
 
-const loadStoredPresets = () => {
+export const loadStoredPresets = () => {
   let storedPresets = localStorage.getItem('presets')
   if (!storedPresets) {
     localStorage.setItem('presets', JSON.stringify(defaultPresets))
@@ -152,18 +152,25 @@ const loadStoredPresets = () => {
   } else {
     storedPresets = JSON.parse(storedPresets)
   }
-  for (const name in storedPresets) {
-    presets[name] = storedPresets[name]
-  }
+  presets = structuredClone(storedPresets)
 }
 
-const loadStoredConfig = () => {
+export const loadStoredConfig = () => {
   let storedConfig = localStorage.getItem('config')
   if (storedConfig) {
     storedConfig = JSON.parse(storedConfig)
     for (const name in storedConfig) {
       config[name].def = storedConfig[name]
     }
+  } else {
+    storedConfig = {}
+    for (const name in config) {
+      const { def } = config[name]
+      if (def !== undefined) {
+        storedConfig[name] = def
+      }
+    }
+    localStorage.setItem('config', JSON.stringify(storedConfig))
   }
 }
 

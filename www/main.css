@@ -154,3 +154,9 @@ input[type="text"] {
 stats-panel {
 	margin: 1em;
 }
+
+#presets-form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+}
