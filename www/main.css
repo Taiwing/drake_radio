@@ -107,10 +107,6 @@ input[type="text"] {
 	flex-wrap: wrap;
 }
 
-.form-line, .checkbox-line {
-	margin-top: 0.5em;
-}
-
 .form-line > * {
 	flex: 1;
 }
@@ -134,6 +130,12 @@ input[type="text"] {
 .fieldset-grid {
 	display: grid;
 	grid-template-columns: auto 0.5fr;
+	gap: 0.5em;
+}
+
+.fieldset-flex {
+	display: flex;
+	flex-direction: column;
 	gap: 0.5em;
 }
 

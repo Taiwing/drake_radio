@@ -176,7 +176,7 @@ const SettingsDialogHTML = `
 	  <output class="grid-field" id="N">0</output>
 	</fieldset>
 
-	<fieldset>
+	<fieldset class="fieldset-flex">
 		<legend>Simulation</legend>
 		<label class="form-line">
 			<modal-button>
