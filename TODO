@@ -32,8 +32,5 @@ MAYBE:
   the event is not visible anymore (except if the user has paused or changed
   speed in between).
 
-- AN OTHER COOL FEATURE would be to let the user create and his own presets.
-  They should be stored locally (using cookies maybe).
-
 - add a scale for the distances (how to handle the zoom ?), or maybe just give
   the size info on an explication page

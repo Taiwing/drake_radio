@@ -214,6 +214,9 @@ const SettingsDialogHTML = `
 
 <div class="button-line">
 	<input form="drake-form" type="submit" value="Apply" />
+	<button title="Save As" id="save-button">
+		<i class="fa-solid fa-floppy-disk"></i>
+	</button>
 	<button title="Random" id="random-button">
 		<i class="fa-solid fa-dice-six"></i>
 	</button>
@@ -257,6 +260,8 @@ class SettingsDialog extends CustomDialog {
     this.innerHTML = SettingsDialogHTML
 
     this._restart
+    const saveButton = this.querySelector('#save-button')
+    saveButton.addEventListener('click', () => this._saveForm())
     const resetButton = this.querySelector('#reset-button')
     resetButton.addEventListener('click', () => this._resetForm())
     const randomButton = this.querySelector('#random-button')
@@ -275,6 +280,9 @@ class SettingsDialog extends CustomDialog {
 
     this._preset = this.querySelector('#preset')
     this._reloadPresets()
+    this._preset.addEventListener('change', ({ target }) => {
+      saveButton.disabled = !!target.value
+    })
     this._preset.addEventListener('input', ({ target }) => {
       const { value } = target
       if (!value) return
@@ -341,6 +349,7 @@ class SettingsDialog extends CustomDialog {
         break
       case 'SELECT':
         element.value = value
+        element.dispatchEvent(new Event('change'))
         break
       case 'OUTPUT':
         element.value = formatNumber(value, 8, 6, true)
@@ -452,6 +461,23 @@ class SettingsDialog extends CustomDialog {
     }
     this._applyPreset({ name: config['preset'].def })
     this._updateResults()
+  }
+
+  _saveForm() {
+    const name = prompt('Enter a name for the preset')
+    if (!name) return
+    const preset = {}
+    for (const field in config) {
+      if (['preset', 'Ny', 'N'].includes(field)) continue
+      const value = this._getFormValue({ name: field })
+      if (value !== config[field].def) {
+        preset[field] = value
+      }
+    }
+    presets[name] = preset
+    localStorage.setItem('presets', JSON.stringify(presets))
+    this._reloadPresets()
+    this._setFormValue({ name: 'preset', value: name })
   }
 }
 
