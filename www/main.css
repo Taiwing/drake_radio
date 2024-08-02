@@ -124,6 +124,27 @@ input[type="text"] {
 	justify-content: space-between;
 }
 
+#presets-field {
+	display: flex;
+	flex-direction: row;
+	gap: 0.5em;
+	min-width: fit-content;
+}
+
+.fieldset-grid {
+	display: grid;
+	grid-template-columns: auto 0.5fr;
+	gap: 0.5em;
+}
+
+.grid-label {
+	grid-column: 1 / 2;
+}
+
+.grid-field {
+	grid-column: 2 / 2;
+}
+
 .smooth-block {
 	padding: 0.5em;
 	border-radius: 10px;

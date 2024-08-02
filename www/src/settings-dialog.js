@@ -12,14 +12,18 @@ import { CustomDialog } from './custom-dialog.js'
 const SettingsDialogHTML = `
 <h3>Settings</h3>
 <form id="drake-form" method="dialog">
-	<fieldset>
+	<fieldset class="fieldset-grid">
 		<legend>Drake Equation</legend>
-		<label class="form-line">
-			<span>Preset</span>
-			<select name="preset" id="preset">
-			</select>
-		</label>
-		<label class="form-line">
+		<label class="grid-label" for="preset">Preset</label>
+    <div class="grid-field" id="presets-field">
+		  <select name="preset" id="preset"></select>
+      <!--
+			<button title="Edit Presets" id="presets-button">
+				<i class="fa-solid fa-pen-to-square"></i>
+			</button>
+      -->
+    </div>
+		<label class="grid-label" for="new-stars-rate">
 			<modal-button>
 				<span slot="button">R<sub>*</sub></span>
 				<div slot="modal">
@@ -29,13 +33,14 @@ const SettingsDialogHTML = `
 					</p>
 				</div>
 			</modal-button>
-			<input
-				type="text"
-				inputmode="numeric"
-				id="new-stars-rate"
-			/>
 		</label>
-		<label class="form-line">
+		<input
+			type="text"
+			inputmode="numeric"
+			id="new-stars-rate"
+      class="grid-field"
+		/>
+		<label class="grid-label" for="planet-fraction">
 			<modal-button>
 				<span slot="button">f<sub>p</sub></span>
 				<div slot="modal">
@@ -45,13 +50,14 @@ const SettingsDialogHTML = `
 					</p>
 				</div>
 			</modal-button>
-			<input
-				type="text"
-				inputmode="numeric"
-				id="planet-fraction"
-			/>
 		</label>
-		<label class="form-line">
+		<input
+			type="text"
+			inputmode="numeric"
+			id="planet-fraction"
+      class="grid-field"
+		/>
+		<label class="grid-label" for="habitable-average">
 			<modal-button>
 				<span slot="button">n<sub>e</sub></span>
 				<div slot="modal">
@@ -61,13 +67,14 @@ const SettingsDialogHTML = `
 					</p>
 				</div>
 			</modal-button>
-			<input
-				type="text"
-				inputmode="numeric"
-				id="habitable-average"
-			/>
 		</label>
-		<label class="form-line">
+		<input
+			type="text"
+			inputmode="numeric"
+			id="habitable-average"
+      class="grid-field"
+		/>
+		<label class="grid-label" for="life-fraction">
 			<modal-button>
 				<span slot="button">f<sub>l</sub></span>
 				<div slot="modal">
@@ -77,13 +84,14 @@ const SettingsDialogHTML = `
 					</p>
 				</div>
 			</modal-button>
-			<input
-				type="text"
-				inputmode="numeric"
-				id="life-fraction"
-			/>
 		</label>
-		<label class="form-line">
+		<input
+			type="text"
+			inputmode="numeric"
+			id="life-fraction"
+      class="grid-field"
+		/>
+		<label class="grid-label" for="intelligence-fraction">
 			<modal-button>
 				<span slot="button">f<sub>i</sub></span>
 				<div slot="modal">
@@ -94,13 +102,14 @@ const SettingsDialogHTML = `
 					</p>
 				</div>
 			</modal-button>
-			<input
-				type="text"
-				inputmode="numeric"
-				id="intelligence-fraction"
-			/>
 		</label>
-		<label class="form-line">
+		<input
+			type="text"
+			inputmode="numeric"
+			id="intelligence-fraction"
+      class="grid-field"
+		/>
+		<label class="grid-label" for="communication-fraction">
 			<modal-button>
 				<span slot="button">f<sub>c</sub></span>
 				<div slot="modal">
@@ -112,13 +121,14 @@ const SettingsDialogHTML = `
 					</p>
 				</div>
 			</modal-button>
-			<input
-				type="text"
-				inputmode="numeric"
-				id="communication-fraction"
-			/>
 		</label>
-		<label class="form-line">
+		<input
+			type="text"
+			inputmode="numeric"
+			id="communication-fraction"
+      class="grid-field"
+		/>
+		<label class="grid-label" for="civilization-lifetime">
 			<modal-button>
 				<span slot="button">L</span>
 				<div slot="modal">
@@ -129,17 +139,18 @@ const SettingsDialogHTML = `
 					</p>
 				</div>
 			</modal-button>
-			<input
-				type="text"
-				inputmode="numeric"
-				id="civilization-lifetime"
-			/>
 		</label>
+		<input
+			type="text"
+			inputmode="numeric"
+			id="civilization-lifetime"
+      class="grid-field"
+		/>
 	</fieldset>
 
-	<fieldset>
+	<fieldset class="fieldset-grid">
 		<legend>Results</legend>
-		<label class="form-line">
+		<label class="grid-label" for="Ny">
 			<modal-button>
 				<span slot="button">N<sub>y</sub>:</span>
 				<div slot="modal">
@@ -150,9 +161,9 @@ const SettingsDialogHTML = `
 					</p>
 				</div>
 			</modal-button>
-			<output id="Ny">0</output>
 		</label>
-		<label class="form-line">
+	  <output class="grid-field" id="Ny">0</output>
+		<label class="grid-label" for="N">
 			<modal-button>
 				<span slot="button">N:</span>
 				<div slot="modal">
@@ -162,8 +173,8 @@ const SettingsDialogHTML = `
 					</p>
 				</div>
 			</modal-button>
-			<output id="N">0</output>
 		</label>
+	  <output class="grid-field" id="N">0</output>
 	</fieldset>
 
 	<fieldset>
