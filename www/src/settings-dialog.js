@@ -270,9 +270,7 @@ class SettingsDialog extends CustomDialog {
       const { id } = target
       if (!drakeParameters.includes(id)) return
       this._updateResults()
-      if (config['preset'].current) {
-        this._setFormValue({ name: 'preset', value: "" })
-      }
+      this._setFormValue({ name: 'preset', value: "" })
     })
 
     this._preset = this.querySelector('#preset')
