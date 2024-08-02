@@ -17,7 +17,6 @@ const SettingsDialogHTML = `
 		<label class="form-line">
 			<span>Preset</span>
 			<select name="preset" id="preset">
-				<option value="">-- None --</option>
 			</select>
 		</label>
 		<label class="form-line">
@@ -267,9 +266,7 @@ class SettingsDialog extends CustomDialog {
     })
 
     this._preset = this.querySelector('#preset')
-    for (const preset in presets) {
-      this._addPresetOption(preset)
-    }
+    this._reloadPresets()
     this._preset.addEventListener('input', ({ target }) => {
       const { value } = target
       if (!value) return
@@ -354,11 +351,19 @@ class SettingsDialog extends CustomDialog {
     }
   }
 
-  _addPresetOption(name) {
+  _addPresetOption(value, name) {
     const option = document.createElement('option')
-    option.value = name
-    option.textContent = capitalize(name.replace('-', ' '))
+    option.value = value
+    option.textContent = name ? name : capitalize(value.replace('-', ' '))
     this._preset.append(option)
+  }
+
+  _reloadPresets() {
+    this._preset.innerHTML = ''
+    this._addPresetOption('', '-- None --')
+    for (const preset in presets) {
+      this._addPresetOption(preset)
+    }
   }
 
   _applyPreset({ name }) {

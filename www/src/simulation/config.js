@@ -76,7 +76,7 @@ export const yearlyParameters = drakeParameters.filter(
   name => name !== 'civilization-lifetime'
 )
 
-export const presets = {
+const defaultPresets = {
   /* Rare Earth Hypothesis */
   'pessimistic': {
     'new-stars-rate': 1.5,
@@ -136,23 +136,52 @@ export const presets = {
   },
 }
 
+export const presets = {}
+
 export const applyConfig = (values) => {
   for (const name in values) {
     config[name].current = values[name]
   }
 }
 
+const loadStoredPresets = () => {
+  let storedPresets = localStorage.getItem('presets')
+  if (!storedPresets) {
+    localStorage.setItem('presets', JSON.stringify(defaultPresets))
+    storedPresets = defaultPresets
+  } else {
+    storedPresets = JSON.parse(storedPresets)
+  }
+  for (const name in storedPresets) {
+    presets[name] = storedPresets[name]
+  }
+}
+
+const loadStoredConfig = () => {
+  let storedConfig = localStorage.getItem('config')
+  if (storedConfig) {
+    storedConfig = JSON.parse(storedConfig)
+    for (const name in storedConfig) {
+      config[name].def = storedConfig[name]
+    }
+  }
+}
+
 const configMultiply = (result, name) => result * config[name].current
 
 export const initConfig = () => {
+  loadStoredConfig()
   for (const name in config) {
     const { def } = config[name]
     if (def !== undefined) {
       config[name].current = def
     }
   }
+
+  loadStoredPresets()
   const { def } = config['preset']
   applyConfig(presets[def])
+
   config['N'].current = drakeParameters.reduce(configMultiply, 1)
   config['Ny'].current = yearlyParameters.reduce(configMultiply, 1)
 }
