@@ -127,9 +127,13 @@ input[type="text"] {
 	min-width: fit-content;
 }
 
+#presets-field > select {
+	width: 8em;
+}
+
 .fieldset-grid {
 	display: grid;
-	grid-template-columns: auto 0.5fr;
+	grid-template-columns: auto 0.865fr;
 	gap: 0.5em;
 }
 
