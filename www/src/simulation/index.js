@@ -98,7 +98,7 @@ export class Simulation {
   _kill({ spawnRate, elapsed }) {
     let dead = []
     const currentN = this.living.length
-    const averageN = config['N'].current
+    const averageN = config['N']
 
     let killRate
     if (averageN > 0) {
@@ -151,8 +151,8 @@ export class Simulation {
   onTick() {}
 
   tick({ delta }) {
-    const elapsed = config['speed'].current * delta
-    const spawnRate = config['Ny'].current * elapsed
+    const elapsed = config['speed'] * delta
+    const spawnRate = config['Ny'] * elapsed
 
     const birth = this._spawn({ spawnRate, elapsed })
     this.time += elapsed

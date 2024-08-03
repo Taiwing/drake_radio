@@ -4,6 +4,8 @@ import {
   config,
   presets,
   applyConfig,
+  configTemplate,
+  configDefaults,
   drakeParameters,
   yearlyParameters,
 } from './simulation/config.js'
@@ -239,7 +241,7 @@ class ApplyStatus {
 
 const validate = ({ target }) => {
   const value = parseFloat(target.value)
-  const { min, max } = config[target.id]
+  const { min, max } = configTemplate[target.id]
   let validity = ''
   if (target.value === '') {
     validity = 'Value required'
@@ -328,10 +330,10 @@ class SettingsDialog extends CustomDialog {
     presetDialog.setup({ presetsButton })
     presetDialog.onSubmit = (presetMap) => {
       const selected = this._preset.value
-      const { current } = config['preset']
+      const current = config['preset']
       this._reloadPresets()
       const newSelected = selected in presetMap ? presetMap[selected] : ''
-      config['preset'].current = current in presetMap ? presetMap[current] : ''
+      config['preset'] = current in presetMap ? presetMap[current] : ''
       this._setFormValue({ name: 'preset', value: newSelected })
     }
   }
@@ -376,8 +378,7 @@ class SettingsDialog extends CustomDialog {
   _initForm() {
     this._reloadPresets()
     for (const name in config) {
-      const { current } = config[name]
-      this._setFormValue({ name, value: current })
+      this._setFormValue({ name, value: config[name] })
     }
   }
 
@@ -424,9 +425,9 @@ class SettingsDialog extends CustomDialog {
     let hardReset = []
     for (const name in config) {
       const value = this._getFormValue({ name })
-      if (config[name].hardReset
-        && config[name].current !== undefined
-        && value !== config[name].current) {
+      if (configTemplate[name].hardReset
+        && config[name] !== undefined
+        && value !== config[name]) {
         hardReset.push(name)
       }
       values[name] = value
@@ -445,7 +446,7 @@ class SettingsDialog extends CustomDialog {
 
   _randomForm() {
     for (const name of drakeParameters) {
-      const { min, max, randomMax } = config[name]
+      const { min, max, randomMax } = configTemplate[name]
       const element = this._form.querySelector(`#${name}`)
       element.value = randomFloat(min, randomMax || max).toFixed(2)
     }
@@ -454,12 +455,10 @@ class SettingsDialog extends CustomDialog {
   }
 
   _resetForm() {
-    for (const name in config) {
-      if (config[name].def === undefined) continue
-      const { def } = config[name]
-      this._setFormValue({ name, value: def })
+    for (const name in configDefaults) {
+      this._setFormValue({ name, value: configDefaults[name] })
     }
-    this._applyPreset({ name: config['preset'].def })
+    this._applyPreset({ name: configDefaults['preset'] })
     this._updateResults()
   }
 
@@ -467,10 +466,10 @@ class SettingsDialog extends CustomDialog {
     const name = prompt('Enter a name for the preset')
     if (!name) return
     const preset = {}
-    for (const field in config) {
+    for (const field in configTemplate) {
       if (['preset', 'Ny', 'N'].includes(field)) continue
       const value = this._getFormValue({ name: field })
-      if (value !== config[field].def) {
+      if (value !== configDefaults[field]) {
         preset[field] = value
       }
     }

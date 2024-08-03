@@ -1,9 +1,8 @@
 import { CustomDialog } from './custom-dialog.js'
 import {
   loadStoredPresets,
-  loadStoredConfig,
+  configDefaults,
   presets,
-  config,
 } from './simulation/config.js'
 
 const PresetLineHTML = `
@@ -59,7 +58,7 @@ class PresetsDialog extends CustomDialog {
 
   _open() {
     this._form.innerHTML = ''
-    const { def } = config['preset']
+    const def = configDefaults['preset']
     for (const preset in presets) {
       const line = document.createElement('div')
       line.innerHTML = PresetLineHTML
@@ -113,9 +112,8 @@ class PresetsDialog extends CustomDialog {
     const newDefault = this._form.querySelector('input[type="radio"]:checked')
     const div = newDefault.closest('div')
     const preset = div.querySelector('input[type="text"]').value
-    config['preset'].def = preset
-    localStorage.removeItem('config')
-    loadStoredConfig()
+    configDefaults['preset'] = preset
+    localStorage.setItem('configDefaults', JSON.stringify(configDefaults))
   }
 
   _submit(e) {

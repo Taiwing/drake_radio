@@ -14,7 +14,7 @@ export const galaxySpec = {
   get CENTER_RADIUS() { return this.CENTER_DIAMETER / 2 },  // Center radius
   get TOTAL_DIAMETER() {
     // Diameter including star cloud if it is set
-    return config['star-cloud'].current ? this.DIAMETER * 2 : this.DIAMETER
+    return config['star-cloud'] ? this.DIAMETER * 2 : this.DIAMETER
   },
   get TOTAL_RADIUS() { return this.TOTAL_DIAMETER / 2 },  // Includes star cloud
 }

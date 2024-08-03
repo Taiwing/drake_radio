@@ -120,7 +120,7 @@ class StatsPanel extends HTMLElement {
     })
     this.setValue({
       name: 'speed',
-      value: formatNumber(config['speed'].current),
+      value: formatNumber(config['speed']),
     })
     this.setValue({
       name: 'living',

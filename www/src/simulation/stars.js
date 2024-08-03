@@ -48,7 +48,7 @@ export const starPoints = ({ count = 20000, centerRadius, radius, height }) => {
   points = points.concat(disk)
 
   // Global Star Cloud
-  if (config['star-cloud'].current) {
+  if (config['star-cloud']) {
     const global = spherePoints({
       count,
       radius: galaxySpec.TOTAL_RADIUS,

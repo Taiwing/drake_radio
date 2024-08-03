@@ -1,5 +1,5 @@
-import { config } from './simulation/config.js'
 import { galaxySpec } from './simulation/constants.js'
+import { config, configTemplate } from './simulation/config.js'
 import { Civilization, Simulation } from './simulation/index.js'
 
 const ControlPanelTemplate = document.createElement('template')
@@ -84,9 +84,10 @@ class ControlPanel extends HTMLElement {
   }
 
   speedDown() {
-    const { current, min } = config['speed']
+    const current = config['speed']
+    const { min } = configTemplate['speed']
     const newCurrent = Math.floor(current - current * SPEED_FACTOR)
-    config['speed'].current = newCurrent < min ? min : newCurrent
+    config['speed'] = newCurrent < min ? min : newCurrent
     this._statsPanel.tick()
   }
 
@@ -96,9 +97,10 @@ class ControlPanel extends HTMLElement {
   }
 
   speedUp() {
-    const { current, max } = config['speed']
+    const current = config['speed']
+    const { max } = configTemplate['speed']
     const newCurrent = Math.ceil(current + current * SPEED_FACTOR)
-    config['speed'].current = newCurrent > max ? max : newCurrent
+    config['speed'] = newCurrent > max ? max : newCurrent
     this._statsPanel.tick()
   }
 

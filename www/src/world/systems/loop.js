@@ -27,8 +27,8 @@ export class Loop {
 
   _tick () {
     this._delta = this._clock.getDelta()
-    const rotation = config['rotation'].current
-    const elapsed = config['speed'].current * this._delta
+    const rotation = config['rotation']
+    const elapsed = config['speed'] * this._delta
 
     let events
     if (this._simulation.isRunning) {

@@ -76,7 +76,7 @@ export class World {
     this._loop.updatables.push(galaxy)
     this._scene.add(galaxy)
 
-    if (config['first-signals'].current) {
+    if (config['first-signals']) {
       const firstSignals = new Signals({
         camera: this._camera,
         color: CIV_LIFE_COLOR,
@@ -86,7 +86,7 @@ export class World {
       this._scene.add(firstSignals)
     }
 
-    if (config['last-signals'].current) {
+    if (config['last-signals']) {
       const lastSignals = new Signals({
         camera: this._camera,
         color: CIV_DEATH_COLOR,

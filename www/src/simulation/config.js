@@ -1,4 +1,7 @@
-export const config = {
+// Configuration template for the Drake Equation simulation. Sets the default
+// values for the simulation parameters as well as limit values for the drake
+// parameters.
+export const configTemplate = {
   'new-stars-rate': {
     min: 0,
     max: 1000,
@@ -69,13 +72,7 @@ export const config = {
   },
 }
 
-export const drakeParameters = Object.keys(config).filter(
-  name => config[name].isDrakeParameter
-)
-export const yearlyParameters = drakeParameters.filter(
-  name => name !== 'civilization-lifetime'
-)
-
+// Default configuration presets for the simulation.
 const defaultPresets = {
   /* Rare Earth Hypothesis */
   'pessimistic': {
@@ -136,11 +133,23 @@ const defaultPresets = {
   },
 }
 
-export let presets = {}
+export let configDefaults = {}  // Default values for the simulation parameters
+export let config = {}          // Current values for the simulation parameters
+export let presets = {}         // Presets for the simulation parameters
+
+// Drake parameters that are used to compute N.
+export const drakeParameters = Object.keys(configTemplate).filter(
+  name => configTemplate[name].isDrakeParameter
+)
+
+// Drake parameters that are used to compute Ny.
+export const yearlyParameters = drakeParameters.filter(
+  name => name !== 'civilization-lifetime'
+)
 
 export const applyConfig = (values) => {
   for (const name in values) {
-    config[name].current = values[name]
+    config[name] = values[name]
   }
 }
 
@@ -148,47 +157,42 @@ export const loadStoredPresets = () => {
   let storedPresets = localStorage.getItem('presets')
   if (!storedPresets) {
     localStorage.setItem('presets', JSON.stringify(defaultPresets))
-    storedPresets = defaultPresets
-  } else {
-    storedPresets = JSON.parse(storedPresets)
+    storedPresets = localStorage.getItem('presets')
   }
-  presets = structuredClone(storedPresets)
+  presets = JSON.parse(storedPresets)
 }
 
-export const loadStoredConfig = () => {
-  let storedConfig = localStorage.getItem('config')
-  if (storedConfig) {
-    storedConfig = JSON.parse(storedConfig)
-    for (const name in storedConfig) {
-      config[name].def = storedConfig[name]
-    }
-  } else {
-    storedConfig = {}
-    for (const name in config) {
-      const { def } = config[name]
+const loadStoredConfigDefaults = () => {
+  let storedConfigDefaults = localStorage.getItem('configDefaults')
+  if (!storedConfigDefaults) {
+    const defaultConfigDefaults = {}
+    for (const name in configTemplate) {
+      const { def } = configTemplate[name]
       if (def !== undefined) {
-        storedConfig[name] = def
+        defaultConfigDefaults[name] = def
       }
     }
-    localStorage.setItem('config', JSON.stringify(storedConfig))
+    localStorage.setItem(
+      'configDefaults',
+      JSON.stringify(defaultConfigDefaults)
+    )
+    storedConfigDefaults = localStorage.getItem('configDefaults')
   }
+  configDefaults = JSON.parse(storedConfigDefaults)
 }
 
-const configMultiply = (result, name) => result * config[name].current
+const configMultiply = (result, name) => result * config[name]
 
 export const initConfig = () => {
-  loadStoredConfig()
-  for (const name in config) {
-    const { def } = config[name]
-    if (def !== undefined) {
-      config[name].current = def
-    }
-  }
-
+  loadStoredConfigDefaults()
   loadStoredPresets()
-  const { def } = config['preset']
+
+  for (const name in configTemplate) {
+    config[name] = configDefaults[name]
+  }
+  const def = configDefaults['preset']
   applyConfig(presets[def])
 
-  config['N'].current = drakeParameters.reduce(configMultiply, 1)
-  config['Ny'].current = yearlyParameters.reduce(configMultiply, 1)
+  config['N'] = drakeParameters.reduce(configMultiply, 1)
+  config['Ny'] = yearlyParameters.reduce(configMultiply, 1)
 }
