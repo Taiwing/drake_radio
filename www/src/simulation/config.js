@@ -162,7 +162,7 @@ export const loadStoredPresets = () => {
   presets = JSON.parse(storedPresets)
 }
 
-const loadStoredConfigDefaults = () => {
+export const loadStoredConfigDefaults = () => {
   let storedConfigDefaults = localStorage.getItem('configDefaults')
   if (!storedConfigDefaults) {
     const defaultConfigDefaults = {}

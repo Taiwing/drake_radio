@@ -1,5 +1,6 @@
 import { CustomDialog } from './custom-dialog.js'
 import {
+  loadStoredConfigDefaults,
   loadStoredPresets,
   configDefaults,
   presets,
@@ -38,6 +39,7 @@ const PresetsDialogHTML = `
   <form id="presets-form" method="dialog"></form>
   <div class="button-line">
     <input form="presets-form" type="submit" value="Save" />
+    <input form="presets-form" type="submit" value="Restore" />
     <input form="presets-form" type="reset" value="Cancel" />
   </div>
 `
@@ -116,11 +118,31 @@ class PresetsDialog extends CustomDialog {
     localStorage.setItem('configDefaults', JSON.stringify(configDefaults))
   }
 
+  _restore() {
+    if (!confirm('Restoring the default presets will delete all custom presets. Are you sure you want to proceed ?')) {
+      return false
+    }
+    localStorage.removeItem('presets')
+    localStorage.removeItem('configDefaults')
+    loadStoredPresets()
+    loadStoredConfigDefaults()
+    return true
+  }
+
   _submit(e) {
+    const { value } = e.submitter
     e.stopPropagation()
     e.preventDefault()
-    const presetMap = this._savePresets()
-    this._saveDefault()
+    let presetMap = {}
+    switch (value) {
+      case 'Save':
+        presetMap = this._savePresets()
+        this._saveDefault()
+        break
+      case 'Restore':
+        if (!this._restore()) return
+        break
+    }
     this.onSubmit(presetMap)
     this.close()
   }
