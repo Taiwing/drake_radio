@@ -3,6 +3,7 @@
   current N, average lifetime and galaxy dimensions). Maybe switch methods at a
   some point. Also show their stats.
 
+- add a 'restore' button in presets menu to get back to the default preset list
 - expand README file explanations
 - add a documentation page (about how the simulation works, what the bubbles and
   animation precisely represent, etc...)
