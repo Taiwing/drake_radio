@@ -15,6 +15,7 @@ export const config = {
   get 'rotation-per-sec'() { return MathUtils.degToRad(this['rotation']) },
   'live-color': 0x66acdc,
   'dead-color': 0xbf1111,
-  'live-signal': true,
-  'dead-signal': true,
+  'live-signal': false,
+  'dead-signal': false,
+  'kdtree-search': 1,
 }

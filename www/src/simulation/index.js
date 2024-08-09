@@ -2,6 +2,7 @@ import { starPoints } from './stars.js'
 import { insertSorted } from '../utils.js'
 import { config } from './config.js'
 import { randomFloat, distanceToOrigin } from './math.js'
+import { KDTree } from './kd-tree.js'
 
 export class Light {
   constructor({ birth, index, x, y, z }) {
@@ -49,6 +50,8 @@ export class Simulation {
       count: config['points-count'],
       cubeSide: config['cube-side'],
     })
+    this.stars.forEach((star, index) => star.index = index)
+    this.starTree = new KDTree(this.stars, ['x', 'y', 'z'])
 
     // Current year (floating point number)
     this.time = 0
@@ -57,6 +60,7 @@ export class Simulation {
     this.on = []    // Still emitting light
     this.off = []   // Off but light  still visible
     this.gone = []  // Off and all ligt has left
+    this.lightQueries = []
 
     // Simulation state
     this.isRunning = false
@@ -84,7 +88,11 @@ export class Simulation {
         const index = Math.floor(Math.random() * this.starCount)
         const { x, y, z } = this.stars[index]
         const birth = this.time + timeOffset
-        born.push(new Light({ birth, index, x, y, z }))
+        const light = new Light({ birth, index, x, y, z })
+        born.push(light)
+        if (this.lightQueries.length < config['kdtree-search']) {
+          this.lightQueries.push(light)
+        }
         timeOffset += timeSlice
       }
       this.on = this.on.concat(born)
@@ -138,12 +146,27 @@ export class Simulation {
     while (lastOff >= 0) {
       const light = this.off[lastOff]
       if (light.isVisible(this.time)) break
-      else gone.push(light)
+      else {
+        gone.push(light)
+        if (this.lightQueries.includes(light)) {
+          this.lightQueries.splice(this.lightQueries.indexOf(light), 1)
+        }
+      }
       lastOff--
     }
     this.off = this.off.slice(0, lastOff + 1)
     this.gone = this.gone.concat(gone)
     return gone
+  }
+
+  _getBalls() {
+    const balls = []
+    for (const light of this.lightQueries) {
+      const radius =  this.time - light.birth
+      const ball = this.starTree.nearest_within_R(light.coord, radius)
+      balls.push(ball)
+    }
+    return balls
   }
 
   onTick() {}
@@ -156,9 +179,10 @@ export class Simulation {
     this.time += elapsed
     const death = this._kill({ spawnRate, elapsed })
     const gone = this._forget()
+    const balls = this._getBalls()
 
     if (this.onTick) this.onTick()
 
-    return { birth, death, gone }
+    return { birth, death, gone, balls }
   }
 }

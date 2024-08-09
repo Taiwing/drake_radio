@@ -77,6 +77,7 @@ export class Galaxy extends Group {
 
     this._civLifeColor = new Color(config['live-color'])
     this._civDeathColor = new Color(config['dead-color'])
+    this._testColor = new Color(0x00ff00)
     this._stars = this._createParticles({ points: stars })
     this._starColors = this._stars.geometry.attributes.color
     this._starCivCount = Array(stars.length).fill(0)
@@ -112,7 +113,7 @@ export class Galaxy extends Group {
 
   tick({ events }) {
     if (!events) return
-    const { birth, death } = events
+    const { birth, death, balls } = events
 
     for (const born of birth) {
       const { star } = born
@@ -125,6 +126,12 @@ export class Galaxy extends Group {
       this._starCivCount[star] -= 1
       if (this._starCivCount[star] === 0) {
         this._changeParticleColor({ index: star, color: this._civDeathColor })
+      }
+    }
+
+    for (const ball of balls) {
+      for (const { point: { index } } of ball) {
+        this._changeParticleColor({ index, color: this._testColor })
       }
     }
   }

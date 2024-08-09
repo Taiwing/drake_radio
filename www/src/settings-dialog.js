@@ -125,6 +125,16 @@ const SettingsDialogHTML = `
 			<span>Dead Signal</span>
 			<input type="checkbox" id="dead-signal" />
 		</label>
+
+		<label class="form-line">
+			<modal-button>
+				<span slot="button">KDTree Search</span>
+				<div slot="modal">
+					<p>Number of lights to search in KDTree.</p>
+				</div>
+			</modal-button>
+		  <input type="text" inputmode="numeric" id="kdtree-search" />
+		</label>
 	</fieldset>
 </form>
 
