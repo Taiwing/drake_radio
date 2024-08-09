@@ -1,19 +1,18 @@
 import { starPoints } from './stars.js'
 import { insertSorted } from '../utils.js'
-import { galaxySpec } from './constants.js'
 import { config } from './config.js'
 import { randomFloat, distanceToOrigin } from './math.js'
 
-export class Civilization {
+export class Light {
   constructor({ birth, index, x, y, z }) {
     this.birth = birth
     this.death = -1
     this.gone = -1
     this.star = index
     this.coord = { x, y, z }
-    this._id = Civilization.counter
+    this._id = Light.counter
     this.distanceToOrigin = distanceToOrigin(this.coord)
-    this.goneRadius = galaxySpec.TOTAL_RADIUS + this.distanceToOrigin
+    this.goneRadius = config['cube-side'] / 2 + this.distanceToOrigin
   }
 
   get id() {
@@ -21,16 +20,16 @@ export class Civilization {
   }
 
   static get counter() {
-    Civilization._counter = (Civilization._counter || 0) + 1
-    return Civilization._counter
+    Light._counter = (Light._counter || 0) + 1
+    return Light._counter
   }
 
   static get count() {
-    return Civilization._counter || 0
+    return Light._counter || 0
   }
 
   static reset() {
-    Civilization._counter = 0
+    Light._counter = 0
   }
 
   kill(time) {
@@ -47,18 +46,17 @@ export class Simulation {
   constructor() {
     // Each star is an { x, y, z } coordinate point in Light Year units
     this.stars = starPoints({
-      centerRadius: galaxySpec.CENTER_RADIUS,
-      radius: galaxySpec.RADIUS,
-      height: galaxySpec.HEIGHT,
+      count: config['points-count'],
+      cubeSide: config['cube-side'],
     })
 
     // Current year (floating point number)
     this.time = 0
 
-    // Civilizations
-    this.living = []    // Still emitting signals
-    this.dead = []      // Dead but signals still visible
-    this.gone = []      // Dead and all signals have left the galaxy
+    // Lights
+    this.on = []    // Still emitting light
+    this.off = []   // Off but light  still visible
+    this.gone = []  // Off and all ligt has left
 
     // Simulation state
     this.isRunning = false
@@ -68,7 +66,7 @@ export class Simulation {
     return this.stars.length
   }
 
-  // Create new civilizations according to simulation parameters
+  // Create new lights according to simulation parameters
   _spawn({ spawnRate, elapsed }) {
     const born = []
 
@@ -86,18 +84,18 @@ export class Simulation {
         const index = Math.floor(Math.random() * this.starCount)
         const { x, y, z } = this.stars[index]
         const birth = this.time + timeOffset
-        born.push(new Civilization({ birth, index, x, y, z }))
+        born.push(new Light({ birth, index, x, y, z }))
         timeOffset += timeSlice
       }
-      this.living = this.living.concat(born)
+      this.on = this.on.concat(born)
     }
     return born
   }
 
-  // Kill civilizations and move them to dead
+  // Kill lights and move them to off
   _kill({ spawnRate, elapsed }) {
-    let dead = []
-    const currentN = this.living.length
+    let off = []
+    const currentN = this.on.length
     const averageN = config['N']
 
     let killRate
@@ -119,31 +117,31 @@ export class Simulation {
       const timeSlice = elapsed / count
       // TODO: maybe find a way to efficiently randomize this (shuffle and
       // splice count or randomize indexes and splice each one)
-      dead = this.living.splice(0, count)
-      for (const civ of dead) {
+      off = this.on.splice(0, count)
+      for (const light of off) {
         let death = this.time + timeOffset
-        death = death <= civ.birth ? civ.birth + timeSlice : death
+        death = death <= light.birth ? light.birth + timeSlice : death
         death = death > this.time ? this.time : death
-        civ.kill(death)
-        insertSorted(this.dead, civ, (a, b) => b.gone - a.gone)
+        light.kill(death)
+        insertSorted(this.off, light, (a, b) => b.gone - a.gone)
         timeOffset += timeSlice
       }
     }
-    return dead
+    return off
   }
 
-  // Move civilizations that are not dead anymore to gone
+  // Move lights that are not off anymore to gone
   _forget() {
     const gone = []
 
-    let lastDead = this.dead.length - 1
-    while (lastDead >= 0) {
-      const civ = this.dead[lastDead]
-      if (civ.isVisible(this.time)) break
-      else gone.push(civ)
-      lastDead--
+    let lastOff = this.off.length - 1
+    while (lastOff >= 0) {
+      const light = this.off[lastOff]
+      if (light.isVisible(this.time)) break
+      else gone.push(light)
+      lastOff--
     }
-    this.dead = this.dead.slice(0, lastDead + 1)
+    this.off = this.off.slice(0, lastOff + 1)
     this.gone = this.gone.concat(gone)
     return gone
   }
@@ -152,7 +150,7 @@ export class Simulation {
 
   tick({ delta }) {
     const elapsed = config['speed'] * delta
-    const spawnRate = config['Ny'] * elapsed
+    const spawnRate = config['spawn-rate'] * elapsed
 
     const birth = this._spawn({ spawnRate, elapsed })
     this.time += elapsed

@@ -9,10 +9,9 @@ import { Loop } from './systems/loop.js'
 import { AxesHelper, CameraHelper } from './vendor/three.js'
 import { FrameRate } from './vendor/frame-rate.js'
 import { config } from '../simulation/config.js'
-import { CIV_LIFE_COLOR, CIV_DEATH_COLOR } from './constants.js'
 
 export class World {
-  constructor({ container, simulation, galaxySpec }) {
+  constructor({ container, simulation }) {
     this._container = container
     this._cameraStartingPoint = { x: 0, y: 3.5, z: 15 }
     this._camera = createCamera(this._cameraStartingPoint)
@@ -34,7 +33,7 @@ export class World {
       camera: this._camera,
       renderer: this._renderer,
     })
-    this.reset({ simulation, galaxySpec })
+    this.reset({ simulation })
 
     //TODO: debug functions
     /*
@@ -58,7 +57,7 @@ export class World {
     this._controls.update()
   }
 
-  reset({ simulation, galaxySpec }) {
+  reset({ simulation }) {
     if (this._loop) {
       this._loop.stop()
       this._scene.clear()
@@ -72,28 +71,28 @@ export class World {
       simulation,
     })
 
-    const galaxy = new Galaxy({ stars: simulation.stars, galaxySpec })
+    const galaxy = new Galaxy({ stars: simulation.stars })
     this._loop.updatables.push(galaxy)
     this._scene.add(galaxy)
 
-    if (config['first-signals']) {
-      const firstSignals = new Signals({
+    if (config['live-signal']) {
+      const liveSignals = new Signals({
         camera: this._camera,
-        color: CIV_LIFE_COLOR,
+        color: config['live-color'],
         eventName: 'birth',
       })
-      this._loop.updatables.push(firstSignals)
-      this._scene.add(firstSignals)
+      this._loop.updatables.push(liveSignals)
+      this._scene.add(liveSignals)
     }
 
-    if (config['last-signals']) {
-      const lastSignals = new Signals({
+    if (config['dead-signal']) {
+      const deadSignals = new Signals({
         camera: this._camera,
-        color: CIV_DEATH_COLOR,
+        color: config['dead-color'],
         eventName: 'death',
       })
-      this._loop.updatables.push(lastSignals)
-      this._scene.add(lastSignals)
+      this._loop.updatables.push(deadSignals)
+      this._scene.add(deadSignals)
     }
 
     this._loop.updatables.push(this._frameRate)

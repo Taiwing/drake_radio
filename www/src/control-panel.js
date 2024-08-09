@@ -1,6 +1,5 @@
-import { galaxySpec } from './simulation/constants.js'
-import { config, configTemplate } from './simulation/config.js'
-import { Civilization, Simulation } from './simulation/index.js'
+import { config } from './simulation/config.js'
+import { Light, Simulation } from './simulation/index.js'
 
 const ControlPanelTemplate = document.createElement('template')
 ControlPanelTemplate.innerHTML = `
@@ -85,9 +84,7 @@ class ControlPanel extends HTMLElement {
 
   speedDown() {
     const current = config['speed']
-    const { min } = configTemplate['speed']
-    const newCurrent = Math.floor(current - current * SPEED_FACTOR)
-    config['speed'] = newCurrent < min ? min : newCurrent
+    config['speed'] = Math.floor(current - current * SPEED_FACTOR)
     this._statsPanel.tick()
   }
 
@@ -98,9 +95,7 @@ class ControlPanel extends HTMLElement {
 
   speedUp() {
     const current = config['speed']
-    const { max } = configTemplate['speed']
-    const newCurrent = Math.ceil(current + current * SPEED_FACTOR)
-    config['speed'] = newCurrent > max ? max : newCurrent
+    config['speed'] = Math.ceil(current + current * SPEED_FACTOR)
     this._statsPanel.tick()
   }
 
@@ -112,9 +107,9 @@ class ControlPanel extends HTMLElement {
     if (this.isPlaying) this.playPauseToggle()
     const simulation = new Simulation()
     this._simulation = simulation
-    Civilization.reset()
+    Light.reset()
     this._statsPanel.setup({ simulation })
-    this._world.reset({ simulation, galaxySpec })
+    this._world.reset({ simulation })
     this._world.start()
   }
 }

@@ -1,6 +1,6 @@
 import { config } from './simulation/config.js'
 import { formatNumber } from './utils.js'
-import { Civilization } from './simulation/index.js'
+import { Light } from './simulation/index.js'
 
 const StatsPanelTemplate = document.createElement('template')
 StatsPanelTemplate.innerHTML = `
@@ -48,22 +48,22 @@ StatsPanelTemplate.innerHTML = `
   <modal-button data-time="3000">
     <div slot="button" class="stats-panel-row">
       <div class="stats-panel-label">Living:</div>
-      <div class="stats-panel-value" id="living-value"></div>
+      <div class="stats-panel-value" id="on-value"></div>
     </div>
     <div slot="modal">
       <p>
-        Number of civilizations currently emitting signals.
+        Number of lights currently emitting signals.
       </p>
     </div>
   </modal-button>
   <modal-button data-time="3000">
     <div slot="button" class="stats-panel-row">
       <div class="stats-panel-label">Dead:</div>
-      <div class="stats-panel-value" id="dead-value"></div>
+      <div class="stats-panel-value" id="off-value"></div>
     </div>
     <div slot="modal">
       <p>
-        Number of civilizations that have stopped emitting but whose signals can
+        Number of lights that have stopped emitting but whose signals can
         still be detected inside the galaxy.
       </p>
     </div>
@@ -75,7 +75,7 @@ StatsPanelTemplate.innerHTML = `
     </div>
     <div slot="modal">
       <p>
-        Number of dead civilizations whose signals have completely exited the
+        Number of off lights whose signals have completely exited the
         galaxy. They cannot be detected anymore.
       </p>
     </div>
@@ -87,7 +87,7 @@ StatsPanelTemplate.innerHTML = `
     </div>
     <div slot="modal">
       <p>
-        Total civilization count.
+        Total light count.
       </p>
     </div>
   </modal-button>
@@ -123,12 +123,12 @@ class StatsPanel extends HTMLElement {
       value: formatNumber(config['speed']),
     })
     this.setValue({
-      name: 'living',
-      value: formatNumber(this._simulation.living.length),
+      name: 'on',
+      value: formatNumber(this._simulation.on.length),
     })
     this.setValue({
-      name: 'dead',
-      value: formatNumber(this._simulation.dead.length),
+      name: 'off',
+      value: formatNumber(this._simulation.off.length),
     })
     this.setValue({
       name: 'gone',
@@ -136,7 +136,7 @@ class StatsPanel extends HTMLElement {
     })
     this.setValue({
       name: 'total',
-      value: formatNumber(Civilization.count),
+      value: formatNumber(Light.count),
     })
   }
 }

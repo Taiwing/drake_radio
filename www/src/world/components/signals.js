@@ -5,8 +5,7 @@ import {
   LineBasicMaterial,
   Float32BufferAttribute,
 } from '../vendor/three.js'
-import { VISUAL_LIGHT_YEAR } from '../constants.js'
-import { galaxySpec } from '../../simulation/constants.js'
+import { config } from '../../simulation/config.js'
 
 // Create a circle geometry
 const createCircle = (radius, color, segments = 64) => {
@@ -27,7 +26,7 @@ export class Bubble extends Line {
   static camera = null
 
   constructor({ origin, dto, count, scale, color }) {
-    const { geometry, material } = createCircle(VISUAL_LIGHT_YEAR, color)
+    const { geometry, material } = createCircle(config['visual-light-year'], color)
     super(geometry, material)
 
     this._material = material
@@ -35,11 +34,11 @@ export class Bubble extends Line {
     this.scale.y = scale
     this.scale.z = scale
     this.position.set(
-      origin.x * VISUAL_LIGHT_YEAR,
-      origin.y * VISUAL_LIGHT_YEAR,
-      origin.z * VISUAL_LIGHT_YEAR
+      origin.x * config['visual-light-year'],
+      origin.y * config['visual-light-year'],
+      origin.z * config['visual-light-year']
     )
-    this._radiusMax = dto + galaxySpec.TOTAL_RADIUS * this._reduction(count+1)
+    this._radiusMax = dto + config['cube-side'] * this._reduction(count+1)
   }
 
   get _radiusMiddle() {

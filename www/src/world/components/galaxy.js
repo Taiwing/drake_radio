@@ -8,86 +8,80 @@ import {
   Float32BufferAttribute,
   Points,
   Color,
-} from '../vendor/three.js'
-import {
-  VISUAL_LIGHT_YEAR,
-  CIV_LIFE_COLOR,
-  CIV_DEATH_COLOR,
-} from '../constants.js'
-
-//TODO: debug functions
-/*
-import {
-  Curve,
-  CurvePath,
-  TubeGeometry,
   LineBasicMaterial,
-  LineSegments,
   Vector3,
   Line,
-}
+} from '../vendor/three.js'
+import { config } from '../../simulation/config.js'
 
-class InvoluteCurve extends Curve {
-  constructor({ radius, id }) {
-    super()
-    this._radius = radius
-    this._segmentId = id
-  }
+const createGridLines = ({ color }) => {
+  const linePoints = [
+    [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}],
+    [{x: -1, y: 0, z: -1}, {x: 1, y: 0, z: -1}],
+    [{x: -1, y: 1, z: -1}, {x: 1, y: 1, z: -1}],
 
-  getPoint(t, optionalTarget = new Vector3()) {
-    t += this._segmentId
-    const { x, y, z } = involuteCurve({ t, radius: this._radius })
-    return optionalTarget.set(x, y, z)
-  }
-}
+    [{x: -1, y: -1, z: 0}, {x: 1, y: -1, z: 0}],
+    [{x: -1, y: 0, z: 0}, {x: 1, y: 0, z: 0}],
+    [{x: -1, y: 1, z: 0}, {x: 1, y: 1, z: 0}],
 
-const createTube = ({ length, radius, width, color }) => {
-  const path = new CurvePath()
-  for (let i = 0; i < length ; i++) {
-    const segment = new InvoluteCurve({ radius, id: i })
-    path.add(segment)
-  }
-  const geometry = new TubeGeometry(path, 80, width / 2, 16, false)
-  const material = new LineBasicMaterial({ color, linewidth: 2 })
-  return new LineSegments(geometry, material)
-}
+    [{x: -1, y: -1, z: 1}, {x: 1, y: -1, z: 1}],
+    [{x: -1, y: 0, z: 1}, {x: 1, y: 0, z: 1}],
+    [{x: -1, y: 1, z: 1}, {x: 1, y: 1, z: 1}],
 
-const createLine = ({ length, radius, width, nsections, color }) => {
-  const points = []
-  const segment = length / nsections
-  for (let t = 0; t < length ; t += segment) {
-    const point = involuteCurve({ radius, t })
-    const { x, y, z } = point
-    points.push(new Vector3(x, y, z))
+    [{x: -1, y: -1, z: -1}, {x: -1, y: 1, z: -1}],
+    [{x: -1, y: -1, z: 0}, {x: -1, y: 1, z: 0}],
+    [{x: -1, y: -1, z: 1}, {x: -1, y: 1, z: 1}],
+
+    [{x: 0, y: -1, z: -1}, {x: 0, y: 1, z: -1}],
+    [{x: 0, y: -1, z: 0}, {x: 0, y: 1, z: 0}],
+    [{x: 0, y: -1, z: 1}, {x: 0, y: 1, z: 1}],
+
+    [{x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}],
+    [{x: 1, y: -1, z: 0}, {x: 1, y: 1, z: 0}],
+    [{x: 1, y: -1, z: 1}, {x: 1, y: 1, z: 1}],
+
+    [{x: -1, y: -1, z: -1}, {x: -1, y: -1, z: 1}],
+    [{x: 0, y: -1, z: -1}, {x: 0, y: -1, z: 1}],
+    [{x: 1, y: -1, z: -1}, {x: 1, y: -1, z: 1}],
+
+    [{x: -1, y: 0, z: -1}, {x: -1, y: 0, z: 1}],
+    [{x: 0, y: 0, z: -1}, {x: 0, y: 0, z: 1}],
+    [{x: 1, y: 0, z: -1}, {x: 1, y: 0, z: 1}],
+
+    [{x: -1, y: 1, z: -1}, {x: -1, y: 1, z: 1}],
+    [{x: 0, y: 1, z: -1}, {x: 0, y: 1, z: 1}],
+    [{x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}],
+  ]
+  const cubeHalf = config['cube-side'] / 2 * config['visual-light-year']
+  linePoints.forEach((l) => l.forEach((p) => {
+    p.x *= cubeHalf
+    p.y *= cubeHalf
+    p.z *= cubeHalf
+  }))
+  const material = new LineBasicMaterial({ color, linewidth: 1 })
+  const lines = []
+  for (const line of linePoints) {
+    const [start, end] = line
+    const geometry = new BufferGeometry().setFromPoints([
+      new Vector3(start.x, start.y, start.z),
+      new Vector3(end.x, end.y, end.z),
+    ])
+    lines.push(new Line(geometry, material))
   }
-  const geometry = new BufferGeometry().setFromPoints(points)
-  const material = new LineBasicMaterial({ color, linewidth: 2 })
-  return new Line(geometry, material)
+  return lines
 }
-*/
 
 export class Galaxy extends Group {
-  constructor({ stars, galaxySpec }) {
+  constructor({ stars }) {
     super()
 
-    this._spec = galaxySpec
-    this._civLifeColor = new Color(CIV_LIFE_COLOR)
-    this._civDeathColor = new Color(CIV_DEATH_COLOR)
-    this._center = this._createSphere({
-      radius: this._spec.CENTER_RADIUS * 3/5 * VISUAL_LIGHT_YEAR,
-    })
+    this._civLifeColor = new Color(config['live-color'])
+    this._civDeathColor = new Color(config['dead-color'])
     this._stars = this._createParticles({ points: stars })
     this._starColors = this._stars.geometry.attributes.color
     this._starCivCount = Array(stars.length).fill(0)
-    this.add(this._center, this._stars)
-  }
-
-  _createSphere(opt = {}) {
-    const { radius, color = 'white', opacity = 0.75, transparent = true } = opt
-    const geometry = new SphereGeometry(radius)
-    const material = new MeshBasicMaterial({ color, opacity, transparent })
-    const sphere = new Mesh(geometry, material)
-    return sphere
+    const gridLines = createGridLines({ color: 'white' })
+    this.add(this._stars, ...gridLines)
   }
 
   _createParticles({ points, size = 0.01 }) {
@@ -95,9 +89,9 @@ export class Galaxy extends Group {
     const colors = []
     points.forEach((p) => {
       positions.push(
-        p.x * VISUAL_LIGHT_YEAR,
-        p.y * VISUAL_LIGHT_YEAR,
-        p.z * VISUAL_LIGHT_YEAR
+        p.x * config['visual-light-year'],
+        p.y * config['visual-light-year'],
+        p.z * config['visual-light-year']
       )
       colors.push(1, 1, 1)
     })

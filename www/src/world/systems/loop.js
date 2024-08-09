@@ -1,5 +1,4 @@
 import { Clock } from '../vendor/three.js'
-import { ROTATION_PER_SEC } from '../constants.js'
 import { config } from '../../simulation/config.js'
 
 export class Loop {
@@ -38,7 +37,7 @@ export class Loop {
     const { time, isRunning } = this._simulation
     for (const object of this.updatables) {
       if (isRunning && rotation && object.rotation) {
-        object.rotation.y += ROTATION_PER_SEC * this._delta
+        object.rotation.y += config['rotation-per-sec'] * this._delta
       }
       object.tick({ time, isRunning, elapsed, events })
     }

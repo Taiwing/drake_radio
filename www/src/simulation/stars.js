@@ -1,60 +1,17 @@
-import { MathUtils } from '../world/vendor/three.js'
-import { galaxySpec } from './constants.js'
-import { randomSpherePoint, spherePoints } from './sphere.js'
-import { curvePoints } from './curve.js'
-import { config } from './config.js'
-
-const rotateY = ({ point, angle }) => {
-  const { x, y, z } = point
-  return {
-    x: x * Math.cos(angle) - z * Math.sin(angle),
-    y,
-    z: z * Math.cos(angle) + x * Math.sin(angle),
-  }
+const randomCubePoint = ({ cubeSide }) => {
+  const half = cubeSide / 2
+  const x = Math.random() * cubeSide - half
+  const y = Math.random() * cubeSide - half
+  const z = Math.random() * cubeSide - half
+  return { x, y, z }
 }
 
-const diskPoints = ({ count, radius, yMax }) => {
+export const starPoints = ({ count, cubeSide }) => {
   const points = []
+
+  // Create random points in a cube
   while (points.length < count) {
-    const point = randomSpherePoint({ radius, inside: true })
-    if (Math.abs(point.y) <= yMax) points.push(point)
-  }
-  return points
-}
-
-export const starPoints = ({ count = 20000, centerRadius, radius, height }) => {
-  let points = []
-
-  // Galactic Center
-  const center = spherePoints({
-    count: count * 2,
-    radius: centerRadius * 3/4,
-    inside: true,
-  })
-  points = points.concat(center)
-
-  // Spiraling Arms
-  const arm = curvePoints({ radius: centerRadius, width: height })
-  const arms = [arm]
-  const angle = MathUtils.degToRad(360 / galaxySpec.ARM_COUNT)
-  for (let i = 1; i < galaxySpec.ARM_COUNT; i++) {
-    const lastArm = arms[i - 1]
-    arms.push(lastArm.map((point) => rotateY({ point, angle })))
-  }
-  points = points.concat(...arms)
-
-  // Galactic Disk
-  const disk = diskPoints({ count, radius, yMax: height / 2 })
-  points = points.concat(disk)
-
-  // Global Star Cloud
-  if (config['star-cloud']) {
-    const global = spherePoints({
-      count,
-      radius: galaxySpec.TOTAL_RADIUS,
-      inside: true,
-    })
-    points = points.concat(global)
+    points.push(randomCubePoint({ cubeSide }))
   }
 
   return points
