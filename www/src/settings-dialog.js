@@ -15,255 +15,255 @@ const SettingsDialogHTML = `
 <h3>Settings</h3>
 <dialog is="presets-dialog"></dialog>
 <form id="drake-form" method="dialog">
-	<fieldset class="fieldset-grid">
-		<legend>Drake Equation</legend>
-		<label class="grid-label" for="preset">Preset</label>
+  <fieldset class="fieldset-grid">
+    <legend>Drake Equation</legend>
+    <label class="grid-label" for="preset">Preset</label>
     <div class="grid-field" id="presets-field">
-		  <select name="preset" id="preset"></select>
-			<button type="button" title="Edit Presets" id="presets-button">
-				<i class="fa-solid fa-pen-to-square"></i>
-			</button>
+      <select name="preset" id="preset"></select>
+      <button type="button" title="Edit Presets" id="presets-button">
+        <i class="fa-solid fa-pen-to-square"></i>
+      </button>
     </div>
-		<label class="grid-label" for="new-stars-rate">
-			<modal-button>
-				<span slot="button">R<sub>*</sub></span>
-				<div slot="modal">
-					<p>
-						The average number of stars formed per year
-						in the galaxy.
-					</p>
-				</div>
-			</modal-button>
-		</label>
-		<input
-			type="text"
-			inputmode="numeric"
-			id="new-stars-rate"
+    <label class="grid-label" for="new-stars-rate">
+      <modal-button>
+        <span slot="button">R<sub>*</sub></span>
+        <div slot="modal">
+          <p>
+            The average number of stars formed per year
+            in the galaxy.
+          </p>
+        </div>
+      </modal-button>
+    </label>
+    <input
+      type="text"
+      inputmode="numeric"
+      id="new-stars-rate"
       class="grid-field"
-		/>
-		<label class="grid-label" for="planet-fraction">
-			<modal-button>
-				<span slot="button">f<sub>p</sub></span>
-				<div slot="modal">
-					<p>
-						The fraction of stars that have planets
-						(between 0 and 1).
-					</p>
-				</div>
-			</modal-button>
-		</label>
-		<input
-			type="text"
-			inputmode="numeric"
-			id="planet-fraction"
+    />
+    <label class="grid-label" for="planet-fraction">
+      <modal-button>
+        <span slot="button">f<sub>p</sub></span>
+        <div slot="modal">
+          <p>
+            The fraction of stars that have planets
+            (between 0 and 1).
+          </p>
+        </div>
+      </modal-button>
+    </label>
+    <input
+      type="text"
+      inputmode="numeric"
+      id="planet-fraction"
       class="grid-field"
-		/>
-		<label class="grid-label" for="habitable-average">
-			<modal-button>
-				<span slot="button">n<sub>e</sub></span>
-				<div slot="modal">
-					<p>
-						Average number of planets that can support
-						life per star that has planets.
-					</p>
-				</div>
-			</modal-button>
-		</label>
-		<input
-			type="text"
-			inputmode="numeric"
-			id="habitable-average"
+    />
+    <label class="grid-label" for="habitable-average">
+      <modal-button>
+        <span slot="button">n<sub>e</sub></span>
+        <div slot="modal">
+          <p>
+            Average number of planets that can support
+            life per star that has planets.
+          </p>
+        </div>
+      </modal-button>
+    </label>
+    <input
+      type="text"
+      inputmode="numeric"
+      id="habitable-average"
       class="grid-field"
-		/>
-		<label class="grid-label" for="life-fraction">
-			<modal-button>
-				<span slot="button">f<sub>l</sub></span>
-				<div slot="modal">
-					<p>
-						The fraction of habitable planets on which
-						life actually develops (between 0 and 1).
-					</p>
-				</div>
-			</modal-button>
-		</label>
-		<input
-			type="text"
-			inputmode="numeric"
-			id="life-fraction"
+    />
+    <label class="grid-label" for="life-fraction">
+      <modal-button>
+        <span slot="button">f<sub>l</sub></span>
+        <div slot="modal">
+          <p>
+            The fraction of habitable planets on which
+            life actually develops (between 0 and 1).
+          </p>
+        </div>
+      </modal-button>
+    </label>
+    <input
+      type="text"
+      inputmode="numeric"
+      id="life-fraction"
       class="grid-field"
-		/>
-		<label class="grid-label" for="intelligence-fraction">
-			<modal-button>
-				<span slot="button">f<sub>i</sub></span>
-				<div slot="modal">
-					<p>
-						The fraction of inhabited planets that
-						develop intelligent life, thus civilization
-						(between 0 and 1).
-					</p>
-				</div>
-			</modal-button>
-		</label>
-		<input
-			type="text"
-			inputmode="numeric"
-			id="intelligence-fraction"
+    />
+    <label class="grid-label" for="intelligence-fraction">
+      <modal-button>
+        <span slot="button">f<sub>i</sub></span>
+        <div slot="modal">
+          <p>
+            The fraction of inhabited planets that
+            develop intelligent life, thus civilization
+            (between 0 and 1).
+          </p>
+        </div>
+      </modal-button>
+    </label>
+    <input
+      type="text"
+      inputmode="numeric"
+      id="intelligence-fraction"
       class="grid-field"
-		/>
-		<label class="grid-label" for="communication-fraction">
-			<modal-button>
-				<span slot="button">f<sub>c</sub></span>
-				<div slot="modal">
-					<p>
-						The fraction of civilizations that develop a
-						technology releasing detectable signs of
-						their existence into space (between 0 and
-						1).
-					</p>
-				</div>
-			</modal-button>
-		</label>
-		<input
-			type="text"
-			inputmode="numeric"
-			id="communication-fraction"
+    />
+    <label class="grid-label" for="communication-fraction">
+      <modal-button>
+        <span slot="button">f<sub>c</sub></span>
+        <div slot="modal">
+          <p>
+            The fraction of civilizations that develop a
+            technology releasing detectable signs of
+            their existence into space (between 0 and
+            1).
+          </p>
+        </div>
+      </modal-button>
+    </label>
+    <input
+      type="text"
+      inputmode="numeric"
+      id="communication-fraction"
       class="grid-field"
-		/>
-		<label class="grid-label" for="civilization-lifetime">
-			<modal-button>
-				<span slot="button">L</span>
-				<div slot="modal">
-					<p>
-						Length of time for which technological
-						civilizations release detectable signals
-						into space (in years).
-					</p>
-				</div>
-			</modal-button>
-		</label>
-		<input
-			type="text"
-			inputmode="numeric"
-			id="civilization-lifetime"
+    />
+    <label class="grid-label" for="civilization-lifetime">
+      <modal-button>
+        <span slot="button">L</span>
+        <div slot="modal">
+          <p>
+            Length of time for which technological
+            civilizations release detectable signals
+            into space (in years).
+          </p>
+        </div>
+      </modal-button>
+    </label>
+    <input
+      type="text"
+      inputmode="numeric"
+      id="civilization-lifetime"
       class="grid-field"
-		/>
-	</fieldset>
+    />
+  </fieldset>
 
-	<fieldset class="fieldset-grid">
-		<legend>Results</legend>
-		<label class="grid-label" for="Ny">
-			<modal-button>
-				<span slot="button">N<sub>y</sub>:</span>
-				<div slot="modal">
-					<p>
-						The average number of detectable
-						civilizations appearing each year in the
-						galaxy.
-					</p>
-				</div>
-			</modal-button>
-		</label>
-	  <output class="grid-field" id="Ny">0</output>
-		<label class="grid-label" for="N">
-			<modal-button>
-				<span slot="button">N:</span>
-				<div slot="modal">
-					<p>
-						The number of civilizations in the galaxy
-						with which communication might be possible.
-					</p>
-				</div>
-			</modal-button>
-		</label>
-	  <output class="grid-field" id="N">0</output>
-	</fieldset>
+  <fieldset class="fieldset-grid">
+    <legend>Results</legend>
+    <label class="grid-label" for="Ny">
+      <modal-button>
+        <span slot="button">N<sub>y</sub>:</span>
+        <div slot="modal">
+          <p>
+            The average number of detectable
+            civilizations appearing each year in the
+            galaxy.
+          </p>
+        </div>
+      </modal-button>
+    </label>
+    <output class="grid-field" id="Ny">0</output>
+    <label class="grid-label" for="N">
+      <modal-button>
+        <span slot="button">N:</span>
+        <div slot="modal">
+          <p>
+            The number of civilizations in the galaxy
+            with which communication might be possible.
+          </p>
+        </div>
+      </modal-button>
+    </label>
+    <output class="grid-field" id="N">0</output>
+  </fieldset>
 
-	<fieldset class="fieldset-flex">
-		<legend>Simulation</legend>
-		<label class="form-line">
-			<modal-button>
-				<span slot="button">Speed</span>
-				<div slot="modal">
-					<p>
-						Simulation speed in year(s) per second.
-					</p>
-				</div>
-			</modal-button>
-			<input
-				type="text"
-				inputmode="numeric"
-				id="speed"
-			/>
-		</label>
-		<label class="checkbox-line">
-			<span>Star Cloud</span>
-			<input type="checkbox" id="star-cloud" />
-		</label>
-		<label class="checkbox-line">
-			<span>Galactic Rotation</span>
-			<input type="checkbox" id="rotation" />
-		</label>
-	</fieldset>
+  <fieldset class="fieldset-flex">
+    <legend>Simulation</legend>
+    <label class="form-line">
+      <modal-button>
+        <span slot="button">Speed</span>
+        <div slot="modal">
+          <p>
+            Simulation speed in year(s) per second.
+          </p>
+        </div>
+      </modal-button>
+      <input
+        type="text"
+        inputmode="numeric"
+        id="speed"
+      />
+    </label>
+    <label class="checkbox-line">
+      <span>Star Cloud</span>
+      <input type="checkbox" id="star-cloud" />
+    </label>
+    <label class="checkbox-line">
+      <span>Galactic Rotation</span>
+      <input type="checkbox" id="rotation" />
+    </label>
+  </fieldset>
 
-	<fieldset class="fieldset-flex">
-		<legend>Birth Signals</legend>
+  <fieldset class="fieldset-flex">
+    <legend>Birth Signals</legend>
     <label class="form-line">
       <span>Color</span>
       <input type="color" id="birth-signals-color" />
     </label>
-		<label class="form-line">
-			<modal-button>
-				<span slot="button">Count</span>
-				<div slot="modal">
-					<p>
-						Maximum number of birth signals to show.
-					</p>
-				</div>
-			</modal-button>
-			<input
-				type="text"
-				inputmode="numeric"
-				id="birth-signals-count"
-			/>
-		</label>
-	</fieldset>
+    <label class="form-line">
+      <modal-button>
+        <span slot="button">Count</span>
+        <div slot="modal">
+          <p>
+            Maximum number of birth signals to show.
+          </p>
+        </div>
+      </modal-button>
+      <input
+        type="text"
+        inputmode="numeric"
+        id="birth-signals-count"
+      />
+    </label>
+  </fieldset>
 
   <fieldset class="fieldset-flex">
-		<legend>Death Signals</legend>
+    <legend>Death Signals</legend>
     <label class="form-line">
       <span>Color</span>
       <input type="color" id="death-signals-color" />
     </label>
-		<label class="form-line">
-			<modal-button>
-				<span slot="button">Count</span>
-				<div slot="modal">
-					<p>
-						Maximum number of death signals to show.
-					</p>
-				</div>
-			</modal-button>
-			<input
-				type="text"
-				inputmode="numeric"
-				id="death-signals-count"
-			/>
-		</label>
-	</fieldset>
+    <label class="form-line">
+      <modal-button>
+        <span slot="button">Count</span>
+        <div slot="modal">
+          <p>
+            Maximum number of death signals to show.
+          </p>
+        </div>
+      </modal-button>
+      <input
+        type="text"
+        inputmode="numeric"
+        id="death-signals-count"
+      />
+    </label>
+  </fieldset>
 </form>
 
 <div class="button-line">
-	<input form="drake-form" type="submit" value="Apply" />
-	<button title="Save As" id="save-button">
-		<i class="fa-solid fa-floppy-disk"></i>
-	</button>
-	<button title="Random" id="random-button">
-		<i class="fa-solid fa-dice-six"></i>
-	</button>
-	<button title="Reset" id="reset-button">
-		<i class="fa-solid fa-arrow-rotate-left"></i>
-	</button>
-	<input form="drake-form" type="reset" value="Cancel" />
+  <input form="drake-form" type="submit" value="Apply" />
+  <button title="Save As" id="save-button">
+    <i class="fa-solid fa-floppy-disk"></i>
+  </button>
+  <button title="Random" id="random-button">
+    <i class="fa-solid fa-dice-six"></i>
+  </button>
+  <button title="Reset" id="reset-button">
+    <i class="fa-solid fa-arrow-rotate-left"></i>
+  </button>
+  <input form="drake-form" type="reset" value="Cancel" />
 </div>
 `
 
