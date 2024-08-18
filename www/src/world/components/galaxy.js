@@ -9,11 +9,8 @@ import {
   Points,
   Color,
 } from '../vendor/three.js'
-import {
-  VISUAL_LIGHT_YEAR,
-  CIV_LIFE_COLOR,
-  CIV_DEATH_COLOR,
-} from '../constants.js'
+import { VISUAL_LIGHT_YEAR } from '../constants.js'
+import { config } from '../../simulation/config.js'
 
 //TODO: debug functions
 /*
@@ -71,8 +68,8 @@ export class Galaxy extends Group {
     super()
 
     this._spec = galaxySpec
-    this._civLifeColor = new Color(CIV_LIFE_COLOR)
-    this._civDeathColor = new Color(CIV_DEATH_COLOR)
+    this._civLifeColor = new Color(config['birth-signals-color'])
+    this._civDeathColor = new Color(config['death-signals-color'])
     this._center = this._createSphere({
       radius: this._spec.CENTER_RADIUS * 3/5 * VISUAL_LIGHT_YEAR,
     })

@@ -9,7 +9,6 @@ import { Loop } from './systems/loop.js'
 import { AxesHelper, CameraHelper } from './vendor/three.js'
 import { FrameRate } from './vendor/frame-rate.js'
 import { config } from '../simulation/config.js'
-import { CIV_LIFE_COLOR, CIV_DEATH_COLOR } from './constants.js'
 
 export class World {
   constructor({ container, simulation, galaxySpec }) {
@@ -35,20 +34,6 @@ export class World {
       renderer: this._renderer,
     })
     this.reset({ simulation, galaxySpec })
-
-    //TODO: debug functions
-    /*
-    const axesHelper = new AxesHelper(3)
-    this._scene.add(axesHelper)
-    setInterval(() => {
-      const { x, y, z } = this._controls.target
-      console.log({ target: { x, y, z }})
-    }, 1000)
-    */
-    /*
-    const cameraHelper = new CameraHelper(this._camera)
-    this._scene.add(cameraHelper)
-    */
   }
 
   resetCamera() {
@@ -76,25 +61,13 @@ export class World {
     this._loop.updatables.push(galaxy)
     this._scene.add(galaxy)
 
-    if (config['first-signals']) {
-      const firstSignals = new Signals({
-        camera: this._camera,
-        color: CIV_LIFE_COLOR,
-        eventName: 'birth',
-      })
-      this._loop.updatables.push(firstSignals)
-      this._scene.add(firstSignals)
-    }
+    const birthSignals = new Signals({ camera: this._camera, type: 'birth' })
+    this._loop.updatables.push(birthSignals)
+    this._scene.add(birthSignals)
 
-    if (config['last-signals']) {
-      const lastSignals = new Signals({
-        camera: this._camera,
-        color: CIV_DEATH_COLOR,
-        eventName: 'death',
-      })
-      this._loop.updatables.push(lastSignals)
-      this._scene.add(lastSignals)
-    }
+    const deathSignals = new Signals({ camera: this._camera, type: 'death' })
+    this._loop.updatables.push(deathSignals)
+    this._scene.add(deathSignals)
 
     this._loop.updatables.push(this._frameRate)
   }

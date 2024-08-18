@@ -59,12 +59,20 @@ export const configTemplate = {
     def: true,
     hardReset: true,
   },
-  'first-signals': {
-    def: true,
+  'birth-signals-count': {
+    def: 50,
     hardReset: true,
   },
-  'last-signals': {
-    def: true,
+  'birth-signals-color': {
+    def: 0x66acdc,
+    hardReset: true,
+  },
+  'death-signals-count': {
+    def: 50,
+    hardReset: true,
+  },
+  'death-signals-color': {
+    def: 0xbf1111,
     hardReset: true,
   },
   'preset': {
@@ -128,8 +136,6 @@ const defaultPresets = {
     'communication-fraction': 0.2,
     'civilization-lifetime': 1.282051e+7,
     'speed': 1000,
-    'first-signals': true,
-    'last-signals': true,
   },
 }
 

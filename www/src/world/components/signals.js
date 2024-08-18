@@ -7,6 +7,7 @@ import {
 } from '../vendor/three.js'
 import { VISUAL_LIGHT_YEAR } from '../constants.js'
 import { galaxySpec } from '../../simulation/constants.js'
+import { config } from '../../simulation/config.js'
 
 // Create a circle geometry
 const createCircle = (radius, color, segments = 64) => {
@@ -75,13 +76,11 @@ export class Bubble extends Line {
   }
 }
 
-const MAX_SIGNALS = 50
-
 export class Signals extends Group {
-  constructor({ camera, color, eventName }) {
+  constructor({ camera, type }) {
     super()
-    this._color = color
-    this._eventName = eventName
+    this._color = config[`${type}-signals-color`]
+    this._type = type
     Bubble.camera = camera
   }
 
@@ -107,11 +106,11 @@ export class Signals extends Group {
   }
 
   _handleEvent({ time, events }) {
-    const civilizations = events[this._eventName]
+    const civilizations = events[this._type]
 
     for (const civ of civilizations) {
-      if (this.children.length >= MAX_SIGNALS) break
-      const elapsed = time - civ[this._eventName]
+      if (this.children.length >= config[`${this._type}-signals-count`]) break
+      const elapsed = time - civ[this._type]
       this._createBubble({ elapsed, civ })
     }
   }

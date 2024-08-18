@@ -200,16 +200,54 @@ const SettingsDialogHTML = `
 			<input type="checkbox" id="star-cloud" />
 		</label>
 		<label class="checkbox-line">
-			<span>First Signals</span>
-			<input type="checkbox" id="first-signals" />
-		</label>
-		<label class="checkbox-line">
-			<span>Last Signals</span>
-			<input type="checkbox" id="last-signals" />
-		</label>
-		<label class="checkbox-line">
 			<span>Galactic Rotation</span>
 			<input type="checkbox" id="rotation" />
+		</label>
+	</fieldset>
+
+	<fieldset class="fieldset-flex">
+		<legend>Birth Signals</legend>
+    <label class="form-line">
+      <span>Color</span>
+      <input type="color" id="birth-signals-color" />
+    </label>
+		<label class="form-line">
+			<modal-button>
+				<span slot="button">Count</span>
+				<div slot="modal">
+					<p>
+						Maximum number of birth signals to show.
+					</p>
+				</div>
+			</modal-button>
+			<input
+				type="text"
+				inputmode="numeric"
+				id="birth-signals-count"
+			/>
+		</label>
+	</fieldset>
+
+  <fieldset class="fieldset-flex">
+		<legend>Death Signals</legend>
+    <label class="form-line">
+      <span>Color</span>
+      <input type="color" id="death-signals-color" />
+    </label>
+		<label class="form-line">
+			<modal-button>
+				<span slot="button">Count</span>
+				<div slot="modal">
+					<p>
+						Maximum number of death signals to show.
+					</p>
+				</div>
+			</modal-button>
+			<input
+				type="text"
+				inputmode="numeric"
+				id="death-signals-count"
+			/>
 		</label>
 	</fieldset>
 </form>
@@ -345,6 +383,8 @@ class SettingsDialog extends CustomDialog {
         if (element.type === 'text') {
           element.value = formatNumber(value, 8, 6, true)
           validate({ target: element })
+        } else if (element.type === 'color') {
+          element.value = `#${value.toString(16).padStart(6, '0')}`
         } else if (element.type === 'checkbox') {
           element.checked = value
         }
@@ -363,8 +403,13 @@ class SettingsDialog extends CustomDialog {
     const element = this._form.querySelector(`#${name}`)
     switch (element.tagName) {
       case 'INPUT':
-        if (element.type === 'text') return parseFloat(element.value)
-        else if (element.type === 'checkbox') return element.checked
+        if (element.type === 'text') {
+          return parseFloat(element.value)
+        } else if (element.type === 'color') {
+          return parseInt(element.value.slice(1), 16)
+        } else if (element.type === 'checkbox') {
+          return element.checked
+        }
         break
       case 'SELECT':
         return element.value
