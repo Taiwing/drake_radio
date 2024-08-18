@@ -1,13 +1,13 @@
-- Efficiently compute detections in simulation (a civilization sees an other for
-  the first time). If it cant be handled do it probabilistically (based on
-  current N, average lifetime and galaxy dimensions). Maybe switch methods at a
-  some point. Also show their stats.
-
 - expand README file explanations
 - add a documentation page (about how the simulation works, what the bubbles and
   animation precisely represent, etc...)
 
 MAYBE:
+
+- Efficiently compute detections in simulation (a civilization sees an other for
+  the first time). If it cant be handled do it probabilistically (based on
+  current N, average lifetime and galaxy dimensions). Maybe switch methods at a
+  some point. Also show their stats.
 
 - compute the following events in simulation (and show their stats):
   - contact: a signal is sent by Alice, detected by Bob which sends its own
