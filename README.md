@@ -10,8 +10,8 @@ Galactic simulation representing the Drake equation.
 ## Description
 
 This is an interactive and visual representation of the Drake equation. It shows
-how extraterrestrial radio signals could travel across the Milky Way and reach
-the Earth.
+how extraterrestrial radio signals could travel across the galaxy depending on
+the equation parameters.
 
 https://drake-radio.defoy.tech
 
