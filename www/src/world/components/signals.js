@@ -31,7 +31,7 @@ export class Bubble extends Line {
     const { geometry, material } = createCircle(VISUAL_LIGHT_YEAR, color)
     super(geometry, material)
 
-    this._material = material
+    this.material = material
     this.scale.x = scale
     this.scale.y = scale
     this.scale.z = scale
@@ -80,6 +80,7 @@ export class Signals extends Group {
   constructor({ camera, type }) {
     super()
     this._color = config[`${type}-signals-color`]
+    this._count = config[`${type}-signals-count`]
     this._type = type
     Bubble.camera = camera
   }
@@ -109,13 +110,26 @@ export class Signals extends Group {
     const civilizations = events[this._type]
 
     for (const civ of civilizations) {
-      if (this.children.length >= config[`${this._type}-signals-count`]) break
+      if (this.children.length >= this._count) break
       const elapsed = time - civ[this._type]
       this._createBubble({ elapsed, civ })
     }
   }
 
   tick({ time, isRunning, elapsed, events }) {
+    if (config[`${this._type}-signals-count`] !== this._count) {
+      this._count = config[`${this._type}-signals-count`]
+      while (this.children.length > this._count) {
+        this.remove(this.children[0])
+      }
+    }
+    if (config[`${this._type}-signals-color`] !== this._color) {
+      this._color = config[`${this._type}-signals-color`]
+      this.children.forEach((bubble) => {
+        bubble.material.color.set(this._color)
+      })
+    }
+
     if (isRunning) {
       this._inflateBubbles({ elapsed })
       this._handleEvent({ time, events })

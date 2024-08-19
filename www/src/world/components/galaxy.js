@@ -12,70 +12,21 @@ import {
 import { VISUAL_LIGHT_YEAR } from '../constants.js'
 import { config } from '../../simulation/config.js'
 
-//TODO: debug functions
-/*
-import {
-  Curve,
-  CurvePath,
-  TubeGeometry,
-  LineBasicMaterial,
-  LineSegments,
-  Vector3,
-  Line,
-}
-
-class InvoluteCurve extends Curve {
-  constructor({ radius, id }) {
-    super()
-    this._radius = radius
-    this._segmentId = id
-  }
-
-  getPoint(t, optionalTarget = new Vector3()) {
-    t += this._segmentId
-    const { x, y, z } = involuteCurve({ t, radius: this._radius })
-    return optionalTarget.set(x, y, z)
-  }
-}
-
-const createTube = ({ length, radius, width, color }) => {
-  const path = new CurvePath()
-  for (let i = 0; i < length ; i++) {
-    const segment = new InvoluteCurve({ radius, id: i })
-    path.add(segment)
-  }
-  const geometry = new TubeGeometry(path, 80, width / 2, 16, false)
-  const material = new LineBasicMaterial({ color, linewidth: 2 })
-  return new LineSegments(geometry, material)
-}
-
-const createLine = ({ length, radius, width, nsections, color }) => {
-  const points = []
-  const segment = length / nsections
-  for (let t = 0; t < length ; t += segment) {
-    const point = involuteCurve({ radius, t })
-    const { x, y, z } = point
-    points.push(new Vector3(x, y, z))
-  }
-  const geometry = new BufferGeometry().setFromPoints(points)
-  const material = new LineBasicMaterial({ color, linewidth: 2 })
-  return new Line(geometry, material)
-}
-*/
-
 export class Galaxy extends Group {
   constructor({ stars, galaxySpec }) {
     super()
 
     this._spec = galaxySpec
-    this._civLifeColor = new Color(config['birth-signals-color'])
-    this._civDeathColor = new Color(config['death-signals-color'])
+    this._birthColorCode = config['birth-signals-color']
+    this._deathColorCode = config['death-signals-color']
+    this._birthColor = new Color(this._birthColorCode)
+    this._deathColor = new Color(this._deathColorCode)
     this._center = this._createSphere({
       radius: this._spec.CENTER_RADIUS * 3/5 * VISUAL_LIGHT_YEAR,
     })
     this._stars = this._createParticles({ points: stars })
     this._starColors = this._stars.geometry.attributes.color
-    this._starCivCount = Array(stars.length).fill(0)
+    this._starCivCount = Array(stars.length).fill(-1)
     this.add(this._center, this._stars)
   }
 
@@ -113,21 +64,51 @@ export class Galaxy extends Group {
     this._starColors.needsUpdate = true
   }
 
+  _signalColorUpdate(newBirthColor, newDeathColor) {
+    if (newBirthColor) {
+      this._birthColorCode = config['birth-signals-color']
+      this._birthColor.set(this._birthColorCode)
+    }
+
+    if (newDeathColor) {
+      this._deathColorCode = config['death-signals-color']
+      this._deathColor.set(this._deathColorCode)
+    }
+
+    for (let star = 0; star < this._starCivCount.length; star++) {
+      if (newBirthColor && this._starCivCount[star] > 0) {
+        this._changeParticleColor({ index: star, color: this._birthColor })
+      } else if (newDeathColor && this._starCivCount[star] === 0) {
+        this._changeParticleColor({ index: star, color: this._deathColor })
+      }
+    }
+  }
+
   tick({ events }) {
+    const newBirthColor = config['birth-signals-color'] !== this._birthColorCode
+    const newDeathColor = config['death-signals-color'] !== this._deathColorCode
+    if (newBirthColor || newDeathColor) {
+      this._signalColorUpdate(newBirthColor, newDeathColor)
+    }
+
     if (!events) return
     const { birth, death } = events
 
     for (const born of birth) {
       const { star } = born
-      this._starCivCount[star] += 1
-      this._changeParticleColor({ index: star, color: this._civLifeColor })
+      if (this._starCivCount[star] === -1) {
+        this._starCivCount[star] = 1
+      } else {
+        this._starCivCount[star] += 1
+      }
+      this._changeParticleColor({ index: star, color: this._birthColor })
     }
 
     for (const dead of death) {
       const { star } = dead
       this._starCivCount[star] -= 1
       if (this._starCivCount[star] === 0) {
-        this._changeParticleColor({ index: star, color: this._civDeathColor })
+        this._changeParticleColor({ index: star, color: this._deathColor })
       }
     }
   }

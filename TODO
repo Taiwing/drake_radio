@@ -1,5 +1,3 @@
-- handle live signal parameter change (remove hardReset field from
-  configTemplate)
 - expand README file explanations
 - add a documentation page (about how the simulation works, what the bubbles and
   animation precisely represent, etc...)

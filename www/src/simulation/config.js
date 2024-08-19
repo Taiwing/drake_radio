@@ -61,19 +61,15 @@ export const configTemplate = {
   },
   'birth-signals-count': {
     def: 50,
-    hardReset: true,
   },
   'birth-signals-color': {
     def: 0x66acdc,
-    hardReset: true,
   },
   'death-signals-count': {
     def: 50,
-    hardReset: true,
   },
   'death-signals-color': {
     def: 0xbf1111,
-    hardReset: true,
   },
   'preset': {
     def: 'reasonable',
