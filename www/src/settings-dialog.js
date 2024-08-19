@@ -206,7 +206,16 @@ const SettingsDialogHTML = `
   </fieldset>
 
   <fieldset class="fieldset-flex">
-    <legend>Birth Signals</legend>
+    <legend>
+      <modal-button>
+        <span slot="button">Birth Signals</span>
+        <div slot="modal">
+          <p>
+            First signal emitted by a technological civilization.
+          </p>
+        </div>
+      </modal-button>
+    </legend>
     <label class="form-line">
       <span>Color</span>
       <input type="color" id="birth-signals-color" />
@@ -229,7 +238,16 @@ const SettingsDialogHTML = `
   </fieldset>
 
   <fieldset class="fieldset-flex">
-    <legend>Death Signals</legend>
+    <legend>
+      <modal-button>
+        <span slot="button">Death Signals</span>
+        <div slot="modal">
+          <p>
+            Last signal emitted by a technological civilization.
+          </p>
+        </div>
+      </modal-button>
+    </legend>
     <label class="form-line">
       <span>Color</span>
       <input type="color" id="death-signals-color" />
