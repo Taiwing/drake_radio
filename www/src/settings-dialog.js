@@ -158,7 +158,8 @@ const SettingsDialogHTML = `
           <p>
             The average number of detectable
             civilizations appearing each year in the
-            galaxy.
+            galaxy. Is the product of all the Drake
+            Equation factors except L.
           </p>
         </div>
       </modal-button>
@@ -171,6 +172,8 @@ const SettingsDialogHTML = `
           <p>
             The number of civilizations in the galaxy
             with which communication might be possible.
+            Is the product of all the Drake Equation
+            factors.
           </p>
         </div>
       </modal-button>
