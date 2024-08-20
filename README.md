@@ -114,7 +114,7 @@ parameters range. The presets are:
     lower side.
 - `reasonable`: Current reasonable estimates.
 - `optimistic`: Every value is on the higher side, especially for L.
-- `star-trek`: Hundreds of thousands living of civilizations in the galaxy.
+- `star-trek`: Hundreds of thousands of living civilizations in the galaxy.
 
 The application defaults to the `reasonable` preset.
 
