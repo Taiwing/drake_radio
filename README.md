@@ -22,7 +22,7 @@ civilizations in the Milky Way galaxy. It was devised by Frank Drake in 1961.
 The Drake equation is:
 
 ```math
-N = R* · f_p · n_e · f_l · f_i · f_c · L
+N = R_* · f_p · n_e · f_l · f_i · f_c · L
 ```
 
 Where:
