@@ -75,9 +75,9 @@ visual setting that does not affect the Drake equation parameters or the stats
 showed in the top right corner of the screen. It is a way to keep the simulation
 readable and the application responsive.
 
-The signal circles disappearance is not linked to the Drake equation parameters.
-It is purely based on the number of signals on the screen. In reality the
-signals expand indefinitely.
+The signal circles disappearance is not linked to the Drake equation parameters
+either. It is purely based on the number of signals on the screen. In reality
+the signals expand indefinitely.
 
 > When the speed parameter is very high (around 100k years per second), the
 > birth and death signals count should be set to 0 since the circles will
