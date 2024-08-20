@@ -102,6 +102,27 @@ death signal has exited the galaxy, the civilization is gone. It cannot be
 detected by radio anymore. The total number of civilizations is the sum of the
 living, dead and gone civilizations.
 
+### Presets
+
+The application comes with a few presets that can be loaded from the settings
+panel. They are based on the most common values used in the literature. They are
+not meant to be exhaustive but to give an idea of the Drake equation's
+parameters range. The presets are:
+
+- `pessimistic`: Based on the [Rare Earth hypothesis](https://www.astronomy.com/science/rare-earth-hypothesis-why-we-might-really-be-alone-in-the-universe/).
+- `conservative`: Intelligent life is very rare and every other value is on the
+    lower side.
+- `reasonable`: Current reasonable estimates.
+- `optimistic`: Every value is on the higher side, especially for L.
+- `star-trek`: Hundreds of thousands living civilizations in the galaxy.
+
+The application defaults to the `reasonable` preset.
+
+> The preset list can be edited in the settings menu and a new default can be
+> set. Also, the presets do not only contain the Drake equation parameters but
+> also simulation settings like the speed or the signals count and colors if
+> they have been changed.
+
 ## Setup
 
 ### Run the application
