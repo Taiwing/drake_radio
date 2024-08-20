@@ -166,3 +166,15 @@ stats-panel {
 	flex-direction: column;
 	gap: 0.5em;
 }
+
+#github-button {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin: 1em;
+}
+
+#github-button > a {
+	color: inherit;
+	text-decoration: none;
+}
