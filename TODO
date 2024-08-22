@@ -1,5 +1,9 @@
 - change mouse to a hand when hovering
 
+FIX:
+
+- onClick for touchscreens
+
 MAYBE:
 
 - Then it maybe could be possible to compute the detections ONLY for the
