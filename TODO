@@ -3,9 +3,6 @@
 
 FIX:
 
-- make it possible to hover circles that are "below" the header div (probably
-  use the css "z-index" parameter, set it to 0 or -1 for header and 1 for its
-  children)
 - when the mouse is passive but the galaxy is rotating the mouse stays at last
   recorded position which is good except when it has left the container div
   because there should not be any iteractions then (it leaves a kind of "ghost"

@@ -11,51 +11,36 @@ body {
 }
 
 h2 {
-	padding: 0.5em;
+	z-index: 1;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
 	text-align: center;
 	white-space: nowrap;
+	margin: 1em;
 }
 
 h3 {
 	text-align: center;
 }
 
-#header {
-	position: absolute;
-	left: 0;
-	right: 0;
-	z-index: 1;
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+@media only screen and (max-width: 1000px) {
+	stats-panel {
+		top: 50% !important;
+		transform: translateY(-50%);
+	}
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 700px) {
 	h2 {
 		white-space: initial;
 	}
-
-	#header {
-		display: flex;
-		flex-direction: column;
-	}
 }
 
-#header > * {
+.fit-content {
 	width: fit-content;
 	height: fit-content;
-}
-
-.two {
-	grid-column: 2;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.three {
-	grid-column: 3;
-	margin-left: auto;
-	margin-right: 1em;
-	margin-top: 1em;
 }
 
 .main-button {
@@ -84,9 +69,9 @@ control-panel {
 	position: absolute;
 	width: fit-content;
 	bottom: 5%;
-	left: 0;
-	right: 0;
-	margin: 0 auto;
+	left: 50%;
+	transform: translateX(-50%);
+	margin: 1em;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
@@ -158,6 +143,10 @@ input[type="text"] {
 }
 
 stats-panel {
+	z-index: 1;
+	position: absolute;
+	top: 0;
+	right: 0;
 	margin: 1em;
 }
 

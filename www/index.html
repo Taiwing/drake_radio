@@ -15,21 +15,19 @@
 		<script type="module" src='./src/settings-dialog.js'></script>
 	</head>
 	<body>
-		<div id="header">
-			<h2 class="two smooth-block">Drake Radio - Galactic Simulator
-				<button title="Settings" id="settings-button" class="main-button">
-					<i class="fa-solid fa-gear fa-2x"></i>
-				</button>
-			</h2>
-			<stats-panel class="three smooth-block"></stats-panel>
-		</div>
-		<dialog is="settings-dialog"></dialog>
+		<h2 class="smooth-block fit-content">Drake Radio - Galactic Simulator
+			<button title="Settings" id="settings-button" class="main-button">
+				<i class="fa-solid fa-gear fa-2x"></i>
+			</button>
+		</h2>
 		<div id="scene-container"></div>
+		<stats-panel class="smooth-block"></stats-panel>
 		<control-panel class="smooth-block"></control-panel>
 		<button title="Documentation" id="github-button" class="main-button">
 			<a href="https://github.com/Taiwing/drake_radio?tab=readme-ov-file#drake-radio-simulator" target="_blank">
 				<i class="fa-brands fa-github fa-2x"></i>
 			</a>
 		</button>
+		<dialog is="settings-dialog"></dialog>
 	</body>
 </html>
