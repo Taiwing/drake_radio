@@ -4,6 +4,12 @@ import {
   BufferGeometry,
   LineBasicMaterial,
   Float32BufferAttribute,
+  SphereGeometry,
+  WireframeGeometry,
+  LineSegments,
+  CircleGeometry,
+  MeshBasicMaterial,
+  Mesh,
 } from '../vendor/three.js'
 import { VISUAL_LIGHT_YEAR } from '../constants.js'
 import { galaxySpec } from '../../simulation/constants.js'
@@ -21,17 +27,37 @@ const createCircle = (radius, color, segments = 64) => {
 
   geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3))
   const material = new LineBasicMaterial({ color })
-  return { geometry, material }
+  const circle = new Line(geometry, material)
+  return circle
 }
 
-export class Bubble extends Line {
+// Create a sphere geometry
+const createSphere = (radius, color, segments = 32) => {
+  const sphereGeometry = new SphereGeometry(radius, segments, segments)
+  const geometry = new WireframeGeometry(sphereGeometry)
+  const material = new LineBasicMaterial({ color })
+  const sphere = new LineSegments(geometry, material)
+  return sphere
+}
+
+// Create a hitbox geometry for raycasting
+const createHitbox = (radius, segments = 64) => {
+  const geometry = new CircleGeometry(radius, segments)
+  const material = new MeshBasicMaterial({ visible: false })
+  const hitbox = new Mesh(geometry, material)
+  hitbox.isHitbox = true
+  return hitbox
+}
+
+export class Bubble extends Group {
   static camera = null
 
   constructor({ origin, dto, count, scale, color }) {
-    const { geometry, material } = createCircle(VISUAL_LIGHT_YEAR, color)
-    super(geometry, material)
+    super()
 
-    this.material = material
+    this._hitbox = createHitbox(VISUAL_LIGHT_YEAR)
+    this.add(this._hitbox)
+    this._toggleShape(color)
     this.scale.x = scale
     this.scale.y = scale
     this.scale.z = scale
@@ -43,16 +69,53 @@ export class Bubble extends Line {
     this._radiusMax = dto + galaxySpec.TOTAL_RADIUS * this._reduction(count+1)
   }
 
+  get material() {
+    return this.children[1].material
+  }
+
   get _radiusMiddle() {
     return this._radiusMax / 2
+  }
+
+  _toggleShape(color = this.material.color.getHex()) {
+    if (this.children.length > 1) {
+      this.remove(this.children[1])
+    }
+
+    if (!this._isCircle) {
+      const circle = createCircle(VISUAL_LIGHT_YEAR, color)
+      this.add(circle)
+    } else {
+      const sphere = createSphere(VISUAL_LIGHT_YEAR, color)
+      this.add(sphere)
+    }
+
+    this._isCircle = !this._isCircle
   }
 
   _reduction(x) {
     return Math.pow(1/x, 1/2)
   }
 
+  onHover() {
+    this._hovering = true
+    if (this._isCircle) {
+      this._toggleShape()
+    }
+  }
+
+  onUnhover() {
+    if (!this._hovering && !this._isCircle) {
+      this._toggleShape()
+    }
+    this._hovering = false
+  }
+
   cameraTick() {
-    this.lookAt(Bubble.camera.position)
+    this.children[0].lookAt(Bubble.camera.position)
+    if (this._isCircle) {
+      this.children[1].lookAt(Bubble.camera.position)
+    }
   }
 
   tick({ elapsed, count }) {
@@ -135,6 +198,28 @@ export class Signals extends Group {
       this._handleEvent({ time, events })
     } else {
       this.children.forEach((bubble) => bubble.cameraTick())
+    }
+  }
+
+  onMouseMove(raycaster) {
+    // get all intersecting bubbles
+    let intersects = raycaster.intersectObjects(this.children)
+    intersects = intersects.filter(intersect => intersect.object.isHitbox)
+    intersects = intersects.map(intersect => intersect.object.parent)
+
+    // Apply hovering effect to smallest circle
+    if (intersects.length > 0) {
+      const intersect = intersects.reduce((prev, current) => {
+        return prev.scale.x < current.scale.x ? prev : current
+      })
+      if (intersect) {
+        intersect.onHover()
+      }
+    }
+
+    // Apply unhovering effect to all other circles
+    for (const bubble of this.children) {
+      bubble.onUnhover()
     }
   }
 }

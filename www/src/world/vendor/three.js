@@ -26,4 +26,7 @@ export {
   TubeGeometry,
   Vector3,
   Line,
+  Raycaster,
+  Vector2,
+  CircleGeometry,
 } from 'https://cdn.skypack.dev/three@0.136.0'

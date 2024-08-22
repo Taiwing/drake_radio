@@ -1,13 +1,12 @@
+- make the hovering thing a parameter in the settings (activate or disable it)
+- click to select civilization (change mouse to a hand when hovering)
+
 MAYBE:
 
-- Add mouse interactions for the signal circles. Basically make it possible to
-  chose a civilization by clicking or hovering on one of its signal circles. It
-  could "inflate" the circle to a bubble to represent the selection. Maybe make
-  the hovering thing a parameter in the settings (activate or disable it).
-  - Then it maybe could be possible to compute the detections ONLY for the
-	selected civilization if it is not too computationnaly expensive. A panel
-	could appear, or simply additional stats in the stats panel showing the
-	detections and contact counts for the currently selected civilization.
+- Then it maybe could be possible to compute the detections ONLY for the
+  selected civilization if it is not too computationnaly expensive. A panel
+  could appear, or simply additional stats in the stats panel showing the
+  detections and contact counts for the currently selected civilization.
 
 - Efficiently compute detections in simulation (a civilization sees an other for
   the first time). If it cant be handled do it probabilistically (based on

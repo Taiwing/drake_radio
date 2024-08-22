@@ -1,12 +1,12 @@
 import { createCamera } from './components/camera.js'
 import { createScene } from './components/scene.js'
 import { Galaxy } from './components/galaxy.js'
-import { Signals } from './components/signals.js'
+import { Signals, Bubble } from './components/signals.js'
 import { createControls } from './systems/controls.js'
 import { Renderer } from './systems/renderer.js'
 import { Resizer } from './systems/resizer.js'
 import { Loop } from './systems/loop.js'
-import { AxesHelper, CameraHelper } from './vendor/three.js'
+import { Vector2, Raycaster } from './vendor/three.js'
 import { FrameRate } from './vendor/frame-rate.js'
 import { config } from '../simulation/config.js'
 
@@ -20,6 +20,8 @@ export class World {
     this._container.append(this._renderer.domElement)
     this._frameRate = new FrameRate()
     this._container.append(this._frameRate.dom)
+    this._mouse = new Vector2()
+    this._raycaster = new Raycaster()
 
     this._controls = createControls({
       camera: this._camera,
@@ -34,6 +36,20 @@ export class World {
       renderer: this._renderer,
     })
     this.reset({ simulation, galaxySpec })
+
+    this._container.addEventListener('mousemove', this._onMouseMove.bind(this))
+  }
+
+  _onMouseMove(event) {
+    this._mouse.x = (event.clientX / window.innerWidth) * 2 - 1
+    this._mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+    this._raycaster.setFromCamera(this._mouse, this._camera)
+
+    for (const object of this._scene.children) {
+      if (object.onMouseMove) {
+        object.onMouseMove(this._raycaster)
+      }
+    }
   }
 
   resetCamera() {
@@ -54,6 +70,7 @@ export class World {
       camera: this._camera,
       scene: this._scene,
       renderer: this._renderer,
+      raycaster: this._raycaster,
       simulation,
     })
 

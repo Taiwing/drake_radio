@@ -3,10 +3,11 @@ import { ROTATION_PER_SEC } from '../constants.js'
 import { config } from '../../simulation/config.js'
 
 export class Loop {
-  constructor({ camera, scene, renderer, simulation }) {
+  constructor({ camera, scene, renderer, raycaster, simulation }) {
     this._camera = camera
     this._scene = scene
     this._renderer = renderer
+    this._raycaster = raycaster
     this._simulation = simulation
     this._clock = new Clock()
     this._delta = this._clock.getDelta()
@@ -37,10 +38,13 @@ export class Loop {
 
     const { time, isRunning } = this._simulation
     for (const object of this.updatables) {
+      object.tick({ time, isRunning, elapsed, events })
       if (isRunning && rotation && object.rotation) {
         object.rotation.y += ROTATION_PER_SEC * this._delta
       }
-      object.tick({ time, isRunning, elapsed, events })
+      if (object.onMouseMove) {
+        object.onMouseMove(this._raycaster)
+      }
     }
   }
 }
