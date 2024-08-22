@@ -45,14 +45,24 @@ export class World {
       this._raycaster.setFromCamera(this._mouse, this._camera)
     })
     this._container.addEventListener('mousemove', this._onMouseMove.bind(this))
+    this._container.addEventListener('click', this._onClick.bind(this))
+  }
+
+  _setMouse(event) {
+    this._mouse.x = (event.clientX / window.innerWidth) * 2 - 1
+    this._mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+    this._raycaster.setFromCamera(this._mouse, this._camera)
   }
 
   _onMouseMove(event) {
     event.stopPropagation()
-    this._mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-    this._mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
-    this._raycaster.setFromCamera(this._mouse, this._camera)
+    this._setMouse(event)
     Signals.onMouseMove(this._raycaster)
+  }
+
+  _onClick(event) {
+    this._setMouse(event)
+    Signals.onClick(this._raycaster)
   }
 
   resetCamera() {

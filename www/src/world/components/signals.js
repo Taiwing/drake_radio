@@ -104,9 +104,16 @@ export class Bubble extends Group {
   }
 
   onUnhover() {
-    if (!this._isCircle) {
+    if (!this._isCircle && !this._isSphere) {
       this._toggleShape()
     }
+  }
+
+  onClick() {
+    if (this._isCircle) {
+      this._toggleShape()
+    }
+    this._isSphere = !this._isSphere
   }
 
   cameraTick() {
@@ -226,18 +233,20 @@ export class Signals extends Group {
   }
 
   static onMouseMove(raycaster) {
-    // Get all bubbles
     const bubbles = Signals.all.flatMap(signals => signals.children)
-
-    // Find the smallest circle that the raycaster intersects
     const intersect = Signals._findIntersect(raycaster, bubbles)
-    intersect?.onHover()
 
-    // Apply unhovering effect to all other circles
+    intersect?.onHover()
     for (const bubble of bubbles) {
       if (bubble !== intersect) {
         bubble.onUnhover()
       }
     }
+  }
+
+  static onClick(raycaster) {
+    const bubbles = Signals.all.flatMap(signals => signals.children)
+    const intersect = Signals._findIntersect(raycaster, bubbles)
+    intersect?.onClick()
   }
 }

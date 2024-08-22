@@ -75,7 +75,7 @@ export const configTemplate = {
     def: 0xbf1111,
   },
   'death-signals-inflate': {
-    def: true,
+    def: false,
   },
   'preset': {
     def: 'reasonable',
@@ -126,7 +126,8 @@ const defaultPresets = {
     'intelligence-fraction': 0.05,
     'communication-fraction': 0.75,
     'civilization-lifetime': 10_000,
-    'speed': 1000,
+    'speed': 4000,
+    'death-signals-inflate': true,
   },
   /* Largest Estimates */
   'star-trek': {
@@ -137,7 +138,8 @@ const defaultPresets = {
     'intelligence-fraction': 1,
     'communication-fraction': 0.2,
     'civilization-lifetime': 1.282051e+7,
-    'speed': 1000,
+    'speed': 4000,
+    'death-signals-inflate': true,
   },
 }
 
