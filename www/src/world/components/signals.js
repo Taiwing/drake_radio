@@ -98,17 +98,15 @@ export class Bubble extends Group {
   }
 
   onHover() {
-    this._hovering = true
     if (this._isCircle) {
       this._toggleShape()
     }
   }
 
   onUnhover() {
-    if (!this._hovering && !this._isCircle) {
+    if (!this._isCircle) {
       this._toggleShape()
     }
-    this._hovering = false
   }
 
   cameraTick() {
@@ -201,25 +199,35 @@ export class Signals extends Group {
     }
   }
 
-  onMouseMove(raycaster) {
-    // get all intersecting bubbles
+  _findIntersect(raycaster) {
+    // Get all intersecting bubbles
     let intersects = raycaster.intersectObjects(this.children)
     intersects = intersects.filter(intersect => intersect.object.isHitbox)
     intersects = intersects.map(intersect => intersect.object.parent)
 
-    // Apply hovering effect to smallest circle
+    // Get smallest intersecting bubble
+    let intersect
     if (intersects.length > 0) {
-      const intersect = intersects.reduce((prev, current) => {
+      intersect = intersects.reduce((prev, current) => {
         return prev.scale.x < current.scale.x ? prev : current
       })
-      if (intersect) {
-        intersect.onHover()
-      }
+    }
+    return intersect
+  }
+
+  onMouseMove(raycaster) {
+    // Find the smallest circle that the raycaster intersects
+    let intersect
+    if (config[`${this._type}-signals-inflate`]) {
+      intersect = this._findIntersect(raycaster)
+      intersect?.onHover()
     }
 
     // Apply unhovering effect to all other circles
     for (const bubble of this.children) {
-      bubble.onUnhover()
+      if (bubble !== intersect) {
+        bubble.onUnhover()
+      }
     }
   }
 }

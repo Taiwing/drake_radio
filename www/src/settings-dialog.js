@@ -238,6 +238,10 @@ const SettingsDialogHTML = `
         id="birth-signals-count"
       />
     </label>
+    <label class="checkbox-line">
+      <span>Inflate</span>
+      <input type="checkbox" id="birth-signals-inflate" />
+    </label>
   </fieldset>
 
   <fieldset class="fieldset-flex">
@@ -269,6 +273,10 @@ const SettingsDialogHTML = `
         inputmode="numeric"
         id="death-signals-count"
       />
+    </label>
+    <label class="checkbox-line">
+      <span>Inflate</span>
+      <input type="checkbox" id="death-signals-inflate" />
     </label>
   </fieldset>
 </form>

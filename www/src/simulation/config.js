@@ -65,11 +65,17 @@ export const configTemplate = {
   'birth-signals-color': {
     def: 0x66acdc,
   },
+  'birth-signals-inflate': {
+    def: true,
+  },
   'death-signals-count': {
     def: 50,
   },
   'death-signals-color': {
     def: 0xbf1111,
+  },
+  'death-signals-inflate': {
+    def: false,
   },
   'preset': {
     def: 'reasonable',
