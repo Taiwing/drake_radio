@@ -37,10 +37,18 @@ export class World {
     })
     this.reset({ simulation, galaxySpec })
 
+    // Uber hack to prevent interaction when the mouse is moving outside the
+    // container (actually inside objects above the container)
+    document.addEventListener('mousemove', (event) => {
+      this._mouse.x = -2
+      this._mouse.y = -2
+      this._raycaster.setFromCamera(this._mouse, this._camera)
+    })
     this._container.addEventListener('mousemove', this._onMouseMove.bind(this))
   }
 
   _onMouseMove(event) {
+    event.stopPropagation()
     this._mouse.x = (event.clientX / window.innerWidth) * 2 - 1
     this._mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
     this._raycaster.setFromCamera(this._mouse, this._camera)

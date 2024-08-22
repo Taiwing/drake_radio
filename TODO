@@ -1,13 +1,6 @@
 - make the hovering thing a parameter in the settings (activate or disable it)
 - click to select civilization (change mouse to a hand when hovering)
 
-FIX:
-
-- when the mouse is passive but the galaxy is rotating the mouse stays at last
-  recorded position which is good except when it has left the container div
-  because there should not be any iteractions then (it leaves a kind of "ghost"
-  mouse position where circles inflate for no apparent reason)
-
 MAYBE:
 
 - Then it maybe could be possible to compute the detections ONLY for the
