@@ -52,12 +52,7 @@ export class World {
     this._mouse.x = (event.clientX / window.innerWidth) * 2 - 1
     this._mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
     this._raycaster.setFromCamera(this._mouse, this._camera)
-
-    for (const object of this._scene.children) {
-      if (object.onMouseMove) {
-        object.onMouseMove(this._raycaster)
-      }
-    }
+    Signals.onMouseMove(this._raycaster)
   }
 
   resetCamera() {
@@ -72,6 +67,7 @@ export class World {
       this._loop.stop()
       this._scene.clear()
       this.resetCamera()
+      Signals.reset()
     }
 
     this._loop = new Loop({

@@ -1,6 +1,7 @@
 import { Clock } from '../vendor/three.js'
 import { ROTATION_PER_SEC } from '../constants.js'
 import { config } from '../../simulation/config.js'
+import { Signals } from '../components/signals.js'
 
 export class Loop {
   constructor({ camera, scene, renderer, raycaster, simulation }) {
@@ -42,9 +43,7 @@ export class Loop {
       if (isRunning && rotation && object.rotation) {
         object.rotation.y += ROTATION_PER_SEC * this._delta
       }
-      if (object.onMouseMove) {
-        object.onMouseMove(this._raycaster)
-      }
     }
+    Signals.onMouseMove(this._raycaster)
   }
 }

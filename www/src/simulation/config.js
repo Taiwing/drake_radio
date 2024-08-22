@@ -75,7 +75,7 @@ export const configTemplate = {
     def: 0xbf1111,
   },
   'death-signals-inflate': {
-    def: false,
+    def: true,
   },
   'preset': {
     def: 'reasonable',

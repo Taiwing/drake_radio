@@ -138,12 +138,15 @@ export class Bubble extends Group {
 }
 
 export class Signals extends Group {
+  static all = []
+
   constructor({ camera, type }) {
     super()
     this._color = config[`${type}-signals-color`]
     this._count = config[`${type}-signals-count`]
     this._type = type
     Bubble.camera = camera
+    Signals.all.push(this)
   }
 
   _createBubble({ elapsed, civ }) {
@@ -199,11 +202,18 @@ export class Signals extends Group {
     }
   }
 
-  _findIntersect(raycaster) {
+  static reset() {
+    Signals.all = []
+  }
+
+  static _findIntersect(raycaster, bubbles) {
     // Get all intersecting bubbles
-    let intersects = raycaster.intersectObjects(this.children)
+    let intersects = raycaster.intersectObjects(bubbles)
     intersects = intersects.filter(intersect => intersect.object.isHitbox)
     intersects = intersects.map(intersect => intersect.object.parent)
+    intersects = intersects.filter(intersect => {
+      return config[`${intersect.parent._type}-signals-inflate`]
+    })
 
     // Get smallest intersecting bubble
     let intersect
@@ -215,16 +225,16 @@ export class Signals extends Group {
     return intersect
   }
 
-  onMouseMove(raycaster) {
+  static onMouseMove(raycaster) {
+    // Get all bubbles
+    const bubbles = Signals.all.flatMap(signals => signals.children)
+
     // Find the smallest circle that the raycaster intersects
-    let intersect
-    if (config[`${this._type}-signals-inflate`]) {
-      intersect = this._findIntersect(raycaster)
-      intersect?.onHover()
-    }
+    const intersect = Signals._findIntersect(raycaster, bubbles)
+    intersect?.onHover()
 
     // Apply unhovering effect to all other circles
-    for (const bubble of this.children) {
+    for (const bubble of bubbles) {
       if (bubble !== intersect) {
         bubble.onUnhover()
       }
