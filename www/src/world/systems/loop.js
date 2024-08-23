@@ -44,6 +44,6 @@ export class Loop {
         object.rotation.y += ROTATION_PER_SEC * this._delta
       }
     }
-    Signals.onMouseMove(this._raycaster)
+    Signals.onPointerMove(this._raycaster)
   }
 }

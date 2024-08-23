@@ -239,7 +239,7 @@ export class Signals extends Group {
     return intersect
   }
 
-  static onMouseMove(raycaster) {
+  static onPointerMove(raycaster) {
     const bubbles = Signals.all.flatMap(signals => signals.children)
     const intersect = Signals._findIntersect(raycaster, bubbles)
 

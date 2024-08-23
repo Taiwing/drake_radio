@@ -20,7 +20,7 @@ export class World {
     this._container.append(this._renderer.domElement)
     this._frameRate = new FrameRate()
     this._container.append(this._frameRate.dom)
-    this._mouse = new Vector2()
+    this._pointer = new Vector2()
     this._raycaster = new Raycaster()
 
     this._controls = createControls({
@@ -37,35 +37,53 @@ export class World {
     })
     this.reset({ simulation, galaxySpec })
 
-    // Uber hack to prevent interaction when the mouse is moving outside the
+    // Pointer events
+    this._pointerDelta = 6
+    this._pointerStartX = 0
+    this._pointerStartY = 0
+    this._container.addEventListener('pointermove', this._onPointerMove.bind(this))
+    this._container.addEventListener('pointerdown', this._onPointerDown.bind(this))
+    this._container.addEventListener('pointerup', this._onPointerUp.bind(this))
+    // Uber hack to prevent interaction when the pointer is moving outside the
     // container (actually inside objects above the container)
-    document.addEventListener('mousemove', this._resetMouse.bind(this))
-    this._container.addEventListener('mousemove', this._onMouseMove.bind(this))
-    this._container.addEventListener('click', this._onClick.bind(this))
+    document.addEventListener('pointermove', this._resetPointer.bind(this))
   }
 
-  _resetMouse() {
-    this._mouse.x = -2
-    this._mouse.y = -2
-    this._raycaster.setFromCamera(this._mouse, this._camera)
+  _resetPointer() {
+    this._pointer.x = -2
+    this._pointer.y = -2
+    this._raycaster.setFromCamera(this._pointer, this._camera)
   }
 
-  _setMouse(event) {
-    this._mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-    this._mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
-    this._raycaster.setFromCamera(this._mouse, this._camera)
+  _setPointer(event) {
+    this._pointer.x = (event.clientX / window.innerWidth) * 2 - 1
+    this._pointer.y = -(event.clientY / window.innerHeight) * 2 + 1
+    this._raycaster.setFromCamera(this._pointer, this._camera)
   }
 
-  _onMouseMove(event) {
+  _onPointerMove(event) {
     event.stopPropagation()
-    this._setMouse(event)
-    Signals.onMouseMove(this._raycaster)
+    this._setPointer(event)
+    Signals.onPointerMove(this._raycaster)
   }
 
-  _onClick(event) {
-    this._setMouse(event)
+  _onPointerDown(event) {
+    this._pointerStartX = event.clientX
+    this._pointerStartY = event.clientY
+  }
+
+  _onPointerUp(event) {
+    // Prevent click event if the pointer moved too much (drag)
+    const diffX = Math.abs(event.clientX - this._pointerStartX)
+    const diffY = Math.abs(event.clientY - this._pointerStartY)
+    if (diffX > this._pointerDelta || diffY > this._pointerDelta) {
+      return
+    }
+
+    // Else, trigger click event
+    this._setPointer(event)
     Signals.onClick(this._raycaster)
-    this._resetMouse()
+    this._resetPointer()
   }
 
   resetCamera() {

@@ -207,7 +207,7 @@ const SettingsDialogHTML = `
       <input type="checkbox" id="rotation" />
     </label>
     <label class="checkbox-line">
-      <span>Signal Size Reduction</span>
+      <span>Signal Reduction</span>
       <input type="checkbox" id="signals-reduction" />
     </label>
   </fieldset>
@@ -247,7 +247,7 @@ const SettingsDialogHTML = `
       <input type="checkbox" id="birth-signals-select" />
     </label>
     <label class="checkbox-line">
-      <span>Selected Size Reduction</span>
+      <span>Selected Reduction</span>
       <input type="checkbox" id="birth-signals-select-reduction" />
     </label>
   </fieldset>
@@ -287,7 +287,7 @@ const SettingsDialogHTML = `
       <input type="checkbox" id="death-signals-select" />
     </label>
     <label class="checkbox-line">
-      <span>Selected Size Reduction</span>
+      <span>Selected Reduction</span>
       <input type="checkbox" id="death-signals-select-reduction" />
     </label>
   </fieldset>
