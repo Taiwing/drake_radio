@@ -63,7 +63,7 @@ export const configTemplate = {
     def: true,
   },
   'birth-signals-count': {
-    def: 50,
+    def: 500,
   },
   'birth-signals-color': {
     def: 0x66acdc,
@@ -75,7 +75,7 @@ export const configTemplate = {
     def: false,
   },
   'death-signals-count': {
-    def: 50,
+    def: 500,
   },
   'death-signals-color': {
     def: 0xbf1111,
