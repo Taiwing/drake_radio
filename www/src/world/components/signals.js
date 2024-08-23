@@ -52,7 +52,7 @@ const createHitbox = (radius, segments = 64) => {
 export class Bubble extends Group {
   static camera = null
 
-  constructor({ origin, dto, count, scale, color }) {
+  constructor({ origin, dto, count, scale, color, type }) {
     super()
 
     this._hitbox = createHitbox(VISUAL_LIGHT_YEAR)
@@ -66,15 +66,17 @@ export class Bubble extends Group {
       origin.y * VISUAL_LIGHT_YEAR,
       origin.z * VISUAL_LIGHT_YEAR
     )
-    this._radiusMax = dto + galaxySpec.TOTAL_RADIUS * this._reduction(count+1)
+    this._dto = dto
+    this._count = count
+    this._type = type
+  }
+
+  get _radiusMax() {
+    return this._dto + galaxySpec.TOTAL_RADIUS * this._reduction(this._count+1)
   }
 
   get material() {
     return this.children[1].material
-  }
-
-  get _radiusMiddle() {
-    return this._radiusMax / 2
   }
 
   _toggleShape(color = this.material.color.getHex()) {
@@ -94,6 +96,10 @@ export class Bubble extends Group {
   }
 
   _reduction(x) {
+    if (!config['signals-reduction']
+      || (this._selected && !config[`${this._type}-signals-select-reduction`])) {
+      return 1
+    }
     return Math.pow(1/x, 1/2)
   }
 
@@ -104,7 +110,7 @@ export class Bubble extends Group {
   }
 
   onUnhover() {
-    if (!this._isCircle && !this._isSphere) {
+    if (!this._isCircle && !this._selected) {
       this._toggleShape()
     }
   }
@@ -113,7 +119,7 @@ export class Bubble extends Group {
     if (this._isCircle) {
       this._toggleShape()
     }
-    this._isSphere = !this._isSphere
+    this._selected = !this._selected
   }
 
   cameraTick() {
@@ -163,6 +169,7 @@ export class Signals extends Group {
       count: this.children.length,
       scale: elapsed,
       color: this._color,
+      type: this._type,
     })
     this.add(bubble)
   }
@@ -219,7 +226,7 @@ export class Signals extends Group {
     intersects = intersects.filter(intersect => intersect.object.isHitbox)
     intersects = intersects.map(intersect => intersect.object.parent)
     intersects = intersects.filter(intersect => {
-      return config[`${intersect.parent._type}-signals-inflate`]
+      return config[`${intersect.parent._type}-signals-select`]
     })
 
     // Get smallest intersecting bubble

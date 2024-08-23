@@ -206,6 +206,10 @@ const SettingsDialogHTML = `
       <span>Galactic Rotation</span>
       <input type="checkbox" id="rotation" />
     </label>
+    <label class="checkbox-line">
+      <span>Signal Size Reduction</span>
+      <input type="checkbox" id="signals-reduction" />
+    </label>
   </fieldset>
 
   <fieldset class="fieldset-flex">
@@ -239,8 +243,12 @@ const SettingsDialogHTML = `
       />
     </label>
     <label class="checkbox-line">
-      <span>Inflate</span>
-      <input type="checkbox" id="birth-signals-inflate" />
+      <span>Select on Click</span>
+      <input type="checkbox" id="birth-signals-select" />
+    </label>
+    <label class="checkbox-line">
+      <span>Selected Size Reduction</span>
+      <input type="checkbox" id="birth-signals-select-reduction" />
     </label>
   </fieldset>
 
@@ -275,8 +283,12 @@ const SettingsDialogHTML = `
       />
     </label>
     <label class="checkbox-line">
-      <span>Inflate</span>
-      <input type="checkbox" id="death-signals-inflate" />
+      <span>Select on Click</span>
+      <input type="checkbox" id="death-signals-select" />
+    </label>
+    <label class="checkbox-line">
+      <span>Selected Size Reduction</span>
+      <input type="checkbox" id="death-signals-select-reduction" />
     </label>
   </fieldset>
 </form>

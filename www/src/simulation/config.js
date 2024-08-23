@@ -59,14 +59,20 @@ export const configTemplate = {
     def: true,
     hardReset: true,
   },
+  'signals-reduction': {
+    def: true,
+  },
   'birth-signals-count': {
     def: 50,
   },
   'birth-signals-color': {
     def: 0x66acdc,
   },
-  'birth-signals-inflate': {
+  'birth-signals-select': {
     def: true,
+  },
+  'birth-signals-select-reduction': {
+    def: false,
   },
   'death-signals-count': {
     def: 50,
@@ -74,7 +80,10 @@ export const configTemplate = {
   'death-signals-color': {
     def: 0xbf1111,
   },
-  'death-signals-inflate': {
+  'death-signals-select': {
+    def: false,
+  },
+  'death-signals-select-reduction': {
     def: false,
   },
   'preset': {
@@ -127,7 +136,7 @@ const defaultPresets = {
     'communication-fraction': 0.75,
     'civilization-lifetime': 10_000,
     'speed': 4000,
-    'death-signals-inflate': true,
+    'death-signals-select': true,
   },
   /* Largest Estimates */
   'star-trek': {
@@ -139,7 +148,7 @@ const defaultPresets = {
     'communication-fraction': 0.2,
     'civilization-lifetime': 1.282051e+7,
     'speed': 4000,
-    'death-signals-inflate': true,
+    'death-signals-select': true,
   },
 }
 
