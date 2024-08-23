@@ -236,7 +236,13 @@ export class Signals extends Group {
     const bubbles = Signals.all.flatMap(signals => signals.children)
     const intersect = Signals._findIntersect(raycaster, bubbles)
 
-    intersect?.onHover()
+    if (intersect) {
+      intersect.onHover()
+      document.body.style.cursor = 'pointer'
+    } else {
+      document.body.style.cursor = 'default'
+    }
+
     for (const bubble of bubbles) {
       if (bubble !== intersect) {
         bubble.onUnhover()
