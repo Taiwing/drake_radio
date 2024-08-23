@@ -77,13 +77,14 @@ export class World {
     const diffX = Math.abs(event.clientX - this._pointerStartX)
     const diffY = Math.abs(event.clientY - this._pointerStartY)
     if (diffX > this._pointerDelta || diffY > this._pointerDelta) {
+      if (event.pointerType !== 'mouse') this._resetPointer()
       return
     }
 
     // Else, trigger click event
     this._setPointer(event)
     Signals.onClick(this._raycaster)
-    this._resetPointer()
+    if (event.pointerType !== 'mouse') this._resetPointer()
   }
 
   resetCamera() {
