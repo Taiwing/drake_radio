@@ -39,13 +39,15 @@ export class World {
 
     // Uber hack to prevent interaction when the mouse is moving outside the
     // container (actually inside objects above the container)
-    document.addEventListener('mousemove', (event) => {
-      this._mouse.x = -2
-      this._mouse.y = -2
-      this._raycaster.setFromCamera(this._mouse, this._camera)
-    })
+    document.addEventListener('mousemove', this._resetMouse.bind(this))
     this._container.addEventListener('mousemove', this._onMouseMove.bind(this))
     this._container.addEventListener('click', this._onClick.bind(this))
+  }
+
+  _resetMouse() {
+    this._mouse.x = -2
+    this._mouse.y = -2
+    this._raycaster.setFromCamera(this._mouse, this._camera)
   }
 
   _setMouse(event) {
@@ -63,6 +65,7 @@ export class World {
   _onClick(event) {
     this._setMouse(event)
     Signals.onClick(this._raycaster)
+    this._resetMouse()
   }
 
   resetCamera() {
